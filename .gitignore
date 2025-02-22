@@ -14,3 +14,5 @@
 
 # 不忽略 Python 文件
 !*.py
+
+x64/Debug/*
