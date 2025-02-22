@@ -70,9 +70,42 @@ ScanParamWidget::ScanParamWidget(DataManager* data_manager, int scan_widget_inde
 	basic_layout->addWidget(ds_edit_, 8, 1);
 	basic_layout->addWidget(polarization_type_lable_, 9, 0);
 	basic_layout->addWidget(polarization_type_combobox_, 9, 1);
-	basic_qbox_ = new QGroupBox(QString::fromLocal8Bit("扫参数配置"));
+	basic_qbox_ = new QGroupBox(QString::fromLocal8Bit("源信息配置"));
 	basic_qbox_->setLayout(basic_layout);
 
+	// 远场信息
+	theta_begin_lable_ = new QLabel(QString::fromLocal8Bit("theta起始点:"));
+	theta_begin_edit_ = new QLineEdit("0");
+	phi_begin_lable_ = new QLabel(QString::fromLocal8Bit("phi起始点:"));
+	phi_begin_edit_ = new QLineEdit("0");
+
+	theta_end_lable_ = new QLabel(QString::fromLocal8Bit("theta结束点:"));
+	theta_end_edit_ = new QLineEdit("180");
+	phi_end_lable_ = new QLabel(QString::fromLocal8Bit("phi结束点:"));
+	phi_end_edit_ = new QLineEdit("360");
+
+	theta_gap_lable_ = new QLabel(QString::fromLocal8Bit("theta点间距:"));
+	theta_gap_edit_ = new QLineEdit("1.0");
+	phi_gap_lable_ = new QLabel(QString::fromLocal8Bit("phi点间距:"));
+	phi_gap_edit_ = new QLineEdit("1.0");
+
+	QGridLayout* farfield_layout = new QGridLayout;
+	farfield_layout->addWidget(theta_begin_lable_, 0, 0);
+	farfield_layout->addWidget(theta_begin_edit_, 0, 1);
+	farfield_layout->addWidget(phi_begin_lable_, 1, 0);
+	farfield_layout->addWidget(phi_begin_edit_, 1, 1);
+	farfield_layout->addWidget(theta_end_lable_, 2, 0);
+	farfield_layout->addWidget(theta_end_edit_, 2, 1);
+	farfield_layout->addWidget(phi_end_lable_, 3, 0);
+	farfield_layout->addWidget(phi_end_edit_, 3, 1);
+	farfield_layout->addWidget(theta_gap_lable_, 4, 0);
+	farfield_layout->addWidget(theta_gap_edit_, 4, 1);
+	farfield_layout->addWidget(phi_gap_lable_, 5, 0);
+	farfield_layout->addWidget(phi_gap_edit_, 5, 1);
+	farfield_box_ = new QGroupBox(QString::fromLocal8Bit("远场信息配置"));
+	farfield_box_->setLayout(farfield_layout);
+
+	// scan_qbox_
 	scan_param_label_ = new QLabel(QString::fromLocal8Bit("扫描参数选择:"));
 	scan_param_combobox_ = new QComboBox;
 	scan_param_combobox_->addItem(QString::fromLocal8Bit("俯仰角(°)"));
@@ -102,10 +135,14 @@ ScanParamWidget::ScanParamWidget(DataManager* data_manager, int scan_widget_inde
 	scan_qbox_ = new QGroupBox(QString::fromLocal8Bit("扫参数配置"));
 	scan_qbox_->setLayout(scan_layout);
 
+	QVBoxLayout* v_layout = new QVBoxLayout();
+	v_layout->addWidget(farfield_box_);
+	v_layout->addWidget(scan_qbox_);
+
 
 	QHBoxLayout *param_layout = new QHBoxLayout();
 	param_layout->addWidget(basic_qbox_);
-	param_layout->addWidget(scan_qbox_);
+	param_layout->addLayout(v_layout);
 	param_layout->addWidget(ok_qbt_);
 
 	result_table_widget_ = new QTableWidget(10, 4, this);
@@ -257,7 +294,12 @@ bool ScanParamWidget::ReadScanParam() {
 
 	polarization_type_ = polarization_type_combobox_->currentIndex() + 1;
 	scan_type_ = scan_param_combobox_->currentIndex();
-
+	if (!ReadTheta()) {
+		return false;
+	}
+	if (!ReadPhi()) {
+		return false;
+	}
 	
 	return true;
 }
@@ -394,6 +436,7 @@ void ScanParamWidget::GenCalcMeta() {
 	gen_meta.SetOutputPath(cur_result_path_);
 	gen_meta.SetFre(fre_ * 1e9);
 	gen_meta.SetPolarizationType(polarization_type_);
+	gen_meta.SetCalcConf(GetCalcConf());
 
 	gen_meta.WriteMetaMsg(cur_result_path_ + "/meta.json");
 
@@ -529,4 +572,29 @@ void ScanParamWidget::UpdateTable() {
 	result_pic_plot_->xAxis->setRange(min_, max_);
 	result_pic_plot_->yAxis->setRange(min_y_, max_y_ * 1.1);
 	result_pic_plot_->replot();
+}
+
+
+bool ScanParamWidget::ReadTheta() {
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(theta_begin_edit_, min_theta_, -0.000001, 180.0000001);
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(theta_end_edit_, max_theta_, -0.000001, 180.0000001);
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(theta_gap_edit_, gap_theta_, -0.000001, 180.0000001);
+	if (max_theta_ < min_theta_) {
+		theta_begin_edit_->setStyleSheet("background-color:rgba(255,0,0,255)");
+		theta_end_edit_->setStyleSheet("background-color:rgba(255,0,0,255)");
+		return false;
+	}
+	num_theta_ = (max_theta_ - min_theta_) / gap_theta_ + 1;
+}
+
+bool ScanParamWidget::ReadPhi() {
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(phi_begin_edit_, min_phi_, -0.000001, 360.0000001);
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(phi_end_edit_, max_phi_, -0.000001, 360.0000001);
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(phi_gap_edit_, gap_phi_, -0.000001, 360.0000001);
+	if (max_phi_ < min_phi_) {
+		phi_begin_edit_->setStyleSheet("background-color:rgba(255,0,0,255)");
+		phi_end_edit_->setStyleSheet("background-color:rgba(255,0,0,255)");
+		return false;
+	}
+	num_phi_ = (max_phi_ - min_phi_) / gap_phi_ + 1;
 }

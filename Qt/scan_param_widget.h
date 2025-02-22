@@ -16,6 +16,7 @@
 #include "process_show_widget.h"
 #include "../data_manager.h"
 
+#include "../def.h"
 
 class ScanParamWidget : public QDialog
 {
@@ -41,7 +42,18 @@ private:
 	bool GenTbl();
 	bool ReadResult();
 	void UpdateTable();
-
+	bool ReadTheta();
+	bool ReadPhi();
+	CalcConf GetCalcConf() {
+		CalcConf conf;
+		conf.min_theta = min_theta_;
+		conf.min_phi = min_phi_;
+		conf.max_theta = max_theta_;
+		conf.max_phi = max_phi_;
+		conf.num_theta = num_theta_;
+		conf.num_phi = num_phi_;
+		return conf;
+	}
 private:
 	QLabel* theta_label_;
 	QLabel* phi_label_;
@@ -121,4 +133,29 @@ private:
 	double min_y_ = 200;
 	double max_y_ = 0;
 
+	// farfield
+	QLabel* theta_begin_lable_;
+	QLineEdit* theta_begin_edit_;
+	QLabel* theta_end_lable_;
+	QLineEdit* theta_end_edit_;
+
+	QLabel* phi_begin_lable_;
+	QLineEdit* phi_begin_edit_;
+	QLabel* phi_end_lable_;
+	QLineEdit* phi_end_edit_;
+
+	QLabel* theta_gap_lable_;
+	QLineEdit* theta_gap_edit_;
+	QLabel* phi_gap_lable_;
+	QLineEdit* phi_gap_edit_;
+	QGroupBox* farfield_box_;
+
+	double min_theta_ = 0.0;
+	double min_phi_ = 0.0;
+	double max_theta_ = 180.0;
+	double max_phi_ = 360.0;
+	double gap_theta_ = 1.0;
+	double gap_phi_ = 1.0;
+	int num_theta_ = 181;
+	int num_phi_ = 361;
 };
