@@ -30,6 +30,7 @@ signals:
 
 private slots :
 	void OnOKClicked();
+	void OnBrowseBtn();
 
 private:
 	bool GenSource();
@@ -77,6 +78,10 @@ private:
 	QGroupBox* basic_qbox_;
 	QLabel* polarization_type_lable_;
 	QComboBox* polarization_type_combobox_;
+
+	QLabel* path_lable_;
+	QLineEdit* path_edit_;
+	QPushButton* browse_btn_;
 
 	QLabel* scan_param_label_;
 	QComboBox* scan_param_combobox_;
@@ -158,4 +163,6 @@ private:
 	double gap_phi_ = 1.0;
 	int num_theta_ = 181;
 	int num_phi_ = 361;
+
+	std::string custom_path_;
 };

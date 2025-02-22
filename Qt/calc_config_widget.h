@@ -35,6 +35,7 @@ public:
 
 	bool ReadTheta();
 	bool ReadPhi();
+	bool ReadPath();
 
 	CalcConf GetCalcConf() {
 		CalcConf conf;
@@ -47,10 +48,15 @@ public:
 		return conf;
 	}
 
+	const std::string& GetCustomPath() const {
+		return custom_path_;
+	}
+
 private slots :
 	void OnOKClicked();
 	void OnThetaChange();
 	void OnPhiChange();
+	void OnBrowseBtn();
 
 private:
 	QLabel * fre_lable_;
@@ -88,6 +94,11 @@ private:
 	QLineEdit* phi_num_edit_;
 	QGroupBox* num_box_;
 
+	QLabel* path_lable_;
+	QLineEdit* path_edit_;
+	QPushButton* browse_btn_;
+
+
 	QPushButton* ok_bt_;
 	double fre_ = 10.0;
 	bool is_calc_nonrodome_ = true;
@@ -101,4 +112,6 @@ private:
 	double gap_phi_ = 1.0;
 	int num_theta_ = 181;
 	int num_phi_ = 361;
+
+	std::string custom_path_;
 };

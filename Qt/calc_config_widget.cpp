@@ -80,15 +80,21 @@ CalcConfigWidget::CalcConfigWidget(double fre_, QWidget *parent)
 	num_box_ = new QGroupBox(QString::fromLocal8Bit("点个数"));
 	num_box_->setLayout(num_layout);
 	
+	path_lable_ = new QLabel(QString::fromLocal8Bit("保存结果文件夹至:"));
+	path_edit_ = new QLineEdit;
+	browse_btn_ = new QPushButton(tr("Browse..."));
+	connect(browse_btn_, SIGNAL(clicked()), this, SLOT(OnBrowseBtn()));
 
 	QGridLayout * layout = new QGridLayout;
 	//layout->addWidget(fre_lable_, 0, 0);
-	//layout->addWidget(fre_edit_, 0, 1);
-	//layout->addWidget(polarization_type_lable_, 1, 0);
-	//layout->addWidget(polarization_type_combobox_, 1, 1);
+	layout->addWidget(path_lable_, 1, 0);
+	layout->addWidget(path_edit_, 1, 1);
+	layout->addWidget(browse_btn_, 1, 2);
 	layout->addWidget(is_calc_nonrodome_lable_, 2, 0);
 	layout->addWidget(yes_unit_, 2, 1);
 	layout->addWidget(no_unit_, 2, 2);
+
+
 	param_box_ = new QGroupBox(QString::fromLocal8Bit("仿真配置"));
 	param_box_->setLayout(layout);
 
@@ -153,4 +159,26 @@ bool CalcConfigWidget::ReadPhi() {
 		return false;
 	}
 	num_phi_ = (max_phi_ - min_phi_) / gap_phi_ + 1;
+}
+
+bool CalcConfigWidget::ReadPath() {
+
+	// 打开文件夹选择对话框
+	QString folderPath = QFileDialog::getExistingDirectory(this, tr("Select Folder"),
+		QDir::homePath(),
+		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+	if (!folderPath.isEmpty()) {
+		// 输出选择的文件夹路径
+		qDebug() << "Selected folder path: " << folderPath;
+		// 这里可以添加你处理该文件夹路径的代码
+		custom_path_ = folderPath.toStdString();
+		path_edit_->setText(folderPath);
+		return true;
+	}
+	return false;
+}
+
+void CalcConfigWidget::OnBrowseBtn() {
+	ReadPath();
 }

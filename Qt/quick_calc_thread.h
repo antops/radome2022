@@ -35,6 +35,10 @@ public:
 		polarization_type_ = polarization_type;
 	}
 
+	void SetCustomPath(const std::string custom_path) {
+		custom_path_ = custom_path;
+	}
+
 
 	const std::string GetResultPath() const {return result_path_;}
 	const std::string GetResultNonRadomePath() const { return result_non_radome_path_; }
@@ -82,12 +86,15 @@ protected:
 
 		QDateTime data_time = QDateTime::currentDateTime();
 		QString current_time = data_time.toString("yyyy_MM_dd_hh_mm_ss");
-		result_path_ = dir_path_ + "/result/" + current_time.toStdString() + "/";
+		if (custom_path_.empty()) {
+			custom_path_ = dir_path_;
+		}
+		result_path_ = custom_path_ + "/result/" + current_time.toStdString() + "/";
 		dir.mkpath(result_path_.c_str());
 		gen_meta.SetResultPath(result_path_);
 
 		if (is_calc_non_radome_) {
-			result_non_radome_path_ = dir_path_ + "/result/nr_"+current_time.toStdString() + "/";
+			result_non_radome_path_ = custom_path_ + "/result/nr_"+current_time.toStdString() + "/";
 			dir.mkpath(result_non_radome_path_.c_str());
 			gen_meta.SetResultNonRadomePath(result_non_radome_path_);
 		}
@@ -95,6 +102,8 @@ protected:
 		process_show_widget_->QAppend(QString::fromLocal8Bit("path:") 
 			+ QString::fromLocal8Bit(dir_path_.c_str()));
 
+		process_show_widget_->QAppend(QString::fromLocal8Bit("result path:")
+			+ QString::fromLocal8Bit(custom_path_.c_str()));
 
 		// 生成输入
 		process_show_widget_->QAppend(QString::fromLocal8Bit("开始生成源，请等待完成..."));
@@ -135,6 +144,7 @@ protected:
 	std::string dir_path_;
 	std::string result_path_;
 	std::string result_non_radome_path_;
+	std::string custom_path_;
 	bool is_calc_non_radome_ = false;
 	double fre_ = 0.0;
 	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化

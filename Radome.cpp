@@ -1165,6 +1165,7 @@ void Radome::OnNewQuickCalcalteAction()
 	thread.SetFre(fre);
 	thread.SetCalcConf(conf);
 	thread.SetPolarizationType(source->GetPolarizationType());
+	thread.SetCustomPath(widget.GetCustomPath());
 
 	if (!GlobalConfig::Instance()->IsSkipQuickCalc()) {
 		thread.start();
@@ -1266,6 +1267,10 @@ void Radome::OnNewQuickCalcalteAction()
 
 		process_show_widget_->QAppend(QString::fromLocal8Bit("=========================="));
 		if (is_success) {
+			process_show_widget_->QAppend(QString::fromLocal8Bit("计算结果路径:")+ QString::fromLocal8Bit(thread.GetResultPath().c_str()));
+			if (is_calc_non_radome) {
+				process_show_widget_->QAppend(QString::fromLocal8Bit("计算结果路径(无罩):") + QString::fromLocal8Bit(thread.GetResultNonRadomePath().c_str()));
+			}
 			process_show_widget_->QAppend(QString::fromLocal8Bit("计算成功！请点击确定."));
 		}
 		else {

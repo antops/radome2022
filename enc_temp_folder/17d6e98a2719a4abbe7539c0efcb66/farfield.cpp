@@ -202,7 +202,7 @@ bool FarField::ReadFromNpy(const std::string & fileName)
 	ifstream file;
 	file.open(fileName + "/farFieldAbs.txt");
 	if (!file.is_open()) { 
-		return false;
+		// return false;
 	}
 	stringstream tempfile;
 	tempfile << file.rdbuf();
