@@ -58,6 +58,21 @@ bool GenQuickCalcMeta::WriteMetaMsg(const std::string & path)
 	}
 	js_output["result_path"] = result_path_;
 
+	Json::Value js_graph_trans;
+	js_graph_trans["originX"] = graph_trans_.getTrans_x();
+	js_graph_trans["originY"] = graph_trans_.getTrans_x();
+	js_graph_trans["originZ"] = graph_trans_.getTrans_x();
+
+	js_graph_trans["rotUnum"] = graph_trans_.getRotate_x_num();
+	js_graph_trans["rotVnum"] = graph_trans_.getRotate_y_num();
+	js_graph_trans["rotNnum"] = graph_trans_.getRotate_z_num();
+
+	js_graph_trans["rotU"] = graph_trans_.getRotate_x_theta();
+	js_graph_trans["rotV"] = graph_trans_.getRotate_y_theta();
+	js_graph_trans["rotN"] = graph_trans_.getRotate_z_theta();
+
+	js["source_pos"] = js_graph_trans;
+
 	std::ofstream outfile(path);
 	if (!outfile.is_open())
 	{

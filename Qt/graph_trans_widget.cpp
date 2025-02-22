@@ -266,6 +266,10 @@ void GraphTransWidget::setMirror(BasicParameters* mirror)
 	ythetaLineEidt->setText(QString::number(graphTrans.getRotate_y_theta()));
 	zthetaLineEidt->setText(QString::number(graphTrans.getRotate_z_theta()));
 
+	x_theta_combobox_->setCurrentIndex(graphTrans.getRotate_x_num());
+	y_theta_combobox_->setCurrentIndex(graphTrans.getRotate_y_num());
+	z_theta_combobox_->setCurrentIndex(graphTrans.getRotate_z_num());
+
 	if (transLineEidt)
 	{
 		Mirror* tmpmirror = dynamic_cast<Mirror*>(mirror);

@@ -52,9 +52,17 @@ void PlaneMirror::calPolyData(vtkSmartPointer<vtkPolyData>& ptr, double ds)
 	// 用户自定义平移旋转 (先移动后旋转)
 	transform->Translate(graphTrans.getTrans_x(), 
 		graphTrans.getTrans_y(), graphTrans.getTrans_z());
-	transform->RotateWXYZ(graphTrans.getRotate_x_theta(), 1, 0, 0);
-	transform->RotateWXYZ(graphTrans.getRotate_y_theta(), 0, 1, 0);
-	transform->RotateWXYZ(graphTrans.getRotate_z_theta(), 0, 0, 1);
+	for (int i = 0; i < 3; i++) {
+		if (graphTrans.getRotate_x_num() == i) {
+			transform->RotateWXYZ(graphTrans.getRotate_x_theta(), 1, 0, 0);
+		}
+		else if (graphTrans.getRotate_y_num() == i) {
+			transform->RotateWXYZ(graphTrans.getRotate_y_theta(), 0, 1, 0);
+		}
+		else if (graphTrans.getRotate_z_num() == i) {
+			transform->RotateWXYZ(graphTrans.getRotate_z_theta(), 0, 0, 1);
+		}
+	}
 
 	vtkSmartPointer<vtkTransformPolyDataFilter> TransFilter =
 		vtkSmartPointer<vtkTransformPolyDataFilter>::New();

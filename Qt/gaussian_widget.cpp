@@ -88,6 +88,9 @@ GaussianWidget::GaussianWidget(QWidget *parent)
 	layoutSou->addWidget(freLineEdit, 2, 1);
 	layoutSou->addWidget(DsLineEdit, 3, 1);
 
+	layoutSou->addWidget(polarization_type_lable_, 4, 0);
+	layoutSou->addWidget(polarization_type_combobox_, 4, 1);
+
 	sourceGroupBox = new QGroupBox;
 	sourceGroupBox->setTitle(tr("Source"));
 	sourceGroupBox->setLayout(layoutSou);

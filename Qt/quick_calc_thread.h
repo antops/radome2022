@@ -66,6 +66,8 @@ protected:
 		GenQuickCalcMeta gen_meta(data_manager_);
 
 		gen_meta.SetDs(data_manager_.GetSource()->getDs());
+		gen_meta.SetGraphTrans(data_manager_.GetSource()->getGraphTrans());
+
 		dir_path_ = QCoreApplication::applicationDirPath().toStdString() + "/output";
 		QDir dir;
 		dir.mkpath(dir_path_.c_str());

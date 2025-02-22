@@ -361,9 +361,21 @@ void Field::calActor3D()
 		graphTrans.getTrans_y(), graphTrans.getTrans_z());
 	//transform->RotateWXYZ(graphTrans.getRotate_theta(), graphTrans.getRotate_x(),
 	//	graphTrans.getRotate_y(), graphTrans.getRotate_z());
-	transform->RotateWXYZ(graphTrans.getRotate_x_theta(), 1, 0, 0);
-	transform->RotateWXYZ(graphTrans.getRotate_y_theta(), 0, 1, 0);
-	transform->RotateWXYZ(graphTrans.getRotate_z_theta(), 0, 0, 1);
+	//transform->RotateWXYZ(graphTrans.getRotate_x_theta(), 1, 0, 0);
+	//transform->RotateWXYZ(graphTrans.getRotate_y_theta(), 0, 1, 0);
+	//transform->RotateWXYZ(graphTrans.getRotate_z_theta(), 0, 0, 1);
+
+	for (int i = 0; i < 3; i++) {
+		if (graphTrans.getRotate_x_num() == i) {
+			transform->RotateWXYZ(graphTrans.getRotate_x_theta(), 1, 0, 0);
+		}
+		else if (graphTrans.getRotate_y_num() == i) {
+			transform->RotateWXYZ(graphTrans.getRotate_y_theta(), 0, 1, 0);
+		}
+		else if (graphTrans.getRotate_z_num() == i) {
+			transform->RotateWXYZ(graphTrans.getRotate_z_theta(), 0, 0, 1);
+		}
+	}
 	//transform->Translate(-para[7] / 2, -para[8] / 2, 0);
 
 
@@ -472,9 +484,20 @@ void Field::calActor()
 		graphTrans.getTrans_y(), graphTrans.getTrans_z());
 	//transform->RotateWXYZ(graphTrans.getRotate_theta(), graphTrans.getRotate_x(),
 	//	graphTrans.getRotate_y(), graphTrans.getRotate_z());
-	transform->RotateWXYZ(graphTrans.getRotate_x_theta(), 1, 0, 0);
+	/*transform->RotateWXYZ(graphTrans.getRotate_x_theta(), 1, 0, 0);
 	transform->RotateWXYZ(graphTrans.getRotate_y_theta(), 0, 1, 0);
-	transform->RotateWXYZ(graphTrans.getRotate_z_theta(), 0, 0, 1);
+	transform->RotateWXYZ(graphTrans.getRotate_z_theta(), 0, 0, 1);*/
+	for (int i = 0; i < 3; i++) {
+		if (graphTrans.getRotate_x_num() == i) {
+			transform->RotateWXYZ(graphTrans.getRotate_x_theta(), 1, 0, 0);
+		}
+		else if (graphTrans.getRotate_y_num() == i) {
+			transform->RotateWXYZ(graphTrans.getRotate_y_theta(), 0, 1, 0);
+		}
+		else if (graphTrans.getRotate_z_num() == i) {
+			transform->RotateWXYZ(graphTrans.getRotate_z_theta(), 0, 0, 1);
+		}
+	}
 	transform->Translate(-data[0] / 2, -data[1] / 2, 0);
 
 	actor->SetInputData(colorMap->GetOutput());
