@@ -25,6 +25,7 @@ bool RadomeSTL::ReadSTLFromFile(const std::vector<std::string>& paths)
 {
 	material_name_vec_.clear();
 	material_vec_.clear();
+	volume_path_vec_.clear();
 	for (auto path : paths) {
 		vtkSmartPointer<vtkSTLReader> reader =
 			vtkSmartPointer<vtkSTLReader>::New();
@@ -33,6 +34,7 @@ bool RadomeSTL::ReadSTLFromFile(const std::vector<std::string>& paths)
 		polyData_vec_.push_back(reader->GetOutput());
 		material_vec_.push_back(0);
 		material_name_vec_.push_back("金属");
+		volume_path_vec_.push_back(path);
 	}
 	return true;
 }
@@ -64,7 +66,9 @@ void RadomeSTL::UpdateTreeItem()
 	tree_item_->setData(0, Qt::UserRole, QVariant(Def::model_type));
 	int num = 1;
 
-	for (auto& x : material_name_vec_) {
+	for (int i = 0; i < material_name_vec_.size(); i++) {
+		const auto& material_name = material_name_vec_[i];
+		const auto& volume_path = volume_path_vec_[i];
 		QTreeWidgetItem *child_tmp = new QTreeWidgetItem(
 			QStringList(QString::fromLocal8Bit("天线罩层 ") + QString::number(num)));
 		child_tmp->setData(0, Qt::UserRole, QVariant(Def::rotate_layer_type));
@@ -73,8 +77,15 @@ void RadomeSTL::UpdateTreeItem()
 		QTreeWidgetItem *child_eps;
 		child_eps = new QTreeWidgetItem(
 			QStringList(QString::fromLocal8Bit("材料=") + 
-				QString::fromLocal8Bit(x.c_str())));
+				QString::fromLocal8Bit(material_name.c_str())));
 		child_tmp->addChild(child_eps);
+
+		QTreeWidgetItem* child_path = new QTreeWidgetItem(
+			QStringList(QString::fromLocal8Bit("路径=") +
+				QString::fromLocal8Bit(volume_path.c_str())));
+		child_path->setToolTip(0, QString::fromLocal8Bit("路径=") +
+			QString::fromLocal8Bit(volume_path.c_str()));
+		child_tmp->addChild(child_path);
 		child_tmp->setExpanded(true);
 		num++;
 	}

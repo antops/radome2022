@@ -34,7 +34,7 @@ void  MaterialData::Update() {
 	child_loss = new QTreeWidgetItem(
 		QStringList(QString::fromLocal8Bit("lossT  = ") + QString::number(lossT_)));
 	tree_item_->addChild(child_eps);
-	tree_item_->addChild(child_mu);
+	// tree_item_->addChild(child_mu);
 	tree_item_->addChild(child_loss);
 
 	tree_item_->setExpanded(true);

@@ -135,6 +135,7 @@ Radome::Radome(QWidget *parent)
 		this, SLOT(OnTreeWidgetLeftPressed(QTreeWidgetItem*, int)));
 	tree_widget_->setHeaderHidden(true);  // 隐藏表头
 	leftWidget->setWidget(tree_widget_);
+	tree_widget_->setWordWrap(true);
 
 	//RightWidget
 	detailsDockWidget = new QDockWidget("Details", this);
@@ -288,7 +289,7 @@ void Radome::CreateTreeWidgetItem() {
 
 void Radome::CreateMenus()
 {
-	fileMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("文件"));
+	//fileMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("文件"));
 	saveFileAction = new QAction(QString::fromLocal8Bit("保存"), this);
 	connect(saveFileAction, SIGNAL(triggered()), this, SLOT(OnSaveAction()));
 
@@ -301,7 +302,7 @@ void Radome::CreateMenus()
 	//fileMenu->addSeparator();
 	//fileMenu->addAction(LightSourceAction);
 
-	viewMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("视图"));
+	// viewMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("视图"));
 	//viewMenu->addAction(viewAction);
 
 	eidtMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("编辑"));
@@ -556,9 +557,30 @@ void Radome::OnSTLModelAction()
 	if (tmp_widget.exec() != QDialog::Accepted) {
 		return;
 	}
+	if (tmp_widget.GetNumber() <= 0) return;
+	if (tmp_widget.GetNumber() > 10) {
+		return;
+	}
 	InputStlWidget stl_widget(tmp_widget.GetNumber());
 	if (stl_widget.exec() != QDialog::Accepted) {
 		return;
+	}
+	auto old_radome = data_manager_.GetRadomeData();
+	if (old_radome) {
+		QMessageBox::StandardButton rb =
+			QMessageBox::question(NULL, "question", QString::fromLocal8Bit("已存在天线罩模型是否替换"),
+				QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+		if (rb == QMessageBox::No)
+		{
+			return;
+		}
+	}
+	if (old_radome) {
+		const auto& old_actors = old_radome->GetActors();
+		for (const auto& actor : old_actors) {
+			renderer->RemoveActor(actor);
+		}
+		model_tree_item_->removeChild(old_radome->GetTreeItem());
 	}
 	auto results = stl_widget.GetResults();
 	RadomeSTL* tmp_data = new RadomeSTL();

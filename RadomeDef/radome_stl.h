@@ -32,5 +32,6 @@ protected:
 private:
 	std::string path_;
 	std::vector<std::string> surface_path_vec_;
+	std::vector<std::string> volume_path_vec_;
 };
 

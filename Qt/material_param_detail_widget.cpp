@@ -32,8 +32,8 @@ MaterialParamDatailWidget::MaterialParamDatailWidget(bool is_del, QWidget *paren
 	layout->addWidget(name_edit_, 0, 1);
 	layout->addWidget(eps_lable_, 1, 0);
 	layout->addWidget(eps_edit_, 1, 1);
-	layout->addWidget(mu_lable_, 2, 0);
-	layout->addWidget(mu_edit_, 2, 1);
+	// layout->addWidget(mu_lable_, 2, 0);
+	// layout->addWidget(mu_edit_, 2, 1);
 	layout->addWidget(loss_lable_, 3, 0);
 	layout->addWidget(loss_edit_, 3, 1);
 	param_box_ = new QGroupBox(QString::fromLocal8Bit("µç´Å²ÎÊý"));
