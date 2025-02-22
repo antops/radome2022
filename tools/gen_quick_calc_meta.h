@@ -2,6 +2,7 @@
 
 #include "../data_manager.h"
 #include <vtkjsoncpp/json/json.h>
+#include "def.h"
 
 class GenQuickCalcMeta
 {
@@ -47,6 +48,10 @@ public:
 		graph_trans_ = graph_trans;
 	}
 
+	void SetCalcConf(CalcConf conf) {
+		conf_ = conf;
+	}
+
 private:
 	const DataManager& data_manager_;
 	std::vector<std::string> stl_path_;
@@ -59,4 +64,5 @@ private:
 	double ds_ = 0.0;
 	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
 	GraphTrans graph_trans_;
+	CalcConf conf_;
 };

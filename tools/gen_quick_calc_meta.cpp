@@ -43,10 +43,12 @@ bool GenQuickCalcMeta::WriteMetaMsg(const std::string & path)
 	js["source_mode"] = polarization_type_;
 
 	Json::Value& js_farfield = js["farfield"];
-	js_farfield["maxtheta"] = 20;
-	js_farfield["numtheta"] = 101;
-	js_farfield["maxphi"] = 360;
-	js_farfield["numphi"] = 181;
+	js_farfield["maxtheta"] = conf_.max_theta;
+	js_farfield["numtheta"] = conf_.num_theta;
+	js_farfield["maxphi"] = conf_.max_phi;
+	js_farfield["numphi"] = conf_.num_phi;
+	js_farfield["minphi"] = conf_.min_phi;
+	js_farfield["mintheta"] = conf_.min_theta;
 
 	Json::Value& js_output = js["output"];
 	if (is_calc_non_radome_) {

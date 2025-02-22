@@ -27,6 +27,10 @@ public:
 		fre_ = fre;
 	}
 
+	void SetCalcConf(CalcConf conf) {
+		conf_ = conf;
+	}
+
 	void SetPolarizationType(int polarization_type) {
 		polarization_type_ = polarization_type;
 	}
@@ -117,6 +121,7 @@ protected:
 		gen_meta.SetOutputPath(dir_path_);
 		gen_meta.SetFre(fre_);
 		gen_meta.SetPolarizationType(polarization_type_);
+		gen_meta.SetCalcConf(conf_);
 
 		gen_meta.WriteMetaMsg(dir_path_ +"/meta.json");
 		
@@ -133,5 +138,5 @@ protected:
 	bool is_calc_non_radome_ = false;
 	double fre_ = 0.0;
 	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
-
+	CalcConf conf_;
 };

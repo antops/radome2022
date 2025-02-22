@@ -97,3 +97,13 @@ edit_name->setText(QString::fromLocal8Bit(js[#edit_name].asString().c_str()));
 //
 #define READ_COMBOX_TO_JSON(name, js) \
 name->setCurrentIndex(js[#name].asInt())
+
+
+struct CalcConf {
+	double min_theta = 0.0;
+	double min_phi = 0.0;
+	double max_theta = 180.0;
+	double max_phi = 360.0;
+	int num_theta = 181;
+	int num_phi = 361;
+};

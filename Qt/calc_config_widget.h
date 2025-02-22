@@ -11,7 +11,7 @@
 #include <QCloseEvent> 
 #include "qcustomplot.h"
 
-
+#include "../def.h"
 
 class CalcConfigWidget : public QDialog
 {
@@ -33,9 +33,24 @@ public:
 		return polarization_type_;
 	}
 
+	bool ReadTheta();
+	bool ReadPhi();
+
+	CalcConf GetCalcConf() {
+		CalcConf conf;
+		conf.min_theta = min_theta_;
+		conf.min_phi = min_phi_;
+		conf.max_theta = max_theta_;
+		conf.max_phi = max_phi_;
+		conf.num_theta = num_theta_;
+		conf.num_phi = num_phi_;
+		return conf;
+	}
+
 private slots :
 	void OnOKClicked();
-	
+	void OnThetaChange();
+	void OnPhiChange();
 
 private:
 	QLabel * fre_lable_;
@@ -49,8 +64,41 @@ private:
 	QLabel* polarization_type_lable_;
 	QComboBox* polarization_type_combobox_;
 
+	QLabel* theta_begin_lable_;
+	QLineEdit* theta_begin_edit_;
+	QLabel* theta_end_lable_;
+	QLineEdit* theta_end_edit_;
+	QGroupBox* begin_box_;
+
+	QLabel* phi_begin_lable_;
+	QLineEdit* phi_begin_edit_;
+	QLabel* phi_end_lable_;
+	QLineEdit* phi_end_edit_;
+	QGroupBox* end_box_;
+
+	QLabel* theta_gap_lable_;
+	QLineEdit* theta_gap_edit_;
+	QLabel* phi_gap_lable_;
+	QLineEdit* phi_gap_edit_;
+	QGroupBox* gap_box_;
+
+	QLabel* theta_num_lable_;
+	QLineEdit* theta_num_edit_;
+	QLabel* phi_num_lable_;
+	QLineEdit* phi_num_edit_;
+	QGroupBox* num_box_;
+
 	QPushButton* ok_bt_;
 	double fre_ = 10.0;
 	bool is_calc_nonrodome_ = true;
 	int polarization_type_ = 1;
+
+	double min_theta_ = 0.0;
+	double min_phi_ = 0.0;
+	double max_theta_ = 180.0;
+	double max_phi_ = 360.0;
+	double gap_theta_ = 1.0;
+	double gap_phi_ = 1.0;
+	int num_theta_ = 181;
+	int num_phi_ = 361;
 };

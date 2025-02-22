@@ -1132,6 +1132,8 @@ void Radome::OnNewQuickCalcalteAction()
 	process_show_widget_->show();
 	
 	bool is_calc_non_radome = widget.GetIsCalcNonrodome();
+
+	CalcConf conf = widget.GetCalcConf();
 	double fre = source->GetFre();
 	int polarization_type = widget.GetPolarizationType();
 	std::string fre_str = QString::number(fre/ 1e9, 'g', 4).toStdString();
@@ -1139,6 +1141,7 @@ void Radome::OnNewQuickCalcalteAction()
 	QuickCalcThread thread(data_manager_, process_show_widget_);
 	thread.SetCalcNonRadome(is_calc_non_radome);
 	thread.SetFre(fre);
+	thread.SetCalcConf(conf);
 	thread.SetPolarizationType(source->GetPolarizationType());
 
 	if (!GlobalConfig::Instance()->IsSkipQuickCalc()) {
