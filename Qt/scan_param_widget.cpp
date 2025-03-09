@@ -591,8 +591,8 @@ void ScanParamWidget::UpdateTable() {
 
 
 bool ScanParamWidget::ReadTheta() {
-	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(theta_begin_edit_, min_theta_, -0.000001, 180.0000001);
-	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(theta_end_edit_, max_theta_, -0.000001, 180.0000001);
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(theta_begin_edit_, min_theta_, -180.0000001, 180.0000001);
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(theta_end_edit_, max_theta_, -180.0000001, 180.0000001);
 	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(theta_gap_edit_, gap_theta_, -0.000001, 180.0000001);
 	if (max_theta_ < min_theta_) {
 		theta_begin_edit_->setStyleSheet("background-color:rgba(255,0,0,255)");
@@ -603,8 +603,8 @@ bool ScanParamWidget::ReadTheta() {
 }
 
 bool ScanParamWidget::ReadPhi() {
-	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(phi_begin_edit_, min_phi_, -0.000001, 360.0000001);
-	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(phi_end_edit_, max_phi_, -0.000001, 360.0000001);
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(phi_begin_edit_, min_phi_, -360.0000001, 360.0000001);
+	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(phi_end_edit_, max_phi_, -360.0000001, 360.0000001);
 	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(phi_gap_edit_, gap_phi_, -0.000001, 360.0000001);
 	if (max_phi_ < min_phi_) {
 		phi_begin_edit_->setStyleSheet("background-color:rgba(255,0,0,255)");

@@ -132,7 +132,10 @@ protected:
 		gen_meta.SetPolarizationType(polarization_type_);
 		gen_meta.SetCalcConf(conf_);
 
-		gen_meta.WriteMetaMsg(dir_path_ +"/meta.json");
+		if (!gen_meta.WriteMetaMsg(dir_path_ + "/meta.json")) {
+			status_ = -400;
+			return;
+		}
 		
 		status_ = 0;
 		process_show_widget_->QAppend(QString::fromLocal8Bit("初始化环境完成..."));
