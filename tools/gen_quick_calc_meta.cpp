@@ -10,7 +10,8 @@ bool GenQuickCalcMeta::WriteMetaMsg(const std::string & path)
 	js["version"] = 1;
 	js["threads"] = GlobalConfig::Instance()->GraphicsThread();
 
-	auto* mat = data_manager_.GetMaterialData(1);
+	auto* mat = new MaterialData("¿ÕÆø", 1);
+	mat->SetMaterialData(1.0, 1.0, 0.0);
 	if (mat == nullptr) {
 		return false;
 	}

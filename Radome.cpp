@@ -1148,8 +1148,25 @@ void Radome::OnNewQuickCalcalteAction()
 	if (source == nullptr) {
 		QMessageBox::warning(NULL, "Warning",
 			QString::fromLocal8Bit("未设置源!"));
-
 		return;
+	}
+
+	// 验证模型
+	auto radome_data = data_manager_.GetRadomeData();
+	if (radome_data == NULL) {
+		QMessageBox::warning(NULL, "Warning",
+			QString::fromLocal8Bit("未设置模型!"));
+		return;
+	}
+
+	// 验证材料是否添加
+	const auto& materials_index = radome_data->GetAllMaterials();
+	for (auto index : materials_index) {
+		if (data_manager_.GetMaterialData(index) == nullptr) {
+			QMessageBox::warning(NULL, "Warning",
+				QString::fromLocal8Bit("未设置材料!"));
+			return;
+		}
 	}
 	CalcConfigWidget widget(source->GetFre(), this);
 	if (widget.exec() != QDialog::Accepted) {
@@ -1212,6 +1229,12 @@ void Radome::OnNewQuickCalcalteAction()
 			process_show_widget_->close();
 			QMessageBox::warning(NULL, "Warning",
 				QString::fromLocal8Bit("生成模型网格错误"));
+			return;
+		}
+		else if (thread.GetStatus() == -400) {
+			process_show_widget_->close();
+			QMessageBox::warning(NULL, "Warning",
+				QString::fromLocal8Bit("生成meta信息失败"));
 			return;
 		}
 		else if (thread.GetStatus() != 0) {
@@ -1324,8 +1347,21 @@ void Radome::OnNewQuickCalcalteAction()
 	far_field->SetName(std::string("结果_f") + fre_str  + "_" + current_time.toStdString());
 	far_field->SetPicFilePath(result_path + "/" + GlobalConfig::Instance()->GetFarfieldPicName());
 
-	field_tree_item_->addChild(far_field->GetTree());
+	auto* tree = far_field->GetTree();
+	QTreeWidgetItem* tree_conf = new QTreeWidgetItem;
+	tree_conf->setText(0, QString::fromLocal8Bit("theta:[") + QString::number(conf.min_theta)+ "," + QString::number(conf.max_theta)+ "],"
+	+ QString::fromLocal8Bit("num:") + QString::number(conf.num_theta));
+	tree->addChild(tree_conf);
+	tree_conf = new QTreeWidgetItem;
+	tree_conf->setText(0, QString::fromLocal8Bit("phi:[") + QString::number(conf.min_phi) + "," + QString::number(conf.max_phi) + "],"
+		+ QString::fromLocal8Bit("num:") + QString::number(conf.num_phi));
+	tree->addChild(tree_conf);
+
+	field_tree_item_->addChild(tree);
 	field_tree_item_->setExpanded(true);
+	for (int i = 0; i < field_tree_item_->childCount(); i++) {
+		field_tree_item_->child(i)->setExpanded(true);
+	}
 	
 	if (is_calc_non_radome) {
 		FarField *non_far_field = new FarField("non_radome_farfield");
@@ -1346,8 +1382,20 @@ void Radome::OnNewQuickCalcalteAction()
 			+ "_" + current_time.toStdString());
 		non_far_field->SetPicFilePath(non_radome_result_path + "/" + GlobalConfig::Instance()->GetFarfieldPicName());
 
-		field_tree_item_->addChild(non_far_field->GetTree());
+
+		auto* non_far_tree = non_far_field->GetTree();
+		QTreeWidgetItem* non_far_tree_conf = new QTreeWidgetItem;
+		non_far_tree_conf->setText(0, QString::fromLocal8Bit("theta:[") + QString::number(conf.min_theta) + "," + QString::number(conf.max_theta) + "],"
+			+ QString::fromLocal8Bit("num:") + QString::number(conf.num_theta));
+		non_far_tree->addChild(non_far_tree_conf);
+		non_far_tree_conf = new QTreeWidgetItem;
+		non_far_tree_conf->setText(0, QString::fromLocal8Bit("phi:[") + QString::number(conf.min_phi) + "," + QString::number(conf.max_phi) + "],"
+			+ QString::fromLocal8Bit("num:") + QString::number(conf.num_phi));
+		non_far_tree->addChild(non_far_tree_conf);
+
+		field_tree_item_->addChild(non_far_tree);
 		field_tree_item_->setExpanded(true);
+
 		data_manager_.CalcSourceFarfieldDone();
 	}
 
