@@ -89,6 +89,9 @@ public:
 	void setIsShow(bool);
 
 	virtual QTreeWidgetItem* getTree(); 
+	void SetQTreeWidgetItem(QTreeWidgetItem* tree) {
+		tree_ = tree;
+	}
 
 	void setIsSource(bool);
 	bool getIsSource() const { return isSource; }
@@ -139,5 +142,6 @@ protected:
 	double fre_ = 10.0e10;
 
 	int polarization_type_ = 0; // 极化方向 1，垂直极化Ey，2，水平极化Ex
+	QTreeWidgetItem* tree_ = nullptr;
 };
 

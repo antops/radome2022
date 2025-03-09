@@ -33,7 +33,7 @@ bool RadomeSTL::ReadSTLFromFile(const std::vector<std::string>& paths)
 		reader->Update();
 		polyData_vec_.push_back(reader->GetOutput());
 		material_vec_.push_back(0);
-		material_name_vec_.push_back("Ω Ù");
+		material_name_vec_.push_back("Œ¥∂®“Â");
 		volume_path_vec_.push_back(path);
 	}
 	return true;

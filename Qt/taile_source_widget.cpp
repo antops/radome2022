@@ -176,6 +176,45 @@ bool TaileSourceWidget::getField(Field *& ptr)
 	ptr->setGraphTrans(planeMirror->getGraphTrans());
 	ptr->SetFre(fre_ * 1e9);
 	ptr->ReadPythonText(dir_path_ + "/source.txt");
+
+
+	QTreeWidgetItem* tree = new QTreeWidgetItem;
+	tree->setText(0, QString::fromLocal8Bit("泰勒源"));
+
+	QTreeWidgetItem* treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("俯仰角(°):") + QString::number(theta_));
+	tree->addChild(treeWidth);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("方位角(°):") + QString::number(phi_));
+	tree->addChild(treeWidth);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("频率(GHz):") + QString::number(fre_));
+	tree->addChild(treeWidth);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("口径场半径:") + QString::number(radius_));
+	tree->addChild(treeWidth);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("极化方式:") + polarization_type_ == 1 ? QString::fromLocal8Bit("垂直极化Ey"): QString::fromLocal8Bit("水平极化Ey"));
+	tree->addChild(treeWidth);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("x方向上阵元间距(波长):") + QString::number(dx_));
+	tree->addChild(treeWidth);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("y方向上阵元间距(波长):") + QString::number(dy_));
+	tree->addChild(treeWidth);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("ds:") + QString::number(ds_));
+	tree->addChild(treeWidth);
+
+
+	ptr->SetQTreeWidgetItem(tree);
 	return true;
 }
 
