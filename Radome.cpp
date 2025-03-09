@@ -268,14 +268,14 @@ void Radome::CreateTreeWidgetItem() {
 
 	material_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("材料")));
 
-	data_manager_.SetMaterialData(MaterialDataFactory::MaterialAir,
-		MaterialDataFactory::GetMaterialData(MaterialDataFactory::MaterialAir));
-	data_manager_.SetMaterialData(MaterialDataFactory::MaterialMetal,
-		MaterialDataFactory::GetMaterialData(MaterialDataFactory::MaterialMetal));
+	//data_manager_.SetMaterialData(MaterialDataFactory::MaterialAir,
+	//	MaterialDataFactory::GetMaterialData(MaterialDataFactory::MaterialAir));
+	//data_manager_.SetMaterialData(MaterialDataFactory::MaterialMetal,
+	//	MaterialDataFactory::GetMaterialData(MaterialDataFactory::MaterialMetal));
 	normal_material_tree_item_ = new QTreeWidgetItem(QStringList(QString::fromLocal8Bit("常用材料")));
-	normal_material_tree_item_->addChild(data_manager_.GetMaterialData(MaterialDataFactory::MaterialAir)->GetTreeItem());
-	normal_material_tree_item_->addChild(data_manager_.GetMaterialData(MaterialDataFactory::MaterialMetal)->GetTreeItem());
-	material_tree_item_->addChild(normal_material_tree_item_);
+	//normal_material_tree_item_->addChild(data_manager_.GetMaterialData(MaterialDataFactory::MaterialAir)->GetTreeItem());
+	//normal_material_tree_item_->addChild(data_manager_.GetMaterialData(MaterialDataFactory::MaterialMetal)->GetTreeItem());
+	// material_tree_item_->addChild(normal_material_tree_item_);
 
 	custom_material_tree_item_ = new QTreeWidgetItem(QStringList(QString::fromLocal8Bit("自定义材料")));
 	material_tree_item_->addChild(custom_material_tree_item_);
@@ -730,6 +730,10 @@ void Radome::ToTaileSource(int caseIndex)
 		tree_ptr->setData(0, Qt::UserRole, QVariant(Def::taile_source_type));
 
 		source_tree_item_->addChild(tree_ptr);
+		source_tree_item_->setExpanded(true);
+		for (int i = 0; i < source_tree_item_->childCount(); i++) {
+			source_tree_item_->child(i)->setExpanded(true);
+		}
 		data_manager_.SetSource(temPtr);
 		ToTaileSource(0);
 	}
@@ -807,6 +811,10 @@ void Radome::ToTaileOnlySource(int caseIndex)
 		tree_ptr->setData(0, Qt::UserRole, QVariant(Def::taile_source_type));
 
 		source_tree_item_->addChild(tree_ptr);
+		source_tree_item_->setExpanded(true);
+		for (int i = 0; i < source_tree_item_->childCount(); i++) {
+			source_tree_item_->child(i)->setExpanded(true);
+		}
 		data_manager_.SetSource(temPtr);
 		ToTaileOnlySource(0);
 	}
@@ -858,6 +866,10 @@ void Radome::ToApertureField(int caseIndex)
 		tree_ptr->setData(0, Qt::UserRole, QVariant(Def::aperture_source_type));
 
 		source_tree_item_->addChild(tree_ptr);
+		source_tree_item_->setExpanded(true);
+		for (int i = 0; i < source_tree_item_->childCount(); i++) {
+			source_tree_item_->child(i)->setExpanded(true);
+		}
 		data_manager_.SetSource(temPtr);
 		ToApertureField(0);
 	}

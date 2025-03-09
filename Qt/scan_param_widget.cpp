@@ -616,16 +616,32 @@ bool ScanParamWidget::ReadPhi() {
 
 void ScanParamWidget::OnBrowseBtn() {
 
-	// 打开文件夹选择对话框
-	QString folderPath = QFileDialog::getExistingDirectory(this, tr("Select Folder"),
-		QDir::homePath(),
-		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+	//// 打开文件夹选择对话框
+	//QString folderPath = QFileDialog::getExistingDirectory(this, tr("Select Folder"),
+	//	QDir::homePath(),
+	//	QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-	if (!folderPath.isEmpty()) {
-		// 输出选择的文件夹路径
-		qDebug() << "Selected folder path: " << folderPath;
+	//if (!folderPath.isEmpty()) {
+	//	// 输出选择的文件夹路径
+	//	qDebug() << "Selected folder path: " << folderPath;
+	//	// 这里可以添加你处理该文件夹路径的代码
+	//	custom_path_ = folderPath.toStdString();
+	//	path_edit_->setText(folderPath);
+	//}
+
+	QString selectedDir = QFileDialog::getSaveFileName(nullptr, QString::fromLocal8Bit("创建文件"), QDir::homePath(), QString::fromLocal8Bit(""));
+	if (!selectedDir.isEmpty()) {
+		QDir dir(selectedDir);
+		// 检查文件夹是否存在
+		if (!dir.exists()) {
+			// 若不存在则创建文件夹
+			if (!dir.mkpath(selectedDir)) {
+				QMessageBox::critical(nullptr, QString::fromLocal8Bit("失败"), QString::fromLocal8Bit("文件夹创建失败！"));
+			}
+		}
+		qDebug() << "Selected folder path: " << selectedDir;
 		// 这里可以添加你处理该文件夹路径的代码
-		custom_path_ = folderPath.toStdString();
-		path_edit_->setText(folderPath);
+		custom_path_ = selectedDir.toStdString();
+		path_edit_->setText(selectedDir);
 	}
 }

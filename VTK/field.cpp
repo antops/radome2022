@@ -845,8 +845,13 @@ void Field::setIsShow(bool ok)
 
 QTreeWidgetItem * Field::getTree()
 {
+	if (tree_) {
+		tree_->addChild(getTransformTree());
+		return tree_;
+	}
 	QTreeWidgetItem* tree = new QTreeWidgetItem;
-	tree->setText(0, "Source");
+	tree->setText(0, QString::fromLocal8Bit("Դ"));
+	tree->addChild(getTransformTree());
 	return tree;
 }
 

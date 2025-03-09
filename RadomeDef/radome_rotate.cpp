@@ -175,7 +175,7 @@ bool RadomeRotate::Update(std::string* err_msg)
 		// 生成默认介电常数
 		material_vec_.push_back(0);
 		polyData_vec_.push_back(poly_data);
-		material_name_vec_.push_back("金属");
+		material_name_vec_.push_back("未定义");
 	}
 
 	int index = 0;

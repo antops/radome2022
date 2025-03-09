@@ -100,8 +100,12 @@ QTreeWidgetItem * ApertureField::getTree()
 	QTreeWidgetItem * treeds = new QTreeWidgetItem;
 	treeds->setText(0, QString("ds: ") + QString::number(data[5]));
 
+	QTreeWidgetItem* treefile = new QTreeWidgetItem;
+	treeds->setText(0, QString("file: ")+ QString(fileAddress.c_str()));
+
 	tree->addChild(treeFre);
 	tree->addChild(treeds);
+	tree->addChild(treefile);
 
 	tree->addChild(getTransformTree());
 

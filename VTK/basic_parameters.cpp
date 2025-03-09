@@ -32,10 +32,15 @@ QTreeWidgetItem * BasicParameters::getTransformTree()
 	tempTranslation.append(graphTrans.getTransString());
 	treeTranslation->setText(0, tempTranslation.c_str());
 	QTreeWidgetItem * treeRotation = new QTreeWidgetItem;
-	string tempRotation = "Rotation: ";
-	tempRotation.append(graphTrans.getRotateString());
-	treeRotation->setText(0, tempRotation.c_str());
+	string tempRotation = "Rotation:";
 	tree->addChild(treeTranslation);
 	tree->addChild(treeRotation);
+	treeRotation->setText(0, tempRotation.c_str());
+	for (auto buffer : graphTrans.getRotateXYZString()) {
+		treeRotation = new QTreeWidgetItem;
+		treeRotation->setText(0, buffer.c_str());
+		tree->addChild(treeRotation);
+	}
+	
 	return tree;
 }
