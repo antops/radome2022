@@ -1244,6 +1244,29 @@ void Radome::OnNewQuickCalcalteAction()
 			return;
 		}
 	}
+	QTreeWidgetItem* tree_conf_main = new QTreeWidgetItem;
+	tree_conf_main->setText(0, QString::fromLocal8Bit("快速计算结果") + QString::number(calc_index_++)+ QString::fromLocal8Bit(":"));
+	QTreeWidgetItem* tree_conf_point = new QTreeWidgetItem;
+	tree_conf_point->setText(0, QString::fromLocal8Bit("起始点:"));
+	tree_conf_main->addChild(tree_conf_point);
+	QTreeWidgetItem* tree_conf = new QTreeWidgetItem;
+	tree_conf->setText(0, QString::fromLocal8Bit("theta:[") + QString::number(conf.min_theta) + "," + QString::number(conf.max_theta) + "],"
+		+ QString::fromLocal8Bit("num:") + QString::number(conf.num_theta));
+	tree_conf_point->addChild(tree_conf);
+	tree_conf = new QTreeWidgetItem;
+	tree_conf->setText(0, QString::fromLocal8Bit("phi:[") + QString::number(conf.min_phi) + "," + QString::number(conf.max_phi) + "],"
+		+ QString::fromLocal8Bit("num:") + QString::number(conf.num_phi));
+	tree_conf_point->addChild(tree_conf);
+	tree_conf = new QTreeWidgetItem;
+	tree_conf->setText(0, QString::fromLocal8Bit("保存路径:") + QString::fromLocal8Bit(thread.GetResultPath().c_str()));
+	tree_conf->setToolTip(0, QString::fromLocal8Bit("保存路径:") + QString::fromLocal8Bit(thread.GetResultPath().c_str()));
+	tree_conf_main->addChild(tree_conf);
+	tree_conf_main->addChild(tree_conf);
+
+	field_tree_item_->addChild(tree_conf_main);
+	field_tree_item_->setExpanded(true);
+	tree_conf_main->setExpanded(true);
+	tree_conf_point->setExpanded(true);
 
 	//// 计算
 	if (!GlobalConfig::Instance()->IsSkipQuickCalcMetaGen())  {
@@ -1348,19 +1371,11 @@ void Radome::OnNewQuickCalcalteAction()
 	far_field->SetPicFilePath(result_path + "/" + GlobalConfig::Instance()->GetFarfieldPicName());
 
 	auto* tree = far_field->GetTree();
-	QTreeWidgetItem* tree_conf = new QTreeWidgetItem;
-	tree_conf->setText(0, QString::fromLocal8Bit("theta:[") + QString::number(conf.min_theta)+ "," + QString::number(conf.max_theta)+ "],"
-	+ QString::fromLocal8Bit("num:") + QString::number(conf.num_theta));
-	tree->addChild(tree_conf);
-	tree_conf = new QTreeWidgetItem;
-	tree_conf->setText(0, QString::fromLocal8Bit("phi:[") + QString::number(conf.min_phi) + "," + QString::number(conf.max_phi) + "],"
-		+ QString::fromLocal8Bit("num:") + QString::number(conf.num_phi));
-	tree->addChild(tree_conf);
 
-	field_tree_item_->addChild(tree);
-	field_tree_item_->setExpanded(true);
-	for (int i = 0; i < field_tree_item_->childCount(); i++) {
-		field_tree_item_->child(i)->setExpanded(true);
+	tree_conf_main->addChild(tree);
+	tree_conf_main->setExpanded(true);
+	for (int i = 0; i < tree_conf_main->childCount(); i++) {
+		tree_conf_main->child(i)->setExpanded(true);
 	}
 	
 	if (is_calc_non_radome) {
@@ -1384,17 +1399,12 @@ void Radome::OnNewQuickCalcalteAction()
 
 
 		auto* non_far_tree = non_far_field->GetTree();
-		QTreeWidgetItem* non_far_tree_conf = new QTreeWidgetItem;
-		non_far_tree_conf->setText(0, QString::fromLocal8Bit("theta:[") + QString::number(conf.min_theta) + "," + QString::number(conf.max_theta) + "],"
-			+ QString::fromLocal8Bit("num:") + QString::number(conf.num_theta));
-		non_far_tree->addChild(non_far_tree_conf);
-		non_far_tree_conf = new QTreeWidgetItem;
-		non_far_tree_conf->setText(0, QString::fromLocal8Bit("phi:[") + QString::number(conf.min_phi) + "," + QString::number(conf.max_phi) + "],"
-			+ QString::fromLocal8Bit("num:") + QString::number(conf.num_phi));
-		non_far_tree->addChild(non_far_tree_conf);
 
-		field_tree_item_->addChild(non_far_tree);
-		field_tree_item_->setExpanded(true);
+		tree_conf_main->addChild(non_far_tree);
+		tree_conf_main->setExpanded(true);
+		for (int i = 0; i < tree_conf_main->childCount(); i++) {
+			tree_conf_main->child(i)->setExpanded(true);
+		}
 
 		data_manager_.CalcSourceFarfieldDone();
 	}

@@ -179,6 +179,7 @@ private:
 
 	int source_type_ = -1;
 	bool is_source_window_open_ = false;
+	int calc_index_ = 1;
 };
 
 

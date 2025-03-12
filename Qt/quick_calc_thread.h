@@ -87,14 +87,14 @@ protected:
 		QDateTime data_time = QDateTime::currentDateTime();
 		QString current_time = data_time.toString("yyyy_MM_dd_hh_mm_ss");
 		if (custom_path_.empty()) {
-			custom_path_ = dir_path_;
+			custom_path_ = dir_path_ + "/result";
 		}
-		result_path_ = custom_path_ + "/result/" + current_time.toStdString() + "/";
+		result_path_ = custom_path_ + "/" + current_time.toStdString() + "/";
 		dir.mkpath(result_path_.c_str());
 		gen_meta.SetResultPath(result_path_);
 
 		if (is_calc_non_radome_) {
-			result_non_radome_path_ = custom_path_ + "/result/nr_"+current_time.toStdString() + "/";
+			result_non_radome_path_ = custom_path_ + "/nr_"+current_time.toStdString() + "/";
 			dir.mkpath(result_non_radome_path_.c_str());
 			gen_meta.SetResultNonRadomePath(result_non_radome_path_);
 		}
