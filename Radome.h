@@ -311,5 +311,6 @@ private:
 	////0305
 	std::vector<double> trans_rotate_para = std::vector<double>(9);
 	////
+	int calc_index_ = 1;
 };
 #endif // RADOME_H
