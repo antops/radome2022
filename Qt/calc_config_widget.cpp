@@ -55,7 +55,7 @@ CalcConfigWidget::CalcConfigWidget(double fre_, QWidget *parent)
 	end_box_->setLayout(end_layout);
 
 	theta_gap_lable_ = new QLabel(QString::fromLocal8Bit("theta:"));
-	theta_gap_edit_ = new QLineEdit("1.0");
+	theta_gap_edit_ = new QLineEdit("0.1");
 	phi_gap_lable_ = new QLabel(QString::fromLocal8Bit("phi:"));
 	phi_gap_edit_ = new QLineEdit("1.0");
 	QGridLayout* gap_layout = new QGridLayout;

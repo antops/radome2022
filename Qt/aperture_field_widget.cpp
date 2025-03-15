@@ -182,7 +182,7 @@ bool ApertureFieldWidget::getField(Field *& ptr)
 		return false;
 	}
 	bool ok, ok_back;
-	vector<double> para(14);
+	// vector<double> para(14);
 	string temp;
 	para[0] = planeMirror->getWidth();
 	para[1] = planeMirror->getDepth();
@@ -222,14 +222,16 @@ bool ApertureFieldWidget::getField(Field *& ptr)
 		return false;
 	}
 
-	int N = UNumLineEidt->text().toInt(&ok);
+	// int N = UNumLineEidt->text().toInt(&ok);
+	N = UNumLineEidt->text().toInt(&ok);
 	if (!ok)
 	{
 		UNumLineEidt->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return false;
 	}
 
-	int M = VNumLineEidt->text().toInt(&ok);
+	// int M = VNumLineEidt->text().toInt(&ok);
+	M = VNumLineEidt->text().toInt(&ok);
 	if (!ok)
 	{
 		VNumLineEidt->setStyleSheet("background-color:rgba(255,0,0,255)");
@@ -239,7 +241,8 @@ bool ApertureFieldWidget::getField(Field *& ptr)
 	para[6] = datadefComboBox->currentIndex();
 
 
-	double fre = fre_line_edit_->text().toDouble(&ok);
+	// double fre = fre_line_edit_->text().toDouble(&ok);
+	fre = fre_line_edit_->text().toDouble(&ok);
 	if (!ok)
 	{
 		fre_line_edit_->setStyleSheet("background-color:rgba(255,0,0,255)");
@@ -249,7 +252,7 @@ bool ApertureFieldWidget::getField(Field *& ptr)
 	ptr = new ApertureField(planeMirror->getGraphTrans(), para);
 	ptr->setNM(N, M);
 	ptr->setDs(para[0] / (N - 1));
-	ptr->SetFre(fre* 1e9);
+	ptr->SetFre(fre);
 	ptr->SetPolarizationType(2);
 	dynamic_cast<ApertureField*>(ptr)->setFileAddress(EfieldFile.toStdString());
 	dynamic_cast<ApertureField*>(ptr)->readData();
@@ -324,6 +327,30 @@ void ApertureFieldWidget::on_depthChange(QString var)
 	depthLineEdit->setStyleSheet("background-color:rgba(255,255,255,255)");
 	emit sendData(2);
 }
+
+////0221
+void ApertureFieldWidget::getParameter(std::vector<double>& parameter)
+{
+	parameter.resize(para.size());
+	for (int i = 0; i < para.size(); i++)
+	{
+		parameter[i] = para[i];
+	}
+}
+////
+int ApertureFieldWidget::getM()
+{
+	return M;	
+}
+int ApertureFieldWidget::getN()
+{
+	return N;
+}
+// double ApertureFieldWidget::getFre()
+// {
+// 	return fre;	
+// }
+////
 
 void ApertureFieldWidget::SaveParam(Json::Value* param_js_ptr) {
 	if (param_js_ptr == nullptr) return;

@@ -2,7 +2,7 @@
 // 旋转天线罩的旋转线的base class
 #include <vector>
 #include <string>
-#include "common/include/Vector3.h"
+#include "../../common/include/Vector3.h"
 
 using namespace Common;
 

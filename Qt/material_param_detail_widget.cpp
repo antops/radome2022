@@ -60,6 +60,7 @@ void MaterialParamDatailWidget::SetParam(const MaterialData& data, int index)
 	mu_ = data.GetMu0();
 	lossT_ = data.GetLossT();
 	name_edit_->setText(QString::fromLocal8Bit(data.GetName().c_str()));
+	qDebug() << "[写入] 原始字节：" << name_edit_->text().toLocal8Bit().toHex();
 	eps_edit_->setText(QString::number(eps_));
 	mu_edit_->setText(QString::number(mu_));
 	loss_edit_->setText(QString::number(lossT_));
@@ -72,6 +73,7 @@ void MaterialParamDatailWidget::OnOKClicked() {
 	PARSE_EDIT_LINE_TO_DOUBLE(mu_edit_, mu_);
 	PARSE_EDIT_LINE_TO_DOUBLE(loss_edit_, lossT_);
 	data_.SetName(std::string(name_edit_->text().toLocal8Bit()));
+	qDebug() << "[写入] 原始字节：" << name_edit_->text().toLocal8Bit().toHex();
 	data_.SetMaterialData(eps_, mu_, lossT_);
 	accept();
 	index++;

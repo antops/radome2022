@@ -31,6 +31,26 @@ public:
 	// 用于临时显示源的位置
 	void setMirror(Mirror*);
 
+	////0303
+	int getM(){
+		M_depth = 1 / ds_ + 1;
+		return M_depth;
+	};
+	int getN(){
+		N_width = 1 / ds_ + 1;
+		return N_width;
+	};
+	// void getParameter(std::vector<double>& parameter)
+	// {
+	// 	parameter.resize(para.size());
+	// 	for (int i = 0; i < para.size(); i++)
+	// 	{
+	// 		parameter[i] = para[i];
+	// 	}
+	// }
+	////
+
+
 	private slots:
 	void on_widthChange(QString var);
 	void on_depthChange(QString var);
@@ -92,6 +112,12 @@ private:
 	double ds_ = 0.5;
 	int mesh_N_ = 161;
 	int polarization_type_ = 0;
+
+	////0303
+	int M_depth;
+	int N_width;
+	// std::vector<double> para = std::vector<double>(14);
+	////
 
 	std::string dir_path_;
 

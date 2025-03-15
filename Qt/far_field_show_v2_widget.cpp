@@ -9,16 +9,52 @@
 #include <vtkjsoncpp/json/json.h>
 #include "../tools/calc_tbl.h"
 #include "../Qt/global_config.h"
+////0109:加入marker
+#include "qcustomplot.h" // 确保包含 QCustomPlot 头文件
+#include <QDialog>
+////
+
+////0116:3D
+#include <vtkDoubleArray.h> 
+#include <vtkSmartPointer.h>
+#include <vtkPolyData.h>
+#include <vtkPoints.h>
+#include <vtkCellArray.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkActor.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkColorTransferFunction.h>
+#include <vtkLookupTable.h>
+#include <vtkScalarBarActor.h>
+#include <vtkPointData.h>
+////
 
 std::vector<QColor> COLOR_LINE_POOLV2{
 	QColor(255, 110, 40),
 	QColor(40, 110, 255),
 	QColor(255, 0, 255)
 };
-
 FarFieldShowV2Widget::FarFieldShowV2Widget(DataManager* data_manager) :
 	data_manager_(data_manager)
 {
+    ////0109:加入marker
+	// 初始化新的 QComboBox 成员变量
+    point_label_ = new QLabel(QString::fromLocal8Bit("Point"));
+	point_label_->setMaximumWidth(50);
+	point_combo_box_ = new QComboBox;
+	point_combo_box_->addItem(QString::fromLocal8Bit("Max"));
+	point_combo_box_->addItem(QString::fromLocal8Bit("Min"));
+	point_combo_box_->addItem(QString::fromLocal8Bit("Specify independent axis value"));
+	// 创建一个 QHBoxLayout 并将 QLabel 和 QComboBox 添加到其中
+	point_combo_box_->setCurrentIndex(0);
+
+	QHBoxLayout* point_layout = new QHBoxLayout;
+	point_layout->addWidget(point_label_);
+	point_layout->addWidget(point_combo_box_);
+    ////
+
 	x_label_ = new QLabel(QString::fromLocal8Bit("x轴"));
 	y_label_ = new QLabel(QString::fromLocal8Bit("y轴"));
 	x_label_->setMaximumWidth(50);
@@ -54,6 +90,7 @@ FarFieldShowV2Widget::FarFieldShowV2Widget(DataManager* data_manager) :
 	connect(linear_button_unit_, SIGNAL(clicked()), this, SLOT(OnSwitchClickedUnit()));
 	connect(dB_button_unit_, SIGNAL(clicked()), this, SLOT(OnSwitchClickedUnit()));
 
+
 	QHBoxLayout* unit_layout = new QHBoxLayout;
 	unit_layout->addWidget(linear_button_unit_);
 	unit_layout->addWidget(dB_button_unit_);
@@ -79,13 +116,20 @@ FarFieldShowV2Widget::FarFieldShowV2Widget(DataManager* data_manager) :
 	basic_layout->addLayout(y_a_layout);
 	basic_layout->addLayout(unit_layout);
 	basic_layout->addLayout(normalize_layout);
-
+	
+    ////0109:加入marker
+	Marker_box_ = new QGroupBox;
+	Marker_box_->setTitle(QString::fromLocal8Bit("Marker"));
+	Marker_box_->setLayout(point_layout);
+	Marker_box_->setMaximumHeight(50);
+	Marker_box_->setMaximumWidth(400);
+    ////
 	switch_box_ = new QGroupBox;
 	switch_box_->setTitle(QString::fromLocal8Bit("显示选项"));
 	switch_box_->setLayout(basic_layout);
-	switch_box_->setMaximumHeight(250);
+	switch_box_->setMaximumHeight(100);
 	switch_box_->setMaximumWidth(400);
-
+	
 
 	a_label_ = new QLabel(QString::fromLocal8Bit("结果:"));
 	a_label_->setMaximumWidth(50);
@@ -132,11 +176,39 @@ FarFieldShowV2Widget::FarFieldShowV2Widget(DataManager* data_manager) :
 	UpdateCombox();
 
 	QVBoxLayout* layout_left = new QVBoxLayout();
+	layout_left->addWidget(Marker_box_);
 	layout_left->addWidget(switch_box_);
 	layout_left->addWidget(ab_group_box_);
 	layout_left->addWidget(ab_ok_btn_);
 
 	custom_plot_ = new QCustomPlot;
+    ////0110:加入marker
+	custom_plot_->setInteractions(QCP::iSelectPlottables | QCP::iRangeDrag | QCP::iRangeZoom);
+	// QObject::connect(custom_plot_, &QCustomPlot::plottableClick,
+	//              this, &FarFieldShowV2Widget::OnPlotClick);//关联选点
+	QObject::connect(custom_plot_, &QCustomPlot::plottableClick,
+				this, &FarFieldShowV2Widget::SelectPoint);	//关联最值 
+
+	text_tip_11 = new QCPItemText(custom_plot_);
+	text_tip_11->setPositionAlignment(Qt::AlignTop | Qt::AlignHCenter);
+	text_tip_11->position->setType(QCPItemPosition::ptAbsolute);
+	QFont font;
+	font.setPixelSize(15);
+	text_tip_11->setFont(font); // make font a bit larger
+	text_tip_11->setPen(QPen(Qt::black)); // show black border around text
+	text_tip_11->setBrush(Qt::white);
+	text_tip_11->setVisible(false);
+    ////0113:min
+	text_tip_22 = new QCPItemText(custom_plot_);
+	text_tip_22->setPositionAlignment(Qt::AlignTop | Qt::AlignHCenter);
+	text_tip_22->position->setType(QCPItemPosition::ptAbsolute);
+	QFont font22;
+	font22.setPixelSize(15);
+	text_tip_22->setFont(font22); // make font a bit larger
+	text_tip_22->setPen(QPen(Qt::black)); // show black border around text
+	text_tip_22->setBrush(Qt::white);
+	text_tip_22->setVisible(false);
+	////
 	QHBoxLayout* plot_a_layout = new QHBoxLayout;
 	plot_a_layout->addWidget(custom_plot_);
 	plot_box_ = new QGroupBox;
@@ -151,6 +223,96 @@ FarFieldShowV2Widget::FarFieldShowV2Widget(DataManager* data_manager) :
 
 FarFieldShowV2Widget::~FarFieldShowV2Widget()
 {
+}
+//0109:加入marker
+void FarFieldShowV2Widget::SelectPoint(QCPAbstractPlottable* plottable, int index, QMouseEvent* event) {
+	QCPGraph *graph = custom_plot_->graph();
+    if (!graph) return;
+
+    double maxValue = std::numeric_limits<double>::min();
+    double maxKey = 0.0;
+    double maxValueCoord = 0.0;
+	double minKey = 0.0;
+	double minValue = std::numeric_limits<double>::max();
+
+    // 遍历曲线的数据点
+    QSharedPointer<QCPGraphDataContainer> dataContainer = graph->data();
+	for (QCPGraphDataContainer::const_iterator it = dataContainer->constBegin(); it != dataContainer->constEnd(); ++it) {
+		if (it->value > maxValue) {
+			maxValue = it->value;
+			maxKey = it->key;
+			//maxValueCoord = custom_plot_->xAxis->coordToPixel(maxKey);
+		}
+		if (it->value < minValue) {
+			minValue = it->value;
+			minKey = it->key;
+		}
+    }
+
+		// 将数据坐标转换为像素坐标
+		double xPixel11 = custom_plot_->xAxis->coordToPixel(maxKey);
+		double yPixel11 = custom_plot_->yAxis->coordToPixel(maxValue);
+		double xPixel22 = custom_plot_->xAxis->coordToPixel(minKey);
+		double yPixel22 = custom_plot_->yAxis->coordToPixel(minValue);
+
+	int comboxindex = point_combo_box_->currentIndex();
+		if (comboxindex == 0) {//显示最大值
+			// 更新文本提示
+			QString text = "(" + QString::number(maxKey) + "," + QString::number(maxValue) + ")";
+			QCPLayer* textLayer = new QCPLayer(custom_plot_, "textLayer");
+			text_tip_11->setText(text);
+			text_tip_11->position->setCoords(xPixel11, yPixel11);
+			qDebug() << "xPixel11" << xPixel11;
+			qDebug() << "yPixel11" << yPixel11;
+			if (xPixel11 < 125)
+			{
+				if (yPixel11 < 30)
+				{
+					text_tip_11->position->setCoords(xPixel11 + 125, yPixel11 + 30);
+				}
+				text_tip_11->position->setCoords(xPixel11 + 125, yPixel11);
+			}
+			text_tip_11->setVisible(true);
+		}
+		else if (comboxindex == 1) {//显示最小值
+			QString text22 = "(" + QString::number(minKey) + "," + QString::number(minValue) + ")";
+			QCPLayer* textLayer22 = new QCPLayer(custom_plot_, "textLayer");
+			text_tip_22->setText(text22);
+			text_tip_22->position->setCoords(xPixel22, yPixel22);
+			qDebug() << "xPixel22" << xPixel22;
+			qDebug() << "yPixel22" << yPixel22;
+			if (xPixel22 > 420)
+			{
+				if (yPixel22 > 635)
+				{
+					text_tip_22->position->setCoords(xPixel22 - 105, yPixel22 - 30);
+				}
+				text_tip_22->position->setCoords(xPixel22 - 105, yPixel22);
+			}
+			text_tip_22->setVisible(true);
+		}
+		// //TODO:标记的第三个功能
+		// else if (comboxindex == 2) {//弹窗
+		// 	annotation_widget = new AnnotationWidget;
+		// }
+		// 重绘
+		//TODO:滚动缩放每次，重新显示标签
+		custom_plot_->replot();
+
+}
+//关联选点
+void FarFieldShowV2Widget::OnPlotClick(QCPAbstractPlottable* plottable, int index, QMouseEvent* event) {
+	//先获取点击的绘图层名称,然后通过名称找到图层ID,再找到对应的数据点  这里因为知道ID 所以直接使用 没有通过名称找
+	//const QCPGraphData *ghd = custom_plot_->graph()->data()->at(index);
+
+    const QCPGraphData *ghd = custom_plot_->graph()->data()->at(index);
+    qDebug() << "Data point clicked:" << ghd->key << ", " << ghd->value;
+
+    QString text = "(" + QString::number(ghd->key) + "," + QString::number(ghd->value) + ")";
+    text_tip_11->setText(text);//文本内容填充
+    text_tip_11->position->setCoords(event->pos().x(), event->pos().y());//文本框所在位置
+    text_tip_11->setVisible(true);
+    custom_plot_->replot();
 }
 
 
@@ -188,7 +350,7 @@ void FarFieldShowV2Widget::GetValueByXBox(QVector<double>& zhou_vec, FarField* f
 			zhou_vec.push_back(data / 3.14 * 180);
 		}
 	}
-
+	
 	if (!zhou_vec.empty()) {
 		*min_v = zhou_vec[0];
 		*max_v = zhou_vec.back();

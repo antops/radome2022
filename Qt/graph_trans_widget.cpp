@@ -168,42 +168,60 @@ void GraphTransWidget::on_GraphChange(QString var)
 {
 	bool ok = false;
 	is_param_ok_ = false;
-	double tran_x = ULineEidt->text().toDouble(&ok);
+	////0305
+	//double tran_x = ULineEidt->text().toDouble(&ok);
+	tran_x = ULineEidt->text().toDouble(&ok);
+	////
 	if (!ok)
 	{
 		//输出参数有误
 		ULineEidt->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return;
 	}
-	double tran_y = VLineEidt->text().toDouble(&ok);
+	////0305
+	// double tran_y = VLineEidt->text().toDouble(&ok);
+	tran_y = VLineEidt->text().toDouble(&ok);
+	////
 	if (!ok)
 	{
 		//输出参数有误
 		VLineEidt->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return;
 	}
-	double tran_z = NLineEidt->text().toDouble(&ok);
+	////0305
+	// double tran_z = NLineEidt->text().toDouble(&ok);
+	tran_z = NLineEidt->text().toDouble(&ok);
+	////
 	if (!ok)
 	{
 		//输出参数有误
 		NLineEidt->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return;
 	}
-	double rotate_x_theta = xthetaLineEidt->text().toDouble(&ok);
+	////0305
+	// double rotate_x_theta = xthetaLineEidt->text().toDouble(&ok);
+	rotate_x_theta = xthetaLineEidt->text().toDouble(&ok);
+	////
 	if (!ok)
 	{
 		//输出参数有误
 		xthetaLineEidt->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return;
 	}
-	double rotate_y_theta = ythetaLineEidt->text().toDouble(&ok);
+	////0305
+	// double rotate_y_theta = ythetaLineEidt->text().toDouble(&ok);
+	rotate_y_theta = ythetaLineEidt->text().toDouble(&ok);
+	////
 	if (!ok)
 	{
 		//输出参数有误
 		ythetaLineEidt->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return;
 	}
-	double rotate_z_theta = zthetaLineEidt->text().toDouble(&ok);
+	////0305
+	// double rotate_z_theta = zthetaLineEidt->text().toDouble(&ok);
+	rotate_z_theta = zthetaLineEidt->text().toDouble(&ok);
+	////
 	if (!ok)
 	{
 		//输出参数有误
@@ -212,9 +230,14 @@ void GraphTransWidget::on_GraphChange(QString var)
 	}
 
 	std::vector<bool> judge_ok(3, false);
-	int x_index = x_theta_combobox_->currentIndex();
-	int y_index = y_theta_combobox_->currentIndex();
-	int z_index = z_theta_combobox_->currentIndex();
+	////0305
+	// int x_index = x_theta_combobox_->currentIndex();
+	// int y_index = y_theta_combobox_->currentIndex();
+	// int z_index = z_theta_combobox_->currentIndex();
+	x_index = x_theta_combobox_->currentIndex();
+	y_index = y_theta_combobox_->currentIndex();
+	z_index = z_theta_combobox_->currentIndex();
+	////
 	if (x_index >= 0 && x_index < judge_ok.size()) judge_ok[x_index] = true;
 	if (y_index >= 0 && y_index < judge_ok.size()) judge_ok[y_index] = true;
 	if (z_index >= 0 && z_index < judge_ok.size()) judge_ok[z_index] = true;
@@ -251,7 +274,18 @@ void GraphTransWidget::on_GraphChange(QString var)
 
 	emit sendData(2);
 }
+void GraphTransWidget::setMirror_load(BasicParameters* mirror, std::vector<double> parameter) {
+	this->mirror = mirror;
 
+	GraphTrans graphTrans = mirror->getGraphTrans();
+
+	parameter.resize(9);
+	graphTrans.setGraphTransPar(parameter[0], parameter[1], parameter[2],
+		parameter[3], parameter[4], parameter[5],
+		parameter[6], parameter[7], parameter[8]);
+	mirror->setGraphTrans(graphTrans);
+
+};
 void GraphTransWidget::setMirror(BasicParameters* mirror)
 {
 	this->mirror = mirror;

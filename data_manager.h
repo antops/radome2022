@@ -8,13 +8,32 @@
 
 #include "VTK/field.h"
 #include "VTK/farfield.h"
+#include "RadomeDef/radome_stl.h"
+
 
 class DataManager
 {
 public:
 	DataManager();
 	~DataManager();
+	////0220:清除原来的罩子
+    // 新增获取当前RadomeSTL对象的方法
+    RadomeSTL* GetCurrentRadome() const {
+        return current_radome_;
+    }
 
+    // 修改ResetRadome方法以清理旧对象
+    void ResetRadome_(RadomeSTL* new_radome) {
+        if (current_radome_ != nullptr) {
+            //delete current_radome_;
+            current_radome_ = nullptr;
+        }
+        current_radome_ = new_radome;
+    }
+	////
+	////0308
+	void DataManager::SyncMaterialIndex();
+	////
 	bool ResetRadome(RadomeBaseData* radome_data);
 	RadomeBaseData* GetRadomeData() const;
 
@@ -41,6 +60,10 @@ public:
 	const std::map<int, FarField*>& GetAllFarFieldMap() { return far_field_map_; }
 
 private:
+
+	////0220:清除原来的罩子
+    RadomeSTL* current_radome_ = nullptr;
+	////
 	RadomeBaseData* radome_data_ = nullptr; // 天线罩数据结构
 	// 源
 	Field* source_field_ = nullptr;
@@ -61,3 +84,4 @@ private:
 
 	int background_material = 1; // 默认空气
 };
+

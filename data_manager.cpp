@@ -54,8 +54,29 @@ MaterialData * DataManager::GetMaterialData(int index) const
 int DataManager::GetMaterialId()
 {
 	int index = custom_index_;
+	////0307
 	custom_index_++;
+	//if (material_book_.empty()) {
+	//	custom_index_ = 0;
+	//}
+	//else {
+	//	auto max_key = std::max_element(material_book_.begin(), material_book_.end(),
+	//		[](auto& a, auto& b) { return a.first < b.first; })->first;
+	//	custom_index_ = max_key + 1;
+	//}
+	////
 	return index;
+}
+
+void DataManager::SyncMaterialIndex() {
+	if (material_book_.empty()) {
+		custom_index_ = 0;
+	}
+	else {
+		auto max_key = std::max_element(material_book_.begin(), material_book_.end(),
+			[](auto& a, auto& b) { return a.first < b.first; })->first;
+		custom_index_ = max_key + 1;
+	}
 }
 
 bool DataManager::RemoveMaterialData(int index)

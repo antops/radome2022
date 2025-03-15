@@ -156,8 +156,8 @@ bool FarField::ReadFromNpy(const std::string & fileName)
 	for (int i = 0; i < phi.size(); ++i) {
 		phi[i] = loaded_phi[i];
 	}
-
-	double max_theta = theta[0];
+    //E的每一行与theta对应，每一列与phi对应，E用来存储每个theta和phi的对应值
+		double max_theta = theta[0];
 	double max_phi = phi[0];
 
 	for (int i = 0; i < theta.size(); ++i) {
@@ -186,6 +186,13 @@ bool FarField::ReadFromNpy(const std::string & fileName)
 		EDB_origin[i].resize(phi.size());
 	}
 	double* loaded_data = Es_abs.data<double>();
+	////0210:修改显示的数据，使之转置从而显示正确的theta和phi
+	// for (int i = 0; i < theta.size(); i++) {
+	// 	for (int j = 0; j < phi.size(); j++) {
+	// 		E[i][j] = loaded_data[j + i * phi.size()];
+	// 	}	
+	// }
+	////
 	std::vector<std::vector<double>> E_tmp;
 	std::vector<std::vector<double>> E_tmp_txt;
 	E_tmp.resize(phi.size());
@@ -221,7 +228,7 @@ bool FarField::ReadFromNpy(const std::string & fileName)
 		for (int j = 0; j < phi.size(); j++) {
 			E[i][j] = E_tmp_txt[j][i];
 		}
-	}
+	}	
 	loaded_data[0];
 	loaded_data[1];
 	loaded_data[2];
@@ -275,6 +282,7 @@ bool FarField::ReadFromNpy(const std::string & fileName)
 	}
 	file_name_ = fileName;
 
+    //将三维极坐标theta和phi映射到二维坐标
 	double min = INT32_MAX;
 	double max = INT32_MIN;
 	if (param_.is_dB_unit) {

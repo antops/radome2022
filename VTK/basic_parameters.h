@@ -10,8 +10,9 @@
 
 #include <QTreeWidgetItem>
 
-#include "../common/include/GraphTrans.h"
-#include "../common/include/Vector3.h"
+#include "../../common/include/GraphTrans.h"
+#include "../../common/include/Vector3.h"
+
 
 
 class BasicParameters

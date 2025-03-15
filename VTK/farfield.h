@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../common/include/GraphTrans.h"
+#include "../../common/include/GraphTrans.h"
 #include "../../common/include/farfield_base.h"
 
 #include <vtkSmartPointer.h>

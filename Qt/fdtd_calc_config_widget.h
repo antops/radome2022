@@ -13,6 +13,7 @@
 
 
 
+
 class FDTDCalcConfigWidget : public QDialog
 {
 	Q_OBJECT

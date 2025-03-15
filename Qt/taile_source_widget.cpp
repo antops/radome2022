@@ -8,6 +8,7 @@
 #include <QProgressDialog>
 #include <vtkjsoncpp/json/json.h>
 #include <QThread>
+#include <vtkjsoncpp/json/json.h>
 
 #include "global_config.h"
 
@@ -298,7 +299,7 @@ bool TaileSourceWidget::GenSource() {
 		QMessageBox::warning(NULL, "Warning", QString::fromLocal8Bit("填写参数有误"));
 		return false;
 	}
-	dir_path_ = QCoreApplication::applicationDirPath().toStdString() + "/output/taile_source";
+	dir_path_ = QCoreApplication::applicationDirPath().toStdString() + "/output/taile_source"; 	  
 	QDir dir;
 	dir.mkpath(dir_path_.c_str());
 	GenSourceMeta();
@@ -315,7 +316,7 @@ bool TaileSourceWidget::GenSource() {
 		process.start(exe_file.c_str(),
 			QStringList() << std::string(dir_path_ + "/source_meta.json").c_str());
 	}
-	QProgressDialog progressDialog("Loading...", "Cancel", 0, 300, nullptr);
+    QProgressDialog progressDialog("Loading...", "Cancel", 0, 300, nullptr);
 	progressDialog.setWindowModality(Qt::ApplicationModal);
 	progressDialog.setWindowTitle("Loading");
 	progressDialog.show();
@@ -337,6 +338,16 @@ bool TaileSourceWidget::GenSource() {
 	return true;
 }
 
+// ////0224:保存远场参数
+// void TaileSourceWidget::getParameter(std::vector<double>& parameter)
+// {
+// 	parameter.resize(para.size());
+// 	for (int i = 0; i < para.size(); i++)
+// 	{
+// 		parameter[i] = para[i];
+// 	}
+// }
+// ////
 void TaileSourceWidget::SaveParam(Json::Value* param_js_ptr) {
 	if (param_js_ptr == nullptr) return;
 	Json::Value& param_js = *param_js_ptr;

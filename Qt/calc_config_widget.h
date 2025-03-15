@@ -13,6 +13,7 @@
 
 #include "../def.h"
 
+
 class CalcConfigWidget : public QDialog
 {
 	Q_OBJECT

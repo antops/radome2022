@@ -1,5 +1,5 @@
 #pragma once
-// 旋转对称天线罩
+// ��ת�Գ�������
 
 #include <vector>
 #include "radome_data_base.h"
@@ -26,6 +26,7 @@ public:
 		return true;
 	}
 
+	void ClearTreeItem();
 protected:
 	bool UpdateSurface() override { return true; }
 

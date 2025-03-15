@@ -14,7 +14,7 @@
 #include <vtkAxesActor.h>
 #include <vector>
 
-#include "../common/include//GraphTrans.h"
+#include "../../common/include/GraphTrans.h"
 #include "basic_parameters.h"
 
 enum MirrorsType

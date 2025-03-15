@@ -12,6 +12,7 @@
 
 #include "../VTK/gaussain.h"
 #include "../VTK/plane_mirror.h"
+#include <string>
 
 class TaileSourceWidget : public GraphTransWidget
 {
@@ -33,16 +34,42 @@ public:
 
 	void SaveParam(Json::Value* param_js);
 	bool LoadParam(const Json::Value& param_js);
+	
+	// // ////0224
+	// // void getParameter(std::vector<double>& parameter);
+    
+	// // void GenSourceMeta();
+	// std::string getResultPath() { return dir_path_; }
+    // double getTheta() { return theta_; }
+	// double getPhi() { return phi_; }
+	// double getFre() { return fre_; }
+	// double getRadius() { return radius_; }
+	// double getS11() { return s11_; }
+	// double getDx() { return dx_; }
+	// double getDy() { return dy_; }
+	// double getDs() { return ds_; }
+	// int getMeshN() { return mesh_N_; }
+	// // int getPolarizationType() { return polarization_type_; }
+	// // ////
+	////0303
+	int getM(){
+		M_depth = 1 / ds_ + 1;
+		return M_depth;
+	};
+	int getN(){
+		N_width = 1 / ds_ + 1;
+		return N_width;
+	};
+	////
 
-
-private slots:
+	private slots:
 	void on_widthChange(QString var);
 	void on_depthChange(QString var);
 
 private:
 	void InitSourceParam();
 	bool ReadScanParam();
-	void GenSourceMeta();
+	void GenSourceMeta(); 
 	bool GenSource();
 	bool IsPythonWorkSuccess(const std::string& status_file);
 	//void changeText(int index, const string& t);
@@ -96,7 +123,10 @@ private:
 	double ds_ = 0.5;
 	int mesh_N_ = 161;
 	int polarization_type_ = 0;
-
+	////0303
+	int M_depth;
+	int N_width;
+	////
 	std::string dir_path_;
 
 	PlaneMirror * planeMirror;

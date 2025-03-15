@@ -129,7 +129,7 @@ bool GaussianWidget::getField(Field *& ptr)
 		return false;
 	}
 	bool ok, ok_back;
-	vector<double> para(7);
+	 vector<double> para(7);
 	string temp;
 	para[0] = planeMirror->getWidth();
 	para[1] = planeMirror->getDepth();	
@@ -153,6 +153,9 @@ bool GaussianWidget::getField(Field *& ptr)
 		return false;
 	}
 	para[5] = DsLineEdit->text().toDouble(&ok);
+	////0303
+	ds = para[5];
+	////
 	if (!ok)
 	{		
 		DsLineEdit->setStyleSheet("background-color:rgba(255,0,0,255)");
