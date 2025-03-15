@@ -208,7 +208,8 @@ private:
 	QAction * calcalte_quick_action_;
 	QAction * scan_calc_action_;
 	QAction * ga_action_; // 遗传算法
-	////0114
+	
+////0114
 	QAction * addresult_show_action;
 	QAction * addresult_show2D_action;
 	QAction * addresult_show3D_action;
@@ -311,6 +312,62 @@ private:
 	////0305
 	std::vector<double> trans_rotate_para = std::vector<double>(9);
 	////
+
 	int calc_index_ = 1;
+
+
+	////0116:3D
+	std::map<int, int> data_index_map_;
+	////
+	////0211三维结果的tab
+	FarFieldShowTab * far_widget_2;	
+	////0213三维结果界面
+	QGroupBox* switch_box_;
+	QButtonGroup* switch_group_button_unit_;
+	QRadioButton* linear_button_unit_;
+	QRadioButton* dB_button_unit_;
+	bool is_dB_ = true;
+
+	QGroupBox* basic_info_;
+
+	// ab 结果
+	QGroupBox* ab_group_box_;
+	QComboBox* combo_box_a_;
+	QLabel* a_label_;
+	QPushButton* ab_ok_btn_;
+	// 绘制
+	//QCustomPlot* custom_plot_;
+	QGroupBox* plot_box_;
+
+	QWidget* layout_main_widget;
+	////0220
+	std::vector<std::string> results_filesave;
+	////
+	////0221
+	RadomeSTL* tmp_data;
+	std::vector<double> data_;
+	int N_width = 0;
+	int M_depth = 0;
+	double fre_save;
+	PlaneMirror * planeMirror;
+	////
+	// ////0225:泰勒源保存
+	// double taile_theta_ = 0.0;
+	// double taile_phi = 0.0;
+	// double taile_fre = 17;
+	// double taile_radius = 0.075;
+	// double taile_s11 = 30;
+	// double taile_dx = 0.5;
+	// double taile_dy = 0.5;
+	// double taile_ds = 0.5;
+	// int taile_meshN = 161;
+	// std::string taile_result_path;
+	// ////
+	////0225:保存的源的标志位
+	int source_save_flag = 0;
+	////
+	////0305
+	std::vector<double> trans_rotate_para = std::vector<double>(9);
+	////
 };
 #endif // RADOME_H
