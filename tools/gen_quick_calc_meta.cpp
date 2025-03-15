@@ -24,25 +24,49 @@ bool GenQuickCalcMeta::WriteMetaMsg(const std::string & path)
 		
 		js_model_meta.append(js_model);
 	}
+    ////0311
+	if(data_manager_.GetRadomeData())
+	{
+		const auto& materials_index = data_manager_.GetRadomeData()->GetAllMaterials();
 
-	const auto& materials_index = data_manager_.GetRadomeData()->GetAllMaterials();
-
-	Json::Value& js_material_meta = js["model_meta"];
-	for (const auto& index : materials_index) {
-		Json::Value js_model;
-		mat = data_manager_.GetMaterialData(index);
-		if (mat == nullptr) {
-			return false;
-		}
-		js_model["material"] = mat->ToJson();
-		js_material_meta.append(js_model);
+		Json::Value& js_material_meta = js["model_meta"];
+		for (const auto& index : materials_index) {
+			Json::Value js_model;
+			mat = data_manager_.GetMaterialData(index);
+			if (mat == nullptr) {
+				return false;
+			}
+			js_model["material"] = mat->ToJson();
+			js_material_meta.append(js_model);
+		}	
 	}
-
+	////
 	js["source_path"] = source_path_;
 	js["f0"] = fre_;
 	js["ds"] = ds_;
 	js["source_mode"] = polarization_type_;
+    ////0221:保存导入源的para
+	Json::Value& js_model_meta_2 = js["para_meta"];
+	for (const auto& x : source_para_) {
+		Json::Value js_model;
+		js_model["para_"] = x;
+		
+		js_model_meta_2.append(js_model);
+	}
+	//保存平移旋转参数
+	Json::Value& js_model_meta_3 = js["trans_rotate_para"];
+	for (const auto& x : trans_rotate_para_) {
+		Json::Value js_model;
+		js_model["para_trans_rotate"] = x;
 
+		js_model_meta_3.append(js_model);
+	}
+	js["M_depth"] = m_depth_;
+	js["N_width"] = n_width_;
+    ////
+	////0225:设置source_save_flag
+	js["source_save_flag"] = source_save_flag_;
+	////
 	Json::Value& js_farfield = js["farfield"];
 	js_farfield["maxtheta"] = conf_.max_theta;
 	js_farfield["numtheta"] = conf_.num_theta;
@@ -60,7 +84,7 @@ bool GenQuickCalcMeta::WriteMetaMsg(const std::string & path)
 		js_output["is_calc_nonradome"] = 0;
 	}
 	js_output["result_path"] = result_path_;
-
+	
 	Json::Value js_graph_trans;
 	js_graph_trans["originX"] = graph_trans_.getTrans_x();
 	js_graph_trans["originY"] = graph_trans_.getTrans_x();

@@ -135,7 +135,7 @@ void InputStlWidget::GenSurface() {
     dir_path_ = QCoreApplication::applicationDirPath().toStdString() + "/output/stl_surface";
     QDir dir;
     dir.mkpath(dir_path_.c_str());
-    GenMeta();
+    GenMeta(); 
     QProcess process;
 
     if (GlobalConfig::Instance()->IsQuickCalcByPython()) {

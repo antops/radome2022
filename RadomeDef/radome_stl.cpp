@@ -93,5 +93,12 @@ void RadomeSTL::UpdateTreeItem()
 
 }
 
+//清空原来的tree_item_
+void RadomeSTL::ClearTreeItem() {
+	if (tree_item_) {
+		delete tree_item_;
+		tree_item_ = nullptr;
+	}	
+}
 void RadomeSTL::Mesh(const MeshOption& option, int* step) {
 }

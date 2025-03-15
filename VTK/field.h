@@ -10,10 +10,10 @@
 #include <complex>
 #include <String>
 
-#include "../common/include/GraphTrans.h"
+#include "../../common/include/GraphTrans.h"
 //#include "../interface/FieldBase.h"
 
-#include "../common/include/Vector3.h"
+#include "../../common/include/Vector3.h"
 
 #include <vtkSmartPointer.h>
 #include <vtkImageActor.h>

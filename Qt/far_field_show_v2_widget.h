@@ -1,3 +1,7 @@
+#ifndef FAR_FIELD_SHOW_V2_WIDGET_H
+#define FAR_FIELD_SHOW_V2_WIDGET_H
+
+
 #pragma once
 
 #include <map>
@@ -31,6 +35,7 @@ public:
 	~FarFieldShowV2Widget();
 
 	void UpdateCombox();
+	void SelectMarkerType();
 
 private slots:
 	void OnAbOkBtn();
@@ -39,7 +44,7 @@ private slots:
 	void OnComboBoxChange(int index);
 	void OnSwitchClickedUnit();
 	void OnNormalizeClickedUnit();
-
+	
 private:
 	struct FieldPlotParam {
 		int field_index = 0;
@@ -49,6 +54,8 @@ private:
 	};
 	void UpdatePlotAB(QCustomPlot* plot, const FieldPlotParam& param);
 	void GetValueByXBox(QVector<double>& zhou_vec, FarField* far_field, double* min_v, double* max_v, int index);
+	void SelectPoint(QCPAbstractPlottable* plottable, int index, QMouseEvent* event);
+    void OnPlotClick(QCPAbstractPlottable* , int , QMouseEvent* );
 	void GetValueByYBox(QVector<double>& zhou_vec, FarField* far_field, double* min_v, double* max_v, int cut_inde);
 private:
 	// basic info
@@ -56,7 +63,12 @@ private:
 	QComboBox* x_a_;
 	QLabel* y_label_;
 	QComboBox* y_a_;
+	QLabel* point_label_;	
+    QComboBox* point_combo_box_;
 
+    QGroupBox* Marker_box_;
+	QCPItemText* text_tip_11;
+	QCPItemText* text_tip_22;
 	QGroupBox* switch_box_;
 	QButtonGroup* switch_group_button_unit_;
 	QRadioButton* linear_button_unit_;
@@ -71,7 +83,7 @@ private:
 
 	QGroupBox* basic_info_;
 
-	// ab ½á¹û
+	// ab ï¿½ï¿½ï¿½
 	QGroupBox* ab_group_box_;
 	QComboBox* combo_box_a_;
 	QLabel* a_label_;
@@ -85,7 +97,7 @@ private:
 
 
 	QPushButton* ab_ok_btn_;
-	// »æÖÆ
+	// ï¿½ï¿½ï¿½ï¿½
 	QCustomPlot* custom_plot_;
 	QGroupBox* plot_box_;
 
@@ -105,3 +117,5 @@ private:
 	double x_min_ = 0.0;
 	double y_min_ = 0.0;
 };
+
+#endif // FAR_FIELD_SHOW_V2_WIDGET_H

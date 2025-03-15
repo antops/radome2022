@@ -21,7 +21,7 @@
 #include <QCoreApplication>
 #include <QTimer>
 
-#include "../common/include/field_base.h"
+#include "../../common/include/field_base.h"
 #include "../tools/cnpy.h"
 
 const double dB_RABNGE = 60;
@@ -109,7 +109,7 @@ void Field::allocateMemory()
 		Ey[i].resize(M_depth);
 	}
 
-	if (!isSource) // ²»ÊÇÔ´²Å·ÖÅäÆäËûµÄ³¡·ÖÁ¿
+	if (!isSource) // ï¿½ï¿½ï¿½ï¿½Ô´ï¿½Å·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½
 	{
 		Ez.resize(N_width);
 		Hx.resize(N_width);

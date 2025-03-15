@@ -10,10 +10,10 @@
 #include <vtkSmartPointer.h>
 #include <vtkPolyData.h>
 
-#include "../common/include/Vector3.h"
+#include "../../common/include/Vector3.h"
 
-#include "../common/include/Matrix4D.h"
-#include "../common/include/Vector3D.h"
+#include "../../common/include/Matrix4D.h"
+#include "../../common/include/Vector3D.h"
 
 #include <vector>
 #include <map>

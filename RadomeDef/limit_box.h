@@ -4,7 +4,7 @@
 #include <vtkPolyData.h>
 #include <vtkSmartPointer.h>
 #include <vtkProperty.h>
-#include "common/include/Vector3.h"
+#include "../../common/include/Vector3.h"
 using namespace Common;
 
 class LimitBox

@@ -96,10 +96,10 @@ QTreeWidgetItem * ApertureField::getTree()
 	tree->setText(0, "ApertureField");
 
 	QTreeWidgetItem * treeFre = new QTreeWidgetItem;
-	treeFre->setText(0, QString("fre: ") + QString::number(data[4]) + QString(" GHZ"));
+	treeFre->setText(0, QString("fre: ") + QString::number(Field::GetFre()*1e-9) + QString(" GHZ"));
 
 	QTreeWidgetItem * treeds = new QTreeWidgetItem;
-	treeds->setText(0, QString("ds: ") + QString::number(data[5]));
+	treeds->setText(0, QString("ds: ") + QString::number(Field::getDs()));
 
 	QTreeWidgetItem* treefile = new QTreeWidgetItem;
 	treeds->setText(0, QString("file: ")+ QString(fileAddress.c_str()));

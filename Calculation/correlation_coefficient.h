@@ -14,9 +14,10 @@
 #include <complex>//复数类，C++自带
 #include <string>
 #include <vector>
-#include "../common/include//Vector3.h"
-#include "../common/include//Constant_Var.h"
+#include "../../common/include//Vector3.h"
+#include "../../common/include//Constant_Var.h"
 #include "gaussian_beam_circular.h"
+
 
 using namespace std;
 using namespace Common;

@@ -31,6 +31,16 @@ public:
 	// 用于临时显示源的位置
 	void setMirror(Mirror*);
 
+	////0303
+	int getM(){
+		int M_depth = 1 / ds + 1;
+		return M_depth;
+	};
+	int getN(){
+		int N_width = 1 / ds + 1;
+		return N_width;
+	};
+    ////
 	private slots:
 	void on_widthChange(QString var);
 	void on_depthChange(QString var);
@@ -73,6 +83,9 @@ private:
 	QComboBox* polarization_type_combobox_;
 
 	PlaneMirror * planeMirror;
-
+	////0303
+	double ds;
+	
+	////
 };
 

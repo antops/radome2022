@@ -3,6 +3,7 @@
 #include "../data_manager.h"
 
 
+
 class CalcTbl
 {
 public:

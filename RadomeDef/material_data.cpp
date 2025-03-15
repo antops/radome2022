@@ -56,7 +56,7 @@ MaterialData* MaterialDataFactory::GetMaterialData(MaterialDataType type)
 		data->SetMaterialData(3.15, 1.0, 0.005);
 		data->Update();
 	} else if (type == MaterialAir) {
-		data = new MaterialData("¿ÕÆø", MaterialAir);
+       		data = new MaterialData("¿ÕÆø", MaterialAir);
 		data->SetMaterialData(1.0, 1.0, 0.0);
 		data->Update();
 	}

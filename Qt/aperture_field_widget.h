@@ -13,7 +13,7 @@
 
 #include "../VTK/plane_mirror.h"
 #include "../VTK/field.h"
-#include <vtkjsoncpp/json/json.h>
+
 
 
 class ApertureFieldWidget : public GraphTransWidget
@@ -29,6 +29,12 @@ public:
 	// 用于临时显示源的位置
 	void setMirror(Mirror*);
 
+	////0221：保存源参数
+	void getParameter(std::vector<double>& parameter);
+	int getM();
+	int getN();
+	// double getFre();
+	////
 	private slots:
 	void EfileEeven();
 
@@ -37,7 +43,7 @@ public:
 
 	void SaveParam(Json::Value* param_js);
 	void LoadParam(const Json::Value& param_js);
-
+	
 private:
 
 	//page1
@@ -88,4 +94,10 @@ private:
 	QLineEdit * VNumLineEidt;
 
 	PlaneMirror * planeMirror;
+	////0221：保存源参数
+	//vector<double> para(14);
+	std::vector<double> para = std::vector<double>(14);
+	int N, M;
+	double fre;
+	////
 };

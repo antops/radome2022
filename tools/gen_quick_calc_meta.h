@@ -2,7 +2,6 @@
 
 #include "../data_manager.h"
 #include <vtkjsoncpp/json/json.h>
-#include "def.h"
 
 class GenQuickCalcMeta
 {
@@ -52,6 +51,26 @@ public:
 		conf_ = conf;
 	}
 
+    ////0221:保存导入源的para
+    void SetSourcePara(const std::vector<double>& para) {
+       source_para_ = para;
+    }
+    void SetTransRotatePara(const std::vector<double>& para) {
+       trans_rotate_para_ = para;
+    }
+	void SetN_width(int n_width) {
+		n_width_ = n_width;	
+	}
+	void SetM_depth(int m_depth) {
+		m_depth_ = m_depth;
+	}
+	
+	////
+	////0225:设置source_save_flag
+	void SetSourceSaveFlag(int source_save_flag) {
+		source_save_flag_ = source_save_flag;	
+	}
+	////
 private:
 	const DataManager& data_manager_;
 	std::vector<std::string> stl_path_;
@@ -65,4 +84,14 @@ private:
 	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
 	GraphTrans graph_trans_;
 	CalcConf conf_;
+	////0221:保存导入源的para
+	std::vector<double> source_para_;
+	std::vector<double> trans_rotate_para_;
+	int n_width_ = 0;
+	int m_depth_ = 0;
+
+	////
+	////0225:设置source_save_flag
+	int source_save_flag_ = 0;
+	////
 };

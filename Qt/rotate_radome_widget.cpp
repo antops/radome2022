@@ -136,7 +136,7 @@ void RotateRadomeWidget::InitLineParam() {
 	undo_btn_ = new QPushButton(QString::fromLocal8Bit("还原"));
 	show_btn_ = new QPushButton(QString::fromLocal8Bit("画图"));
 	conform_btn_ = new QPushButton(QString::fromLocal8Bit("应用"));
-	connect(undo_btn_, SIGNAL(clicked()), this, SLOT(OnButtonUndo()));
+	// connect(undo_btn_, SIGNAL(clicked()), this, SLOT(OnButtonUndo()));
 	connect(show_btn_, SIGNAL(clicked()), this, SLOT(OnButtonShow()));
 	connect(conform_btn_, SIGNAL(clicked()), this, SLOT(OnButtonConform()));
 	QHBoxLayout * hlayout2 = new QHBoxLayout;
