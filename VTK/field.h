@@ -141,7 +141,7 @@ protected:
 
 	double fre_ = 10.0e10;
 
-	int polarization_type_ = 0; // 极化方向 1，垂直极化Ey，2，水平极化Ex
+	int polarization_type_ = 0; // 极化方向 垂直极化-Ey- source_mode=1，水平极化- Ex-source_mode=0，导入源source_mode=2
 	QTreeWidgetItem* tree_ = nullptr;
 };
 

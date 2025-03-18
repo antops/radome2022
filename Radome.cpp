@@ -429,6 +429,10 @@ void Radome::OnTreeWidgetLeftPressed(QTreeWidgetItem * item, int column)
 			source_type_ = Def::aperture_source_type;
 			R_Tree_SourceMenu->exec(QCursor::pos());
 		}
+		else if (item->data(0, Qt::UserRole) == Def::taile_only_source_type) {
+			source_type_ = Def::taile_only_source_type;
+			R_Tree_SourceMenu->exec(QCursor::pos());
+		}
 	}
 	UpdateVtk();
 }
@@ -808,7 +812,7 @@ void Radome::ToTaileOnlySource(int caseIndex)
 		}
 		renderer->AddActor(temPtr->getActor());
 		auto tree_ptr = temPtr->getTree();
-		tree_ptr->setData(0, Qt::UserRole, QVariant(Def::taile_source_type));
+		tree_ptr->setData(0, Qt::UserRole, QVariant(Def::taile_only_source_type));
 
 		source_tree_item_->addChild(tree_ptr);
 		source_tree_item_->setExpanded(true);
@@ -1895,7 +1899,6 @@ void Radome::OnChangeSource() {
 		is_source_window_open_ = true;
 	}
 	else if (source_type_ == Def::taile_source_type) {
-		temp_mirror_ = new PlaneMirror(GraphTrans());
 		temp_mirror_->setSelected(true);
 		renderer->AddActor(temp_mirror_->getActor());
 		// taile_source_widget_ = new TaileSourceWidget;
@@ -1904,9 +1907,22 @@ void Radome::OnChangeSource() {
 		taile_source_widget_->show();
 		is_source_window_open_ = true;
 	}
+	else if (source_type_ == Def::taile_only_source_type) {
+		temp_mirror_->setSelected(true);
+		renderer->AddActor(temp_mirror_->getActor());
+		// taile_source_widget_ = new TaileSourceWidget;
+		taile_only_source_widget_->setMirror(temp_mirror_);
+		taile_only_source_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
+		taile_only_source_widget_->show();
+		is_source_window_open_ = true;
+	}
 	else if (source_type_ == Def::aperture_source_type) {
-		source_type_ = Def::aperture_source_type;
-		R_Tree_SourceMenu->exec(QCursor::pos());
+		temp_mirror_->setSelected(true);
+		renderer->AddActor(temp_mirror_->getActor());
+		aperture_field_widget_->setMirror(temp_mirror_);
+		aperture_field_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
+		aperture_field_widget_->show();
+		is_source_window_open_ = true;
 	}
 }
 

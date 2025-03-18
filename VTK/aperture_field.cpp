@@ -5,6 +5,7 @@
 ApertureField::ApertureField(const GraphTrans & _graphTrans, 
 	const std::vector<double> parameter)
 {
+	polarization_type_ = 2;
 	isSource = true;
 
 	graphTrans = _graphTrans;

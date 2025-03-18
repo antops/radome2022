@@ -46,8 +46,9 @@ ScanParamWidget::ScanParamWidget(DataManager* data_manager, int scan_widget_inde
 	mesh_N_edit_ = new QLineEdit("161");
 	ds_edit_ = new QLineEdit("1e-3");
 	polarization_type_combobox_ = new QComboBox;
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
+	
 
 	path_lable_ = new QLabel(QString::fromLocal8Bit("保存结果文件夹至:"));
 	path_edit_ = new QLineEdit;
@@ -307,7 +308,7 @@ bool ScanParamWidget::ReadScanParam() {
 	PARSE_EDIT_LINE_TO_DOUBLE_RETURN(ds_edit_, ds_, 0.0, 100);
 	PARSE_EDIT_LINE_TO_INT_RETURN(mesh_N_edit_, mesh_N_, 1, 10000);
 
-	polarization_type_ = polarization_type_combobox_->currentIndex() + 1;
+	polarization_type_ = polarization_type_combobox_->currentIndex();
 	scan_type_ = scan_param_combobox_->currentIndex();
 	if (!ReadTheta()) {
 		return false;

@@ -7,7 +7,7 @@
 
 ApertureFieldWidget::ApertureFieldWidget(QWidget *parentn)
 {
-	setWindowTitle(tr("Create Aperture-Field"));
+	setWindowTitle(QString::fromLocal8Bit("创建导入源"));
 
 	// page1
 	//defGroupBox
