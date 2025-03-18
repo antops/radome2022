@@ -3,7 +3,7 @@
 
 GaussianWidget::GaussianWidget(QWidget *parent)
 {
-	setWindowTitle(tr("Create Gaussian"));
+	setWindowTitle(QString::fromLocal8Bit("创建高斯源"));
 
 	// page1
 	//defGroupBox
@@ -74,9 +74,9 @@ GaussianWidget::GaussianWidget(QWidget *parent)
 
 	polarization_type_lable_ = new QLabel(QString::fromLocal8Bit("旁瓣电平:"));
 	polarization_type_combobox_ = new QComboBox;
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
-
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
+	
 
 	QGridLayout * layoutSou = new QGridLayout;
 	layoutSou->addWidget(z0label, 0, 0);
@@ -161,7 +161,7 @@ bool GaussianWidget::getField(Field *& ptr)
 		DsLineEdit->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return false;
 	}
-	para[6] = polarization_type_combobox_->currentIndex() + 1;
+	para[6] = polarization_type_combobox_->currentIndex();
 	ptr = new Gaussain(planeMirror->getGraphTrans(), para);
 	return true;
 }

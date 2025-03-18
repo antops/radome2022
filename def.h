@@ -16,6 +16,7 @@ namespace Def {
 		gaussian_source_type = 41,
 		taile_source_type = 42,
 		aperture_source_type = 43,
+		taile_only_source_type = 44,
 	};
 	// ½éµç³£Êý
 	struct Permittivity {

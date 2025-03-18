@@ -14,7 +14,7 @@
 
 TaileSourceWidget::TaileSourceWidget(QWidget *parent)
 {
-	setWindowTitle(tr("Create taile source"));
+	setWindowTitle(QString::fromLocal8Bit("创建泰勒源"));
 	// page1
 
 	//baseGroupBox
@@ -100,8 +100,8 @@ void TaileSourceWidget::InitSourceParam() {
 	dy_edit_ = new QLineEdit("0.5");
 	ds_edit_ = new QLineEdit("1e-3");
 	polarization_type_combobox_ = new QComboBox;
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
 
 	QGridLayout* basic_layout = new QGridLayout;
 	basic_layout->addWidget(theta_label_, 0, 0);
@@ -286,7 +286,7 @@ bool TaileSourceWidget::ReadScanParam() {
 
 	mesh_N_ = planeMirror->getWidth() / ds_ + 1;
 
-	polarization_type_ = polarization_type_combobox_->currentIndex() + 1;
+	polarization_type_ = polarization_type_combobox_->currentIndex();
 
 
 	return true;

@@ -12,8 +12,8 @@ CalcConfigWidget::CalcConfigWidget(double fre_, QWidget *parent)
 
 	polarization_type_lable_ = new QLabel(QString::fromLocal8Bit("极化方向:"));
 	polarization_type_combobox_ = new QComboBox;
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
 
 	is_calc_nonrodome_lable_ = new QLabel(QString::fromLocal8Bit("是否计算无罩:"));
 	
@@ -123,7 +123,7 @@ void CalcConfigWidget::OnOKClicked() {
 
 	PARSE_EDIT_LINE_TO_DOUBLE(fre_edit_, fre_);
 	is_calc_nonrodome_ = (switch_group_button_->checkedId() == 0);
-	polarization_type_ = polarization_type_combobox_->currentIndex() + 1;
+	polarization_type_ = polarization_type_combobox_->currentIndex();
 	accept();
 }
 
