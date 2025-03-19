@@ -1,0 +1,61 @@
+{
+	"background_material" : 
+	{
+		"eps0" : 1.0,
+		"lossT" : 0.0,
+		"mu0" : 1.0
+	},
+	"ds" : 0.001,
+	"f0" : 16000000000.0,
+	"farfield" : 
+	{
+		"maxphi" : 360,
+		"maxtheta" : 30,
+		"numphi" : 181,
+		"numtheta" : 181,
+		"minphi" : 0,
+		"mintheta" : -30
+	},
+	"model_meta" : 
+	[
+		{
+			"material" : 
+			{
+				"eps0" : 3.5,
+				"lossT" : 0.005,
+				"mu0" : 1.0
+			}
+		}
+	],
+	"output" : 
+	{
+		"is_calc_nonradome" : 1,
+		"nonradome_path" : "E:/GB-VTK-Radome-RT/new_radome_20241203/output/result/nr_15x/",
+		"result_path" : "E:/GB-VTK-Radome-RT/new_radome_20241203/output/result/15x/"
+	},
+	"source_mode" : 1,
+	"source_path" : "E:/GB-VTK-Radome-RT/8yuan/quick_calc_py/wx2_16G_source/0_0/source.txt",
+	"source_pos" : 
+	{
+		"originX" : 0,
+		"originY" : 0,
+		"originZ" : 0,
+		"rotU" : 12,
+		"rotV" : 0,
+		"rotN" : 0,
+		"rotUnum" : 0,
+		"rotVnum" : 1,
+		"rotNnum" : 2
+	},
+	"stl_meta" : 
+	[
+		{
+			"stl_path" : "E:/GB-VTK-Radome-RT/8yuan/quick_calc_py/wx2stl///wx2_1.stl"
+		},
+		{
+			"stl_path" : "E:/GB-VTK-Radome-RT/8yuan/quick_calc_py/wx2stl///wx2_0.stl"
+		}
+	],
+	"threads" : 512,
+	"version" : 1
+}
