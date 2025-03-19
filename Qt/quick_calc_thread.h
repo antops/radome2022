@@ -150,6 +150,6 @@ protected:
 	std::string custom_path_;
 	bool is_calc_non_radome_ = false;
 	double fre_ = 0.0;
-	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
+	int polarization_type_ = 1; // 垂直极化是0, 1水平极化
 	CalcConf conf_;
 };

@@ -2059,8 +2059,13 @@ void Radome::OnChangeSource() {
 		is_source_window_open_ = true;
 	}
 	else if (source_type_ == Def::aperture_source_type) {
+		////0318:debug
+		// source_type_ = Def::aperture_source_type;
+		// R_Tree_SourceMenu->exec(QCursor::pos());
+		temp_mirror_ = new PlaneMirror(GraphTrans());
 		temp_mirror_->setSelected(true);
 		renderer->AddActor(temp_mirror_->getActor());
+		// taile_source_widget_ = new TaileSourceWidget;
 		aperture_field_widget_->setMirror(temp_mirror_);
 		aperture_field_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
 		aperture_field_widget_->show();
@@ -2112,7 +2117,7 @@ void Radome::OnSaveProject() {
 	bool is_calc_non_radome_ = false;
 	int status_ = -1;
 	double fre_ = fre_save;
-	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
+	int polarization_type_ = 1; // 垂直极化是0, 1水平极化
 	QDir dir;
 
 	QDateTime data_time = QDateTime::currentDateTime();
