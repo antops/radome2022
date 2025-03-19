@@ -32,9 +32,9 @@ public:
 		Json::Value js;
 		////0305:保存罩子材料
 		js["index"] = index_;
-		//将name_从local8bit转换为utf-8编码
-		 QString qstr = QString::fromLocal8Bit(name_.c_str());
-		 name_ = qstr.toUtf8().toStdString();
+		//if name_是local8bit编码将name_从local8bit转换为utf-8编码
+		QString qstr = QString::fromStdString(name_.c_str());
+		name_ = qstr.toUtf8().toStdString();
 		js["name"] = name_;
 		// js["name"] = name_;
 		////

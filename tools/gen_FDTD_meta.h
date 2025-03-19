@@ -54,6 +54,6 @@ private:
 	std::string result_non_radome_path_;
 	double fre_ = 0.0;
 	int mesh_type_ = 0; // 0:1/20; 1:1/25; 2:1/30; 3:1/40
-	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
+	int polarization_type_ = 1; // 垂直极化是0, 1水平极化
 	int cpu_core_ = 22;
 };

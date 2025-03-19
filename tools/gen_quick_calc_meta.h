@@ -81,7 +81,7 @@ private:
 	std::string result_non_radome_path_;
 	double fre_ = 0.0;
 	double ds_ = 0.0;
-	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
+	int polarization_type_ = 1; // 垂直极化是0, 非1水平极化
 	GraphTrans graph_trans_;
 	CalcConf conf_;
 	////0221:保存导入源的para
