@@ -104,9 +104,6 @@ QTreeWidgetItem * ApertureField::getTree()
 	QTreeWidgetItem* treefile = new QTreeWidgetItem;
 	treeds->setText(0, QString("file: ")+ QString(fileAddress.c_str()));
 
-	QTreeWidgetItem* treefile = new QTreeWidgetItem;
-	treeds->setText(0, QString("file: ")+ QString(fileAddress.c_str()));
-
 	tree->addChild(treeFre);
 	tree->addChild(treeds);
 	tree->addChild(treefile);

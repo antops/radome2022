@@ -51,7 +51,7 @@
 #include <vtkDataSetSurfaceFilter.h>
 #include <vtkUnstructuredGrid.h> 
 #include <vtkPCANormalEstimation.h> 
-////ÏÔÊ¾×ø±ê0208
+////æ˜¾ç¤ºåæ ‡0208
 #include <vtkAxesActor.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkCaptionActor2D.h>
@@ -71,13 +71,13 @@
 #include "Qt/taile_only_source_widget.h"
 #include "Qt/far_field_show_v2_widget.h"
 
-////0114:¼ÓÈëĞÂ±êÇ©Ò³Ñ¡Ïî
+////0114:åŠ å…¥æ–°æ ‡ç­¾é¡µé€‰é¡¹
 #include "Qt/far_field_show_tab_widget.h"
 ////
 #include "data_manager.h"
 #include "Qt/graph_trans_widget.h"
 
-////0217±£´æÏîÄ¿
+////0217ä¿å­˜é¡¹ç›®
 #include <QSettings>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -118,7 +118,7 @@ private slots :
 	void OnSaveFarfield();
 	void UpdateProgress(int);
 	void OnNewScanCalcAction();
-	////0114:¼ÓÈëĞÂ±êÇ©Ò³Ñ¡Ïî
+	////0114:åŠ å…¥æ–°æ ‡ç­¾é¡µé€‰é¡¹
 	void OnNewResult2DAction();
 	void OnNewResult3DAction();
 	void closeResultTab(int);
@@ -136,7 +136,7 @@ private slots :
 	void UpdateMesh();
 	void UpdateFarField();
 	void FarFieldFinished(int);
-	////0217£º±£´æÏîÄ¿£¬µ¼ÈëÏîÄ¿
+	////0217ï¼šä¿å­˜é¡¹ç›®ï¼Œå¯¼å…¥é¡¹ç›®
 	void OnSaveProject();
 	void onLoadProject();
 
@@ -157,40 +157,40 @@ private:
 	
 	////
 	vtkSmartPointer<vtkOrientationMarkerWidget> widget1;
-	QVTKWidget widget; // vtk ÏÔÊ¾´°¿Ú
+	QVTKWidget widget; // vtk æ˜¾ç¤ºçª—å£
 	QVTKWidget widgetRadiator;
-	QTabWidget * tabWidget; // Ö÷´°¿Ú
+	QTabWidget * tabWidget; // ä¸»çª—å£
 
-	vtkSmartPointer<vtkRenderWindowInteractor> interactor; // ½»»¥
+	vtkSmartPointer<vtkRenderWindowInteractor> interactor; // äº¤äº’
 	vtkSmartPointer<vtkRenderer> renderer;
-	vtkSmartPointer<vtkAxesActor> axes; // ×ø±ê
+	vtkSmartPointer<vtkAxesActor> axes; // åæ ‡
 
-	QDockWidget * leftWidget; //·ÅÖÃtreeWidgetµÄ´°¿Ú
+	QDockWidget * leftWidget; //æ”¾ç½®treeWidgetçš„çª—å£
 	QTreeWidget * tree_widget_;
 
 	QDockWidget * detailsDockWidget;
 	QWidget * detailsWidget;
 
-	QLabel * locationLabel;  // ×´Ì¬À¸±êÇ©
-	QPushButton * unitBtn;   // µ¥Î»°´Å¥
+	QLabel * locationLabel;  // çŠ¶æ€æ æ ‡ç­¾
+	QPushButton * unitBtn;   // å•ä½æŒ‰é’®
 
 	//----------- Menu ----------------- 
-	QMenu * fileMenu;  //²Ëµ¥À¸
-	QMenu * viewMenu;  //ÏÔÊ¾À¸
-	QMenu * eidtMenu;  //±à¼­À¸
-	QMenu * ModelMenu;  //Ä£ĞÍÀ¸
-	QMenu * SourceMenu;  //Ô´À¸
-	QMenu * CalMenu;  //¼ÆËãÀ¸
+	QMenu * fileMenu;  //èœå•æ 
+	QMenu * viewMenu;  //æ˜¾ç¤ºæ 
+	QMenu * eidtMenu;  //ç¼–è¾‘æ 
+	QMenu * ModelMenu;  //æ¨¡å‹æ 
+	QMenu * SourceMenu;  //æºæ 
+	QMenu * CalMenu;  //è®¡ç®—æ 
 	////0114
     QMenu * ResultMenu;
 	QMenu* ResultSubMenu;
 	////
-	QMenu *R_Tree_FarFieldMenu; // ÓÒ¼ü²Ëµ¥
+	QMenu *R_Tree_FarFieldMenu; // å³é”®èœå•
 	QMenu *R_BlankMenu;
-	QMenu* R_Tree_SourceMenu; // ÓÒ¼ü²Ëµ¥
+	QMenu* R_Tree_SourceMenu; // å³é”®èœå•
 
 	//----------- Action ----------------- 
-	//ÎÄ¼ş²Ëµ¥Ïî
+	//æ–‡ä»¶èœå•é¡¹
 	QAction * saveFileAction;
 	QAction * openFileAction;
 	QAction * newFileAction;
@@ -207,9 +207,8 @@ private:
 	QAction * calcalte_action_;
 	QAction * calcalte_quick_action_;
 	QAction * scan_calc_action_;
-	QAction * ga_action_; // ÒÅ´«Ëã·¨
-	
-////0114
+	QAction * ga_action_; // é—ä¼ ç®—æ³•
+	////0114
 	QAction * addresult_show_action;
 	QAction * addresult_show2D_action;
 	QAction * addresult_show3D_action;
@@ -219,8 +218,8 @@ private:
 
 	QAction * save_farfield_action_;
 
-	//ÎÄ¼ş²Ëµ¥--view
-	QAction * viewAction;  // ÊÓ½Ç
+	//æ–‡ä»¶èœå•--view
+	QAction * viewAction;  // è§†è§’
 	QLabel * viewLabel;
 	QComboBox * viewComboBox;
 
@@ -245,10 +244,10 @@ private:
 
 	DataManager data_manager_;
 
-	// ½ø¶ÈÌõ
+	// è¿›åº¦æ¡
 	QProgressDialog *progress_dialog_;
 	Mirror* temp_mirror_ = nullptr;
-	////0114:¼ÓÈëĞÂ±êÇ©Ò³Ñ¡Ïî
+	////0114:åŠ å…¥æ–°æ ‡ç­¾é¡µé€‰é¡¹
 	QTabWidget * tabWidget_1;
 	int pageIndex = 1;
 	////
@@ -259,69 +258,15 @@ private:
 	int source_type_ = -1;
 	bool is_source_window_open_ = false;
 
-	////0116:3D
-	std::map<int, int> data_index_map_;
-	////
-	////0211ÈıÎ¬½á¹ûµÄtab
-	FarFieldShowTab * far_widget_2;	
-	////0213ÈıÎ¬½á¹û½çÃæ
-	QGroupBox* switch_box_;
-	QButtonGroup* switch_group_button_unit_;
-	QRadioButton* linear_button_unit_;
-	QRadioButton* dB_button_unit_;
-	bool is_dB_ = true;
-
-	QGroupBox* basic_info_;
-
-	// ab ½á¹û
-	QGroupBox* ab_group_box_;
-	QComboBox* combo_box_a_;
-	QLabel* a_label_;
-	QPushButton* ab_ok_btn_;
-	// »æÖÆ
-	//QCustomPlot* custom_plot_;
-	QGroupBox* plot_box_;
-
-	QWidget* layout_main_widget;
-	////0220
-	std::vector<std::string> results_filesave;
-	////
-	////0221
-	RadomeSTL* tmp_data;
-	std::vector<double> data_;
-	int N_width = 0;
-	int M_depth = 0;
-	double fre_save;
-	PlaneMirror * planeMirror;
-	////
-	// ////0225:Ì©ÀÕÔ´±£´æ
-	// double taile_theta_ = 0.0;
-	// double taile_phi = 0.0;
-	// double taile_fre = 17;
-	// double taile_radius = 0.075;
-	// double taile_s11 = 30;
-	// double taile_dx = 0.5;
-	// double taile_dy = 0.5;
-	// double taile_ds = 0.5;
-	// int taile_meshN = 161;
-	// std::string taile_result_path;
-	// ////
-	////0225:±£´æµÄÔ´µÄ±êÖ¾Î»
-	int source_save_flag = 0;
-	////
-	////0305
-	std::vector<double> trans_rotate_para = std::vector<double>(9);
-	////
-
 	int calc_index_ = 1;
 
 
 	////0116:3D
 	std::map<int, int> data_index_map_;
 	////
-	////0211ÈıÎ¬½á¹ûµÄtab
+	////0211ä¸‰ç»´ç»“æœçš„tab
 	FarFieldShowTab * far_widget_2;	
-	////0213ÈıÎ¬½á¹û½çÃæ
+	////0213ä¸‰ç»´ç»“æœç•Œé¢
 	QGroupBox* switch_box_;
 	QButtonGroup* switch_group_button_unit_;
 	QRadioButton* linear_button_unit_;
@@ -330,12 +275,12 @@ private:
 
 	QGroupBox* basic_info_;
 
-	// ab ½á¹û
+	// ab ç»“æœ
 	QGroupBox* ab_group_box_;
 	QComboBox* combo_box_a_;
 	QLabel* a_label_;
 	QPushButton* ab_ok_btn_;
-	// »æÖÆ
+	// ç»˜åˆ¶
 	//QCustomPlot* custom_plot_;
 	QGroupBox* plot_box_;
 
@@ -351,7 +296,7 @@ private:
 	double fre_save;
 	PlaneMirror * planeMirror;
 	////
-	// ////0225:Ì©ÀÕÔ´±£´æ
+	// ////0225:æ³°å‹’æºä¿å­˜
 	// double taile_theta_ = 0.0;
 	// double taile_phi = 0.0;
 	// double taile_fre = 17;
@@ -363,7 +308,7 @@ private:
 	// int taile_meshN = 161;
 	// std::string taile_result_path;
 	// ////
-	////0225:±£´æµÄÔ´µÄ±êÖ¾Î»
+	////0225:ä¿å­˜çš„æºçš„æ ‡å¿—ä½
 	int source_save_flag = 0;
 	////
 	////0305
