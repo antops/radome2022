@@ -12,8 +12,8 @@ CalcConfigWidget::CalcConfigWidget(double fre_, QWidget *parent)
 
 	polarization_type_lable_ = new QLabel(QString::fromLocal8Bit("极化方向:"));
 	polarization_type_combobox_ = new QComboBox;
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("ˮƽ����Ex"));
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("��ֱ����Ey"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
 
 	is_calc_nonrodome_lable_ = new QLabel(QString::fromLocal8Bit("是否计算无罩:"));
 	
@@ -163,20 +163,20 @@ bool CalcConfigWidget::ReadPhi() {
 
 bool CalcConfigWidget::ReadPath() {
 
-	// ʹ�� QFileDialog ���û�ѡ���ļ���·��
-	// QString selectedDir = QFileDialog::getExistingDirectory(nullptr, QString::fromLocal8Bit("ѡ��Ҫ�����ļ��е�λ��"), QDir::homePath());
-	QString selectedDir = QFileDialog::getSaveFileName(nullptr, QString::fromLocal8Bit("�����ļ�"), QDir::homePath(), QString::fromLocal8Bit(""));
+	// 使用 QFileDialog 让用户选择文件夹路径
+	// QString selectedDir = QFileDialog::getExistingDirectory(nullptr, QString::fromLocal8Bit("选择要创建文件夹的位置"), QDir::homePath());
+	QString selectedDir = QFileDialog::getSaveFileName(nullptr, QString::fromLocal8Bit("创建文件"), QDir::homePath(), QString::fromLocal8Bit(""));
 	if (!selectedDir.isEmpty()) {
 		QDir dir(selectedDir);
-		// ����ļ����Ƿ����
+		// 检查文件夹是否存在
 		if (!dir.exists()) {
-			// ���������򴴽��ļ���
+			// 若不存在则创建文件夹
 			if (!dir.mkpath(selectedDir)) {
-				QMessageBox::critical(nullptr, QString::fromLocal8Bit("ʧ��"), QString::fromLocal8Bit("�ļ��д���ʧ�ܣ�"));
+				QMessageBox::critical(nullptr, QString::fromLocal8Bit("失败"), QString::fromLocal8Bit("文件夹创建失败！"));
 			}
 		}
 		qDebug() << "Selected folder path: " << selectedDir;
-		// ������������㴦�����ļ���·���Ĵ���
+		// 这里可以添加你处理该文件夹路径的代码
 		custom_path_ = selectedDir.toStdString();
 		path_edit_->setText(selectedDir);
 	}
