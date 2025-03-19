@@ -314,6 +314,5 @@ private:
 	////0305
 	std::vector<double> trans_rotate_para = std::vector<double>(9);
 	////
->>>>>>> 99de62f (feat(save_import)锛氶」鐩殑淇濆瓨涓庡鍏�)
-};
+	};
 #endif // RADOME_H

@@ -14,7 +14,7 @@
 
 TaileSourceWidget::TaileSourceWidget(QWidget *parent)
 {
-	setWindowTitle(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½Ì©ï¿½ï¿½Ô´"));
+	setWindowTitle(QString::fromLocal8Bit("´´½¨Ì©ÀÕÔ´"));
 	// page1
 
 	//baseGroupBox
@@ -81,14 +81,14 @@ TaileSourceWidget::TaileSourceWidget(QWidget *parent)
 }
 
 void TaileSourceWidget::InitSourceParam() {
-	theta_label_ = new QLabel(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½):"));
-	phi_label_ = new QLabel(QString::fromLocal8Bit("ï¿½ï¿½Î»ï¿½ï¿½(ï¿½ï¿½):"));
-	fre_label_ = new QLabel(QString::fromLocal8Bit("Æµï¿½ï¿½(GHz):"));
-	radius_label_ = new QLabel(QString::fromLocal8Bit("ï¿½Ú¾ï¿½ï¿½ï¿½ï¿½ë¾¶:"));
-	s11_label_ = new QLabel(QString::fromLocal8Bit("ï¿½Ô°ï¿½ï¿½Æ½:"));
-	polarization_type_lable_ = new QLabel(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½:"));
-	dx_label_ = new QLabel(QString::fromLocal8Bit("xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½):"));
-	dy_label_ = new QLabel(QString::fromLocal8Bit("yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½):"));
+	theta_label_ = new QLabel(QString::fromLocal8Bit("¸©Ñö½Ç(¡ã):"));
+	phi_label_ = new QLabel(QString::fromLocal8Bit("·½Î»½Ç(¡ã):"));
+	fre_label_ = new QLabel(QString::fromLocal8Bit("ÆµÂÊ(GHz):"));
+	radius_label_ = new QLabel(QString::fromLocal8Bit("¿Ú¾¶³¡°ë¾¶:"));
+	s11_label_ = new QLabel(QString::fromLocal8Bit("ÅÔ°êµçÆ½:"));
+	polarization_type_lable_ = new QLabel(QString::fromLocal8Bit("¼«»¯·½Ê½:"));
+	dx_label_ = new QLabel(QString::fromLocal8Bit("x·½ÏòÉÏÕóÔª¼ä¾à(²¨³¤):"));
+	dy_label_ = new QLabel(QString::fromLocal8Bit("y·½ÏòÉÏÕóÔª¼ä¾à(²¨³¤):"));
 	ds_label_ = new QLabel(QString::fromLocal8Bit("ds:"));
 
 	theta_edit_ = new QLineEdit("0");
@@ -100,8 +100,8 @@ void TaileSourceWidget::InitSourceParam() {
 	dy_edit_ = new QLineEdit("0.5");
 	ds_edit_ = new QLineEdit("1e-3");
 	polarization_type_combobox_ = new QComboBox;
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("Ë®Æ½ï¿½ï¿½ï¿½ï¿½Ex"));
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Ey"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("Ë®Æ½¼«»¯Ex"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("´¹Ö±¼«»¯Ey"));
 
 	QGridLayout* basic_layout = new QGridLayout;
 	basic_layout->addWidget(theta_label_, 0, 0);
@@ -122,7 +122,7 @@ void TaileSourceWidget::InitSourceParam() {
 	basic_layout->addWidget(ds_edit_, 8, 1);
 	basic_layout->addWidget(polarization_type_lable_, 9, 0);
 	basic_layout->addWidget(polarization_type_combobox_, 9, 1);
-	basic_qbox_ = new QGroupBox(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
+	basic_qbox_ = new QGroupBox(QString::fromLocal8Bit("²ÎÊýÅäÖÃ"));
 	basic_qbox_->setLayout(basic_layout);
 }
 
@@ -137,7 +137,7 @@ bool TaileSourceWidget::getField(Field *& ptr)
 		return false;
 	}
 	if (!GenSource()) {
-		QMessageBox::warning(NULL, "Warning", QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½Ô´Ê§ï¿½ï¿½"));
+		QMessageBox::warning(NULL, "Warning", QString::fromLocal8Bit("Éú³ÉÔ´Ê§°Ü"));
 		return false;
 	}
 	bool ok, ok_back;
@@ -179,34 +179,34 @@ bool TaileSourceWidget::getField(Field *& ptr)
 
 
 	QTreeWidgetItem* tree = new QTreeWidgetItem;
-	tree->setText(0, QString::fromLocal8Bit("Ì©ï¿½ï¿½Ô´"));
+	tree->setText(0, QString::fromLocal8Bit("Ì©ÀÕÔ´"));
 
 	QTreeWidgetItem* treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½):") + QString::number(theta_));
+	treeWidth->setText(0, QString::fromLocal8Bit("¸©Ñö½Ç(¡ã):") + QString::number(theta_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("ï¿½ï¿½Î»ï¿½ï¿½(ï¿½ï¿½):") + QString::number(phi_));
+	treeWidth->setText(0, QString::fromLocal8Bit("·½Î»½Ç(¡ã):") + QString::number(phi_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("Æµï¿½ï¿½(GHz):") + QString::number(fre_));
+	treeWidth->setText(0, QString::fromLocal8Bit("ÆµÂÊ(GHz):") + QString::number(fre_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("ï¿½Ú¾ï¿½ï¿½ï¿½ï¿½ë¾¶:") + QString::number(radius_));
+	treeWidth->setText(0, QString::fromLocal8Bit("¿Ú¾¶³¡°ë¾¶:") + QString::number(radius_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½:") + polarization_type_ == 1 ? QString::fromLocal8Bit("ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Ey"): QString::fromLocal8Bit("Ë®Æ½ï¿½ï¿½ï¿½ï¿½Ey"));
+	treeWidth->setText(0, QString::fromLocal8Bit("¼«»¯·½Ê½:") + polarization_type_ == 1 ? QString::fromLocal8Bit("´¹Ö±¼«»¯Ey"): QString::fromLocal8Bit("Ë®Æ½¼«»¯Ey"));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½):") + QString::number(dx_));
+	treeWidth->setText(0, QString::fromLocal8Bit("x·½ÏòÉÏÕóÔª¼ä¾à(²¨³¤):") + QString::number(dx_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½):") + QString::number(dy_));
+	treeWidth->setText(0, QString::fromLocal8Bit("y·½ÏòÉÏÕóÔª¼ä¾à(²¨³¤):") + QString::number(dy_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
@@ -235,14 +235,14 @@ void TaileSourceWidget::on_widthChange(QString var)
 	double res = var.toDouble(&ok);
 	if (!ok)
 	{
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//Êä³ö²ÎÊýÓÐÎó
 		widthLineEdit->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return;
 
 	}
 	if (res <= 0.0 + THRESHOLD)
 	{
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½0
+		//Êä³ö²ÎÊýÓÐÎó ÐèÒª´óÓÚ0
 		widthLineEdit->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return;
 	}
@@ -257,13 +257,13 @@ void TaileSourceWidget::on_depthChange(QString var)
 	double res = var.toDouble(&ok);
 	if (!ok)
 	{
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//Êä³ö²ÎÊýÓÐÎó
 		depthLineEdit->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return;
 	}
 	if (res <= 0.0 + THRESHOLD)
 	{
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½0
+		//Êä³ö²ÎÊýÓÐÎó ÐèÒª´óÓÚ0
 		depthLineEdit->setStyleSheet("background-color:rgba(255,0,0,255)");
 		return;
 
@@ -335,7 +335,7 @@ bool TaileSourceWidget::IsPythonWorkSuccess(const std::string& status_file) {
 
 bool TaileSourceWidget::GenSource() {
 	if (!ReadScanParam()) {
-		QMessageBox::warning(NULL, "Warning", QString::fromLocal8Bit("ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
+		QMessageBox::warning(NULL, "Warning", QString::fromLocal8Bit("ÌîÐ´²ÎÊýÓÐÎó"));
 		return false;
 	}
 	dir_path_ = QCoreApplication::applicationDirPath().toStdString() + "/output/taile_source"; 	  
@@ -360,7 +360,7 @@ bool TaileSourceWidget::GenSource() {
 	progressDialog.setWindowTitle("Loading");
 	progressDialog.show();
 	this->setHidden(true);
-	// ï¿½È´ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// µÈ´ý½ø³Ì½áÊø£¬²¢ÏÔÊ¾½ø¶ÈÌõ
 	int i = 0;
 	while (process.state() != QProcess::NotRunning) {
 		progressDialog.setValue(i++);
@@ -408,7 +408,7 @@ bool TaileSourceWidget::LoadParam(const Json::Value& param_js) {
 	catch (const std::exception&)
 	{
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("ï¿½ï¿½È¡ GraphTransWidget Ê§ï¿½ï¿½"));
+			QString::fromLocal8Bit("¶ÁÈ¡ GraphTransWidget Ê§°Ü"));
 		return false;
 	}
 	return GraphTransWidget::LoadParam(param_js);
