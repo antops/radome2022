@@ -41,15 +41,14 @@ Radome::Radome(QWidget* parent)
 {
 
 	GlobalConfig::Instance()->Init(QCoreApplication::applicationDirPath().toStdString() +
-	GlobalConfig::Instance()->Init(QCoreApplication::applicationDirPath().toStdString() +
 		"/config/config.ini");
-	setWindowTitle(QString::fromLocal8Bit("?????????????-????EML v1.0Beta"));
+	setWindowTitle(QString::fromLocal8Bit("天线罩设计软件-北航EML v1.0Beta"));
 	tabWidget = new QTabWidget;
-	tabWidget->addTab(&widget, QString::fromLocal8Bit("??????"));
+	tabWidget->addTab(&widget, QString::fromLocal8Bit("系统整体"));
 	rotate_radome_widget_ = new RotateRadomeWidget;
 	connect(rotate_radome_widget_, SIGNAL(UpdateRotateRadome()),
 		this, SLOT(UpdateRotateRadome()));
-	tabWidget->addTab(rotate_radome_widget_, QString::fromLocal8Bit("???????????????"));
+	tabWidget->addTab(rotate_radome_widget_, QString::fromLocal8Bit("天线罩二维辅助设计"));
 	//tabWidget->setTabsClosable(true);
 	////0114:加入新标签页选项
 	
@@ -67,8 +66,6 @@ Radome::Radome(QWidget* parent)
 
 	double R = 1.0;
 	double G = 1.0;
-	double R = 1.0;
-	double G = 1.0;
 	double B = 1.0;
 	renderer = vtkSmartPointer<vtkRenderer>::New();
 	renderer->SetBackground(R, G, B);
@@ -76,19 +73,19 @@ Radome::Radome(QWidget* parent)
 	auto window = widget.GetRenderWindow();
 	window->AddRenderer(renderer);
 	double axesScale = 1000.0;
-	// ?????vtk????
+	// 初始化vtk窗口
 	axes = vtkSmartPointer<vtkAxesActor>::New();
-	axes->GetXAxisShaftProperty()->SetColor(0, 0, 1);//???X???????????
+	axes->GetXAxisShaftProperty()->SetColor(0, 0, 1);//修改X字体颜色为红色
 	axes->GetXAxisTipProperty()->SetColor(0, 0, 1);
-	axes->GetXAxisCaptionActor2D()->GetCaptionTextProperty()->SetColor(0, 0, 1);//???X???????????  
-	axes->GetYAxisCaptionActor2D()->GetCaptionTextProperty()->SetColor(0, 2, 0);//???Y???????????  
-	axes->GetZAxisCaptionActor2D()->GetCaptionTextProperty()->SetColor(1, 0, 0);//???Z???????????
+	axes->GetXAxisCaptionActor2D()->GetCaptionTextProperty()->SetColor(0, 0, 1);//修改X字体颜色为红色  
+	axes->GetYAxisCaptionActor2D()->GetCaptionTextProperty()->SetColor(0, 2, 0);//修改Y字体颜色为绿色  
+	axes->GetZAxisCaptionActor2D()->GetCaptionTextProperty()->SetColor(1, 0, 0);//修改Z字体颜色为蓝色
 	axes->GetZAxisShaftProperty()->SetColor(1, 0, 0);
 	axes->GetZAxisTipProperty()->SetColor(1, 0, 0);
 
 	axes->SetConeRadius(0.3);
 	axes->SetConeResolution(20);
-	//axes->SetTotalLength(10, 10, 10); //?????????
+	//axes->SetTotalLength(10, 10, 10); //修改坐标尺寸
 
 	interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	interactor->SetRenderWindow(window);
@@ -103,7 +100,6 @@ Radome::Radome(QWidget* parent)
 	aCamera->SetFocalPoint(0, 0, 0);//设焦点 
 	aCamera->ComputeViewPlaneNormal();//自动
 	renderer->SetActiveCamera(aCamera);
-
 
 	auto axes_actor = vtkSmartPointer<vtkAxesActor>::New();
 	axes_actor->SetCylinderRadius(0.001);
@@ -130,7 +126,7 @@ Radome::Radome(QWidget* parent)
 	widget1->SetEnabled(1);
 	widget1->InteractiveOff();
 
-	// ????dock????
+	// 设置dock窗口
 	leftWidget = new QDockWidget("Navigation", this);
 	leftWidget->setFeatures(QDockWidget::DockWidgetMovable);
 	leftWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -144,7 +140,7 @@ Radome::Radome(QWidget* parent)
 		this, SLOT(OnTreeWidgetContextMenuRequested(QPoint)));
 	connect(tree_widget_, SIGNAL(itemPressed(QTreeWidgetItem*, int)),
 		this, SLOT(OnTreeWidgetLeftPressed(QTreeWidgetItem*, int)));
-	tree_widget_->setHeaderHidden(true);  // ??????
+	tree_widget_->setHeaderHidden(true);  // 隐藏表头
 	leftWidget->setWidget(tree_widget_);
 	tree_widget_->setWordWrap(true);
 
@@ -161,7 +157,6 @@ Radome::Radome(QWidget* parent)
 	connect(radome_details_widget_, SIGNAL(UpdateRotateRadomeParam(int)),
 		this, SLOT(UpdateRotateRadomeParam(int)));
 
-
 	material_details_widget_ = new MaterialParamDatailWidget(true);
 	connect(material_details_widget_, SIGNAL(UpdateMaterialRadomeParam(int)),
 		this, SLOT(UpdateMaterialRadomeParam(int)));
@@ -171,7 +166,6 @@ Radome::Radome(QWidget* parent)
 	far_field_param_widget_ = new FarFieldParamWidget;
 	connect(far_field_param_widget_, SIGNAL(UpdateFarField()),
 		this, SLOT(UpdateFarField()));
-
 
 	CreateActions();
 	CreateMenus();
@@ -200,11 +194,10 @@ void Radome::UpdateRotateRadome() {
 	double x_scale, y_scale;
 	rotate_radome_widget_->GetScale(&x_scale, &y_scale);
 	RadomeRotate* tmp_radome_data = new RadomeRotate(line_vec, x_scale, y_scale, rotate_radome_widget_->GetCut());
-	RadomeRotate* tmp_radome_data = new RadomeRotate(line_vec, x_scale, y_scale, rotate_radome_widget_->GetCut());
 
 	if (!tmp_radome_data->Update()) {
 		delete tmp_radome_data;
-		QMessageBox::warning(NULL, "Error", QString::fromLocal8Bit("?????????????"));
+		QMessageBox::warning(NULL, "Error", QString::fromLocal8Bit("生成天线罩错误"));
 		return;
 	}
 
@@ -242,10 +235,9 @@ void Radome::UpdateVtk()
 }
 
 void Radome::CreateTreeWidgetItem() {
-	definitions_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("????????")));
+	definitions_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("常数定义")));
 	definitions_tree_item_->setExpanded(true);
 
-	QTreeWidgetItem* child1;
 	QTreeWidgetItem* child1;
 	child1 = new QTreeWidgetItem;
 	child1->setText(0, tr("eps0") + tr(" = ") +
@@ -254,14 +246,12 @@ void Radome::CreateTreeWidgetItem() {
 	definitions_tree_item_->addChild(child1);
 
 	QTreeWidgetItem* child2;
-	QTreeWidgetItem* child2;
 	child2 = new QTreeWidgetItem;
 	child2->setText(0, tr("Pi") + tr(" = ") +
 		tr("3.14159265358979"));
 	child2->setTextColor(0, "gray");
 	definitions_tree_item_->addChild(child2);
 
-	QTreeWidgetItem* child3;
 	QTreeWidgetItem* child3;
 	child3 = new QTreeWidgetItem;
 	child3->setText(0, tr("mu0") + tr(" = ") +
@@ -270,7 +260,6 @@ void Radome::CreateTreeWidgetItem() {
 	definitions_tree_item_->addChild(child3);
 
 	QTreeWidgetItem* child4;
-	QTreeWidgetItem* child4;
 	child4 = new QTreeWidgetItem;
 	child4->setText(0, tr("c0") + tr(" = ") +
 		tr("1/sqrt(eps0*mu0)"));
@@ -278,32 +267,31 @@ void Radome::CreateTreeWidgetItem() {
 	definitions_tree_item_->addChild(child4);
 
 	QTreeWidgetItem* child5;
-	QTreeWidgetItem* child5;
 	child5 = new QTreeWidgetItem;
 	child5->setText(0, tr("zf0") + tr(" = ") +
 		tr("sqrt(mu0/eps0))"));
 	child5->setTextColor(0, "gray");
 	definitions_tree_item_->addChild(child5);
 
-	material_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("????")));
+	material_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("材料")));
 
 	//data_manager_.SetMaterialData(MaterialDataFactory::MaterialAir,
 	//	MaterialDataFactory::GetMaterialData(MaterialDataFactory::MaterialAir));
 	//data_manager_.SetMaterialData(MaterialDataFactory::MaterialMetal,
 	//	MaterialDataFactory::GetMaterialData(MaterialDataFactory::MaterialMetal));
-	normal_material_tree_item_ = new QTreeWidgetItem(QStringList(QString::fromLocal8Bit("????????")));
+	normal_material_tree_item_ = new QTreeWidgetItem(QStringList(QString::fromLocal8Bit("常用材料")));
 	//normal_material_tree_item_->addChild(data_manager_.GetMaterialData(MaterialDataFactory::MaterialAir)->GetTreeItem());
 	//normal_material_tree_item_->addChild(data_manager_.GetMaterialData(MaterialDataFactory::MaterialMetal)->GetTreeItem());
 	// material_tree_item_->addChild(normal_material_tree_item_);
 
-	custom_material_tree_item_ = new QTreeWidgetItem(QStringList(QString::fromLocal8Bit("????????")));
+	custom_material_tree_item_ = new QTreeWidgetItem(QStringList(QString::fromLocal8Bit("自定义材料")));
 	material_tree_item_->addChild(custom_material_tree_item_);
 
 	material_tree_item_->setExpanded(true);
 
-	model_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("??????")));
-	source_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("?")));
-	field_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("????????")));
+	model_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("天线罩")));
+	source_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("源")));
+	field_tree_item_ = new QTreeWidgetItem(tree_widget_, QStringList(QString::fromLocal8Bit("远场方向图")));
 }
 
 void Radome::CreateMenus()
@@ -332,21 +320,21 @@ void Radome::CreateMenus()
 	//fileMenu->addSeparator();
 	//fileMenu->addAction(LightSourceAction);
 
-	// viewMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("???"));
+	// viewMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("视图"));
 	//viewMenu->addAction(viewAction);
 
-	eidtMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("??"));
+	eidtMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("编辑"));
 	eidtMenu->addAction(add_material_action_);
-	ModelMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("???"));
+	ModelMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("模型"));
 	ModelMenu->addAction(stl_model_action_);
 	ModelMenu->addAction(mesh_action_);
-	SourceMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("?"));
+	SourceMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("源"));
 	SourceMenu->addAction(new_gaussian_source_action_);
 	SourceMenu->addAction(new_source_action_);
 	SourceMenu->addAction(new_taile_source_action_);
 	SourceMenu->addAction(new_taile_only_source_action_);
 
-	CalMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("????"));
+	CalMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("计算"));
 	CalMenu->addAction(calcalte_action_);
 	CalMenu->addAction(calcalte_quick_action_);
 	CalMenu->addAction(ga_action_);
@@ -366,40 +354,40 @@ void Radome::CreateMenus()
 }
 
 void Radome::CreateActions() {
-	mesh_action_ = new QAction(QString::fromLocal8Bit("????"), this);
+	mesh_action_ = new QAction(QString::fromLocal8Bit("网格化"), this);
 	connect(mesh_action_, SIGNAL(triggered()), this, SLOT(OnMeshAction()));
 
-	stl_model_action_ = new QAction(QString::fromLocal8Bit("????stl???"), this);
+	stl_model_action_ = new QAction(QString::fromLocal8Bit("添加stl模型"), this);
 	connect(stl_model_action_, SIGNAL(triggered()), this, SLOT(OnSTLModelAction()));
 
-	add_material_action_ = new QAction(QString::fromLocal8Bit("???????"), this);
+	add_material_action_ = new QAction(QString::fromLocal8Bit("添加材料"), this);
 	connect(add_material_action_, SIGNAL(triggered()), this, SLOT(OnAddMaterialAction()));
 
-	new_source_action_ = new QAction(QString::fromLocal8Bit("?????"), this);
+	new_source_action_ = new QAction(QString::fromLocal8Bit("导入源"), this);
 	connect(new_source_action_, SIGNAL(triggered()), this, SLOT(OnNewSourceAction()));
 
-	new_taile_source_action_ = new QAction(QString::fromLocal8Bit("????"), this);
+	new_taile_source_action_ = new QAction(QString::fromLocal8Bit("泰勒源"), this);
 	connect(new_taile_source_action_, SIGNAL(triggered()), this, SLOT(OnNewTaileSourceAction()));
 
-	new_taile_only_source_action_ = new QAction(QString::fromLocal8Bit("????????"), this);
+	new_taile_only_source_action_ = new QAction(QString::fromLocal8Bit("理想泰勒源"), this);
 	connect(new_taile_only_source_action_, SIGNAL(triggered()), this, SLOT(OnNewTaileOnlySourceAction()));
 
-	new_gaussian_source_action_ = new QAction(QString::fromLocal8Bit("????"), this);
+	new_gaussian_source_action_ = new QAction(QString::fromLocal8Bit("高斯源"), this);
 	connect(new_gaussian_source_action_, SIGNAL(triggered()), this, SLOT(OnNewGaussianSourceAction()));
 
-	calcalte_action_ = new QAction(QString::fromLocal8Bit("FDTD????"), this);
+	calcalte_action_ = new QAction(QString::fromLocal8Bit("FDTD仿真"), this);
 	connect(calcalte_action_, SIGNAL(triggered()), this, SLOT(OnNewCalcalteAction()));
 
-	calcalte_quick_action_ = new QAction(QString::fromLocal8Bit("???????"), this);
+	calcalte_quick_action_ = new QAction(QString::fromLocal8Bit("快速仿真"), this);
 	connect(calcalte_quick_action_, SIGNAL(triggered()), this, SLOT(OnNewQuickCalcalteAction()));
 
-	ga_action_ = new QAction(QString::fromLocal8Bit("??????"), this);
+	ga_action_ = new QAction(QString::fromLocal8Bit("遗传优化"), this);
 	connect(ga_action_, SIGNAL(triggered()), this, SLOT(OnNewGAOptAction()));
 
-	scan_calc_action_ = new QAction(QString::fromLocal8Bit("??????"), this);
+	scan_calc_action_ = new QAction(QString::fromLocal8Bit("新建扫参"), this);
 	connect(scan_calc_action_, SIGNAL(triggered()), this, SLOT(OnNewScanCalcAction()));
 
-	//calcalte_farfield_action_ = new QAction(QString::fromLocal8Bit("????????????"), this);
+	//calcalte_farfield_action_ = new QAction(QString::fromLocal8Bit("生成远场方向图"), this);
 	//connect(calcalte_farfield_action_, SIGNAL(triggered()), this, SLOT(OnCalcalteFarFieldAction()));
 
 	////0114:加入新标签页面 
@@ -417,20 +405,17 @@ void Radome::CreateActions() {
 void Radome::OnTreeWidgetContextMenuRequested(QPoint pos)
 {
 
-
 }
 
-void Radome::OnTreeWidgetLeftPressed(QTreeWidgetItem* item, int column)
 void Radome::OnTreeWidgetLeftPressed(QTreeWidgetItem* item, int column)
 {
 	if (data_manager_.GetRadomeData()) {
 		data_manager_.GetRadomeData()->SetUnSelected(-1);
 	}
 	if (item->parent() == NULL) {
-		// ?????
+		// 根节点
 		detailsDockWidget->close();
 		UpdateVtk();
-		return;
 		return;
 	}
 	if (qApp->mouseButtons() == Qt::LeftButton)
@@ -449,7 +434,6 @@ void Radome::OnTreeWidgetLeftPressed(QTreeWidgetItem* item, int column)
 		else if (item->data(0, Qt::UserRole) == Def::material_type)
 		{
 			int num = item->data(1, Qt::UserRole).toInt();
-			MaterialData* data = data_manager_.GetMaterialData(num);
 			MaterialData* data = data_manager_.GetMaterialData(num);
 			if (data == nullptr) return;
 			material_details_widget_->SetParam(*data, num);
@@ -498,17 +482,16 @@ void Radome::CreateRightMenu()
 	R_Tree_FarFieldMenu = new QMenu(this);
 	R_BlankMenu = new QMenu(this);
 
-	save_farfield_action_ = new QAction(QString::fromLocal8Bit("???????"), this);
-	// save_farfield_action_->setStatusTip(QString::fromLocal8Bit("?????STL"));
+	save_farfield_action_ = new QAction(QString::fromLocal8Bit("导出远场"), this);
+	// save_farfield_action_->setStatusTip(QString::fromLocal8Bit("保存为STL"));
 	connect(save_farfield_action_, SIGNAL(triggered()), this, SLOT(OnSaveFarfield()));
 
 	R_Tree_FarFieldMenu->addAction(save_farfield_action_);
 	
-	
 
 	R_Tree_SourceMenu = new QMenu(this);
 
-	change_source_action_ = new QAction(QString::fromLocal8Bit("???"), this);
+	change_source_action_ = new QAction(QString::fromLocal8Bit("修改"), this);
 	connect(change_source_action_, SIGNAL(triggered()), this, SLOT(OnChangeSource()));
 	R_Tree_SourceMenu->addAction(change_source_action_);
 }
@@ -518,7 +501,7 @@ void Radome::UpdateRotateRadomeParam(int index) {
 	auto* mat = data_manager_.GetMaterialData(mat_id);
 	if (mat == nullptr) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????????"));
+			QString::fromLocal8Bit("设置材料失败"));
 		return;
 	}
 	data_manager_.GetRadomeData()->SetMaterialId(index, mat_id, mat->GetName());
@@ -536,7 +519,6 @@ void Radome::UpdateRotateRadomeParam(int index) {
 void Radome::UpdateMaterialRadomeParam(int index) {
 	auto data = data_manager_.GetMaterialData(index);
 	if (data == nullptr) return;
-	QTreeWidgetItem* tree = nullptr;
 	QTreeWidgetItem* tree = nullptr;
 	if (index < 100) tree = normal_material_tree_item_;
 	else tree = custom_material_tree_item_;
@@ -560,7 +542,7 @@ void Radome::OnMeshAction() {
 	if (radome_data == NULL) return;
 	if (radome_data->IsMesh()) {
 		QMessageBox::StandardButton rb =
-			QMessageBox::question(NULL, "question", QString::fromLocal8Bit("????????????????????????"),
+			QMessageBox::question(NULL, "question", QString::fromLocal8Bit("该天线罩已剖分，是否重新剖分"),
 				QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 		if (rb == QMessageBox::No)
 		{
@@ -569,7 +551,7 @@ void Radome::OnMeshAction() {
 	}
 	int* step = new int(1);
 	Vector3 min_p, max_p;
-	// ??????????????????????
+	// 得到一个保函所有组件的盒子
 	if (!radome_data->GetMaxXYZ(&min_p, &max_p)) {
 		return;
 	}
@@ -593,7 +575,6 @@ void Radome::OnMeshAction() {
 	if (mesh_option.exec() != QDialog::Accepted) {
 		return;
 	}
-
 
 	progress_dialog_ = new QProgressDialog(this);
 
@@ -631,7 +612,7 @@ void Radome::OnSTLModelAction()
 	auto old_radome = data_manager_.GetRadomeData();
 	if (old_radome) {
 		QMessageBox::StandardButton rb =
-			QMessageBox::question(NULL, "question", QString::fromLocal8Bit("???????????????????I"),
+			QMessageBox::question(NULL, "question", QString::fromLocal8Bit("已存在天线罩模型是否替换"),
 				QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 		if (rb == QMessageBox::No)
 		{
@@ -686,7 +667,6 @@ void Radome::UpdateFarField()
 	far_field->SetFarFieldParam(far_field_param_widget_->GetFarFieldParam());
 	renderer->RemoveActor(far_field->GetActor());
 
-
 	far_field->CreateActor3D();
 	renderer->AddActor(far_field->GetActor());
 
@@ -699,7 +679,7 @@ void Radome::OnAddMaterialAction() {
 		return;
 	}
 	int index = data_manager_.GetMaterialId();
-	MaterialData* data = new MaterialData("????_" + std::to_string(index - 99), index);
+	MaterialData* data = new MaterialData("介质_" + std::to_string(index - 99), index);
 	*data = widget.GetData();
 	data->SetIndex(index);
 	data->Update();
@@ -717,7 +697,7 @@ void Radome::OnNewSourceAction()
 {
 	if (is_source_window_open_)
 	{
-		// ????????????
+		// 已经有窗口打开了
 		QMessageBox::warning(NULL, "Warning",
 			"A window has been opened. Please close and continue!");
 
@@ -729,8 +709,7 @@ void Radome::OnNewSourceAction()
 	renderer->AddActor(temp_mirror_->getActor());
 	aperture_field_widget_ = new ApertureFieldWidget;
 	aperture_field_widget_->setMirror(temp_mirror_);
-
-	aperture_field_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // ???????????
+	aperture_field_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
 	aperture_field_widget_->show();
 	is_source_window_open_ = true;
 	connect(aperture_field_widget_, SIGNAL(sendData(int)),
@@ -740,7 +719,7 @@ void Radome::OnNewSourceAction()
 void Radome::OnNewTaileSourceAction() {
 	if (is_source_window_open_)
 	{
-		// ????????????
+		// 已经有窗口打开了
 		QMessageBox::warning(NULL, "Warning",
 			"A window has been opened. Please close and continue!");
 
@@ -752,7 +731,7 @@ void Radome::OnNewTaileSourceAction() {
 	renderer->AddActor(temp_mirror_->getActor());
 	taile_source_widget_ = new TaileSourceWidget;
 	taile_source_widget_->setMirror(temp_mirror_);
-	taile_source_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // ???????????
+	taile_source_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
 	taile_source_widget_->show();
 	is_source_window_open_ = true;
 	connect(taile_source_widget_, SIGNAL(sendData(int)),
@@ -763,12 +742,12 @@ void Radome::ToTaileSource(int caseIndex)
 {
 	if (1 == caseIndex)
 	{
-		if (nullptr != data_manager_.GetSource()) // ?????????? ???????????
+		if (nullptr != data_manager_.GetSource()) // 如果已有源了 则会覆盖以前的源
 		{
 			taile_source_widget_->setHidden(true);
-			// ??????????????????????
+			// 判断是否保留原来的限制条件
 			switch (QMessageBox::question(this, tr("Question"),
-				QString::fromLocal8Bit("??????????????I?"),
+				QString::fromLocal8Bit("已设置源，是否替换?"),
 				QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok))
 			{
 			case QMessageBox::Ok:
@@ -788,7 +767,7 @@ void Radome::ToTaileSource(int caseIndex)
 		{
 			taile_source_widget_->setHidden(true);
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("???????????????"));
+				QString::fromLocal8Bit("参数有误，生成失败"));
 			ToTaileSource(0);
 			return;
 		}
@@ -820,7 +799,7 @@ void Radome::ToTaileSource(int caseIndex)
         ////
 		ToTaileSource(0);
 	}
-	else if (0 == caseIndex)// ??????
+	else if (0 == caseIndex)// 点击取消
 	{
 		renderer->RemoveActor(temp_mirror_->getActor());
 		//delete taile_source_widget_;
@@ -838,7 +817,7 @@ void Radome::ToTaileSource(int caseIndex)
 void Radome::OnNewTaileOnlySourceAction() {
 	if (is_source_window_open_)
 	{
-		// ????????????
+		// 已经有窗口打开了
 		QMessageBox::warning(NULL, "Warning",
 			"A window has been opened. Please close and continue!");
 
@@ -850,7 +829,7 @@ void Radome::OnNewTaileOnlySourceAction() {
 	renderer->AddActor(temp_mirror_->getActor());
 	taile_only_source_widget_ = new TaileOnlySourceWidget;
 	taile_only_source_widget_->setMirror(temp_mirror_);
-	taile_only_source_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // ???????????
+	taile_only_source_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
 	taile_only_source_widget_->show();
 	is_source_window_open_ = true;
 	connect(taile_only_source_widget_, SIGNAL(sendData(int)), this, SLOT(ToTaileOnlySource(int)));
@@ -860,12 +839,12 @@ void Radome::ToTaileOnlySource(int caseIndex)
 {
 	if (1 == caseIndex)
 	{
-		if (nullptr != data_manager_.GetSource()) // ?????????? ???????????
+		if (nullptr != data_manager_.GetSource()) // 如果已有源了 则会覆盖以前的源
 		{
 			taile_only_source_widget_->setHidden(true);
-			// ??????????????????????
+			// 判断是否保留原来的限制条件
 			switch (QMessageBox::question(this, tr("Question"),
-				QString::fromLocal8Bit("??????????????I?"),
+				QString::fromLocal8Bit("已设置源，是否替换?"),
 				QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok))
 			{
 			case QMessageBox::Ok:
@@ -885,7 +864,7 @@ void Radome::ToTaileOnlySource(int caseIndex)
 		{
 			taile_only_source_widget_->setHidden(true);
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("???????????????"));
+				QString::fromLocal8Bit("参数有误，生成失败"));
 			ToTaileOnlySource(0);
 			return;
 		}
@@ -918,7 +897,7 @@ void Radome::ToTaileOnlySource(int caseIndex)
         ////
 		ToTaileOnlySource(0);
 	}
-	else if (0 == caseIndex)// ??????
+	else if (0 == caseIndex)// 点击取消
 	{
 		renderer->RemoveActor(temp_mirror_->getActor());;
 		is_source_window_open_ = false;
@@ -933,12 +912,12 @@ void Radome::ToApertureField(int caseIndex)
 {
 	if (1 == caseIndex)
 	{
-		if (nullptr != data_manager_.GetSource()) // ?????????? ???????????
+		if (nullptr != data_manager_.GetSource()) // 如果已有源了 则会覆盖以前的源
 		{
 			aperture_field_widget_->setHidden(true);
-			// ??????????????????????
+			// 判断是否保留原来的限制条件
 			switch (QMessageBox::question(this, tr("Question"),
-				QString::fromLocal8Bit("??????????????I?"),
+				QString::fromLocal8Bit("已设置源，是否替换?"),
 				QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok))
 			{
 			case QMessageBox::Ok:
@@ -953,12 +932,11 @@ void Radome::ToApertureField(int caseIndex)
 			}
 		}
 		Field* temPtr;
-		Field* temPtr;
 		if (!aperture_field_widget_->getField(temPtr))
 		{
 			aperture_field_widget_->setHidden(true);
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("???????????????"));
+				QString::fromLocal8Bit("参数有误，生成失败"));
 			ToApertureField(0);
 			return;
 		}
@@ -987,7 +965,7 @@ void Radome::ToApertureField(int caseIndex)
         ////
 		ToApertureField(0);
 	}
-	else if (0 == caseIndex)// ??????
+	else if (0 == caseIndex)// 点击取消
 	{
 		renderer->RemoveActor(temp_mirror_->getActor());
 		//delete aperture_field_widget_;
@@ -1005,7 +983,7 @@ void Radome::OnNewGaussianSourceAction()
 {
 	if (is_source_window_open_)
 	{
-		// ????????????
+		// 已经有窗口打开了
 		QMessageBox::warning(NULL, "Warning",
 			"A window has been opened. Please close and continue!");
 
@@ -1017,7 +995,7 @@ void Radome::OnNewGaussianSourceAction()
 	renderer->AddActor(temp_mirror_->getActor());
 	gaussian_widget_ = new GaussianWidget;
 	gaussian_widget_->setMirror(temp_mirror_);
-	gaussian_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // ???????????
+	gaussian_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
 	gaussian_widget_->show();
 	is_source_window_open_ = true;
 	connect(gaussian_widget_, SIGNAL(sendData(int)),
@@ -1028,11 +1006,10 @@ void Radome::OnNewCalcalteAction()
 {
 	const auto& radome_data = data_manager_.GetRadomeData();
 
-
 	auto source = data_manager_.GetSource();
 	if (source == nullptr) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????!"));
+			QString::fromLocal8Bit("未设置源!"));
 
 		return;
 	}
@@ -1044,7 +1021,7 @@ void Radome::OnNewCalcalteAction()
 	qDebug("star OnNewQuickCalcalteAction");
 
 	auto process_show_widget = new ProcessShowWidget;
-	process_show_widget->SetWidgetText(QString::fromLocal8Bit("???????FDTD?????????????..."));
+	process_show_widget->SetWidgetText(QString::fromLocal8Bit("正在进行FDTD，请等待计算完成..."));
 	process_show_widget->setWindowFlags(Qt::WindowStaysOnTopHint);
 	process_show_widget->resize(800, 600);
 	// process_show_widget_->SetTextBrowserHidden(true);
@@ -1071,47 +1048,46 @@ void Radome::OnNewCalcalteAction()
 		if (thread.GetStatus() == -100) {
 			process_show_widget->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("???????!"));
+				QString::fromLocal8Bit("未设置源!"));
 
 			return;
 		}
 		else if (thread.GetStatus() == -200) {
 			process_show_widget->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("?????????!"));
+				QString::fromLocal8Bit("未设置模型!"));
 
 			return;
 		}
 		else if (thread.GetStatus() == -201) {
 			process_show_widget->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("?????????????????!"));
+				QString::fromLocal8Bit("模型未设置材料属性!"));
 
 			return;
 		}
 		else if (thread.GetStatus() == -300) {
 			process_show_widget->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("??????????????"));
+				QString::fromLocal8Bit("生成模型网格错误"));
 			return;
 		}
 		else if (thread.GetStatus() != 0) {
 			process_show_widget->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("???????"));
+				QString::fromLocal8Bit("计算错误"));
 			return;
 		}
 	}
-	// ????QProcess?????????Python?????????????
+	// 创建QProcess对象，并设置Python程序路径和参数
 	QProcess process;
 	process_show_widget->QAppend(QString::fromLocal8Bit(" "));
-	process_show_widget->QAppend(QString::fromLocal8Bit("??????????????..."));
+	process_show_widget->QAppend(QString::fromLocal8Bit("开始计算，请等待完成..."));
 
 	process_show_widget->QAppend(
 		QCoreApplication::applicationDirPath() + "/output/fdtd/3DCore_2.1AVX.exe");
 	process_show_widget->QAppend(
 		std::string(thread.GetDirPath() + "/input.txt").c_str());
-
 
 
 	std::string exe_file = std::string(QCoreApplication::applicationDirPath().toStdString()
@@ -1125,7 +1101,7 @@ void Radome::OnNewCalcalteAction()
 	connect(&process, SIGNAL(readyReadStandardError()), process_show_widget, SLOT(OnReadError()));
 
 
-	// ???????????????????????
+	// 等待进程结束，并显示进度条
 	while (process.state() != QProcess::NotRunning) {
 		if (process_show_widget->IsCanceled()) {
 			process.kill();
@@ -1137,7 +1113,7 @@ void Radome::OnNewCalcalteAction()
 
 	std::ifstream ifs;
 
-	//3?????????????????????
+	//3、打开文件并且判断是否打开成功
 	std::string result_path = thread.GetResultPath() + "/Farfield.txt";
 	std::string non_radome_result_path = thread.GetResultPath() + "/Farfield.txt";
 
@@ -1169,10 +1145,10 @@ void Radome::OnNewCalcalteAction()
 
 	process_show_widget->QAppend(QString::fromLocal8Bit("=========================="));
 	if (is_success) {
-		process_show_widget->QAppend(QString::fromLocal8Bit("???????????????."));
+		process_show_widget->QAppend(QString::fromLocal8Bit("计算成功！请点击确定."));
 	}
 	else {
-		process_show_widget->QAppend(QString::fromLocal8Bit("?????????????????????????????."));
+		process_show_widget->QAppend(QString::fromLocal8Bit("计算失败！请检查计算日志，点击确定后返回."));
 	}
 	process_show_widget->FinishProcess();
 	while (true) {
@@ -1192,7 +1168,7 @@ void Radome::OnNewCalcalteAction()
 	if (!far_field->ReadDataFromFile(result_path)) {
 		qDebug((std::string("read fdtd failed: ") + thread.GetResultPath()).c_str());
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????????????"));
+			QString::fromLocal8Bit("生成远场方向图失败"));
 		return;
 	}
 
@@ -1200,7 +1176,7 @@ void Radome::OnNewCalcalteAction()
 	far_field->SetIndex(index);
 	QDateTime data_time = QDateTime::currentDateTime();
 	QString current_time = data_time.toString("yyyy_MM_dd_hh_mm_ss");
-	far_field->SetName(std::string("FDTD???_f") + fre_str + "_" + current_time.toStdString());
+	far_field->SetName(std::string("FDTD结果_f") + fre_str + "_" + current_time.toStdString());
 	// far_field->SetPicFilePath(result_path + "/" + GlobalConfig::Instance()->GetFarfieldPicName());
 
 	field_tree_item_->addChild(far_field->GetTree());
@@ -1208,18 +1184,17 @@ void Radome::OnNewCalcalteAction()
 
 	// noradome
 	FarField* non_far_field = new FarField("fdtd_non_radome_farfield");
-	FarField* non_far_field = new FarField("fdtd_non_radome_farfield");
 
 	qDebug((std::string("read non fdtd: ") + non_radome_result_path).c_str());
 	if (!non_far_field->ReadDataFromFile(non_radome_result_path)) {
 		qDebug((std::string("read fdtd failed: ") + non_radome_result_path).c_str());
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????????????????"));
+			QString::fromLocal8Bit("生成无罩远场方向图失败"));
 		return;
 	}
 	int non_index = data_manager_.SetFarSource(non_far_field);
 	non_far_field->SetIndex(non_index);
-	non_far_field->SetName(std::string("FDTD??????_f") + fre_str
+	non_far_field->SetName(std::string("FDTD无罩结果_f") + fre_str
 		+ "_" + current_time.toStdString());
 	// non_far_field->SetPicFilePath(non_radome_result_path + "/" + GlobalConfig::Instance()->GetFarfieldPicName());
 
@@ -1227,7 +1202,7 @@ void Radome::OnNewCalcalteAction()
 	field_tree_item_->setExpanded(true);
 	data_manager_.CalcSourceFarfieldDone();
 	//process_show_widget_ = new ProcessShowWidget;
-	//process_show_widget_->SetWidgetText(QString::fromLocal8Bit("???????FDTD???????????????..."));
+	//process_show_widget_->SetWidgetText(QString::fromLocal8Bit("正在进行FDTD计算，请等待计算完成..."));
 	//process_show_widget_->setWindowFlags(Qt::WindowStaysOnTopHint);
 	//process_show_widget_->resize(800, 600);
 	//// process_show_widget_->SetTextBrowserHidden(true);
@@ -1235,7 +1210,7 @@ void Radome::OnNewCalcalteAction()
 
 	//QProcess process;
 	//process_show_widget_->QAppend(QString::fromLocal8Bit(" "));
-	//process_show_widget_->QAppend(QString::fromLocal8Bit("??????????????..."));
+	//process_show_widget_->QAppend(QString::fromLocal8Bit("开始计算，请等待完成..."));
 
 	//data_manager_.GetSource()->SaveFieldBase("pf2fffield");
 	//process.start("./PF2FF.exe", QStringList());
@@ -1245,7 +1220,7 @@ void Radome::OnNewCalcalteAction()
 	//connect(&process, SIGNAL(readyReadStandardError()), process_show_widget_, SLOT(OnReadError()));
 
 
-	//// ???????????????????????
+	//// 等待进程结束，并显示进度条
 	//while (process.state() != QProcess::NotRunning) {
 	//	if (process_show_widget_->IsCanceled()) {
 	//		process.kill();
@@ -1263,24 +1238,24 @@ void Radome::OnNewQuickCalcalteAction()
 	auto source = data_manager_.GetSource();
 	if (source == nullptr) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????!"));
+			QString::fromLocal8Bit("未设置源!"));
 		return;
 	}
 
-	// ??????
+	// 验证模型
 	auto radome_data = data_manager_.GetRadomeData();
 	if (radome_data == NULL) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("?????????!"));
+			QString::fromLocal8Bit("未设置模型!"));
 		return;
 	}
 
-	// ??????????????
+	// 验证材料是否添加
 	const auto& materials_index = radome_data->GetAllMaterials();
 	for (auto index : materials_index) {
 		if (data_manager_.GetMaterialData(index) == nullptr) {
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("??????????!"));
+				QString::fromLocal8Bit("未设置材料!"));
 			return;
 		}
 	}
@@ -1292,15 +1267,13 @@ void Radome::OnNewQuickCalcalteAction()
 	qDebug("star OnNewQuickCalcalteAction");
 
 	process_show_widget_ = new ProcessShowWidget;
-	process_show_widget_->SetWidgetText(QString::fromLocal8Bit("?????????????????????????..."));
+	process_show_widget_->SetWidgetText(QString::fromLocal8Bit("正在进行快速计算，请等待计算完成..."));
 	process_show_widget_->setWindowFlags(Qt::WindowStaysOnTopHint);
 	process_show_widget_->resize(800, 600);
 	// process_show_widget_->SetTextBrowserHidden(true);
 	process_show_widget_->show();
 
-
 	bool is_calc_non_radome = widget.GetIsCalcNonrodome();
-	
 	
 	CalcConf conf = widget.GetCalcConf();
 	double fre = source->GetFre();
@@ -1325,47 +1298,47 @@ void Radome::OnNewQuickCalcalteAction()
 		if (thread.GetStatus() == -100) {
 			process_show_widget_->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("???????!"));
+				QString::fromLocal8Bit("未设置源!"));
 
 			return;
 		}
 		else if (thread.GetStatus() == -200) {
 			process_show_widget_->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("?????????!"));
+				QString::fromLocal8Bit("未设置模型!"));
 
 			return;
 		}
 		else if (thread.GetStatus() == -201) {
 			process_show_widget_->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("?????????????????!"));
+				QString::fromLocal8Bit("模型未设置材料属性!"));
 
 			return;
 		}
 		else if (thread.GetStatus() == -300) {
 			process_show_widget_->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("??????????????"));
+				QString::fromLocal8Bit("生成模型网格错误"));
 			return;
 		}
 		else if (thread.GetStatus() == -400) {
 			process_show_widget_->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("????meta??????"));
+				QString::fromLocal8Bit("生成meta信息失败"));
 			return;
 		}
 		else if (thread.GetStatus() != 0) {
 			process_show_widget_->close();
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("???????"));
+				QString::fromLocal8Bit("计算错误"));
 			return;
 		}
 	}
 	QTreeWidgetItem* tree_conf_main = new QTreeWidgetItem;
-	tree_conf_main->setText(0, QString::fromLocal8Bit("?????????") + QString::number(calc_index_++)+ QString::fromLocal8Bit(":"));
+	tree_conf_main->setText(0, QString::fromLocal8Bit("快速计算结果") + QString::number(calc_index_++)+ QString::fromLocal8Bit(":"));
 	QTreeWidgetItem* tree_conf_point = new QTreeWidgetItem;
-	tree_conf_point->setText(0, QString::fromLocal8Bit("?????:"));
+	tree_conf_point->setText(0, QString::fromLocal8Bit("起始点:"));
 	tree_conf_main->addChild(tree_conf_point);
 	QTreeWidgetItem* tree_conf = new QTreeWidgetItem;
 	tree_conf->setText(0, QString::fromLocal8Bit("theta:[") + QString::number(conf.min_theta) + "," + QString::number(conf.max_theta) + "],"
@@ -1376,8 +1349,8 @@ void Radome::OnNewQuickCalcalteAction()
 		+ QString::fromLocal8Bit("num:") + QString::number(conf.num_phi));
 	tree_conf_point->addChild(tree_conf);
 	tree_conf = new QTreeWidgetItem;
-	tree_conf->setText(0, QString::fromLocal8Bit("????·??:") + QString::fromLocal8Bit(thread.GetResultPath().c_str()));
-	tree_conf->setToolTip(0, QString::fromLocal8Bit("????·??:") + QString::fromLocal8Bit(thread.GetResultPath().c_str()));
+	tree_conf->setText(0, QString::fromLocal8Bit("保存路径:") + QString::fromLocal8Bit(thread.GetResultPath().c_str()));
+	tree_conf->setToolTip(0, QString::fromLocal8Bit("保存路径:") + QString::fromLocal8Bit(thread.GetResultPath().c_str()));
 	tree_conf_main->addChild(tree_conf);
 	tree_conf_main->addChild(tree_conf);
 
@@ -1386,18 +1359,16 @@ void Radome::OnNewQuickCalcalteAction()
 	tree_conf_main->setExpanded(true);
 	tree_conf_point->setExpanded(true);
 
-	//// ????
+	//// 计算
 	if (!GlobalConfig::Instance()->IsSkipQuickCalcMetaGen())  {
 
-		// ????QProcess?????????Python?????????????
+		// 创建QProcess对象，并设置Python程序路径和参数
 		QProcess process;
 		process_show_widget_->QAppend(QString::fromLocal8Bit(" "));
-		process_show_widget_->QAppend(QString::fromLocal8Bit("??????????????..."));
+		process_show_widget_->QAppend(QString::fromLocal8Bit("开始计算，请等待完成..."));
 
 		process_show_widget_->QAppend(
 			QCoreApplication::applicationDirPath() + "/script/quick_calc_py/mainforNlayer.py");
-			//???QCoreApplication::applicationDirPath()
-			qDebug() << QCoreApplication::applicationDirPath();	
 		process_show_widget_->QAppend(
 			std::string(thread.GetDirPath() + "/meta.json").c_str());
 
@@ -1407,7 +1378,6 @@ void Radome::OnNewQuickCalcalteAction()
 		if (GlobalConfig::Instance()->IsQuickCalcByPython()) {
 			process.start("python ",
 				QStringList() << QCoreApplication::applicationDirPath() + "/script/quick_calc_py/mainforNlayer.py"
-				QStringList() << QCoreApplication::applicationDirPath() + "/script/quick_calc_py/mainforNlayer.py"
 				<< std::string(thread.GetDirPath() + "/meta.json").c_str());
 		}
 		else {
@@ -1415,13 +1385,12 @@ void Radome::OnNewQuickCalcalteAction()
 				QStringList() << std::string(thread.GetDirPath() + "/meta.json").c_str());
 		}
 
-
 		process_show_widget_->SetProcess(&process);
 		connect(&process, SIGNAL(readyReadStandardOutput()), process_show_widget_, SLOT(OnReadoutput()));
 		connect(&process, SIGNAL(readyReadStandardError()), process_show_widget_, SLOT(OnReadError()));
 
 
-		// ???????????????????????
+		// 等待进程结束，并显示进度条
 		while (process.state() != QProcess::NotRunning) {
 			if (process_show_widget_->IsCanceled()) {
 				process.kill();
@@ -1433,7 +1402,7 @@ void Radome::OnNewQuickCalcalteAction()
 
 		std::ifstream ifs;
 
-		//3?????????????????????
+		//3、打开文件并且判断是否打开成功
 		std::string status_file = thread.GetResultPath() + "/status.txt";
 		ifs.open(status_file, ios::in);
 		if (ifs.is_open()) {
@@ -1447,14 +1416,14 @@ void Radome::OnNewQuickCalcalteAction()
 
 		process_show_widget_->QAppend(QString::fromLocal8Bit("=========================="));
 		if (is_success) {
-			process_show_widget_->QAppend(QString::fromLocal8Bit("??????????:")+ QString::fromLocal8Bit(thread.GetResultPath().c_str()));
+			process_show_widget_->QAppend(QString::fromLocal8Bit("计算结果路径:")+ QString::fromLocal8Bit(thread.GetResultPath().c_str()));
 			if (is_calc_non_radome) {
-				process_show_widget_->QAppend(QString::fromLocal8Bit("??????????(????):") + QString::fromLocal8Bit(thread.GetResultNonRadomePath().c_str()));
+				process_show_widget_->QAppend(QString::fromLocal8Bit("计算结果路径(无罩):") + QString::fromLocal8Bit(thread.GetResultNonRadomePath().c_str()));
 			}
-			process_show_widget_->QAppend(QString::fromLocal8Bit("???????????????."));
+			process_show_widget_->QAppend(QString::fromLocal8Bit("计算成功！请点击确定."));
 		}
 		else {
-			process_show_widget_->QAppend(QString::fromLocal8Bit("?????????????????????????????."));
+			process_show_widget_->QAppend(QString::fromLocal8Bit("计算失败！请检查计算日志，点击确定后返回."));
 		}
 		process_show_widget_->FinishProcess();
 		while (true) {
@@ -1481,7 +1450,7 @@ void Radome::OnNewQuickCalcalteAction()
 	if (!far_field->ReadFromNpy(result_path)) {
 		qDebug((std::string("read npy failed: ") + thread.GetResultPath()).c_str());
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????????????"));
+			QString::fromLocal8Bit("生成远场方向图失败"));
 		return;
 	}
 
@@ -1489,7 +1458,7 @@ void Radome::OnNewQuickCalcalteAction()
 	far_field->SetIndex(index);
 	QDateTime data_time = QDateTime::currentDateTime();
 	QString current_time = data_time.toString("yyyy_MM_dd_hh_mm_ss");
-	far_field->SetName(std::string("???_f") + fre_str  + "_" + current_time.toStdString());
+	far_field->SetName(std::string("结果_f") + fre_str  + "_" + current_time.toStdString());
 	far_field->SetPicFilePath(result_path + "/" + GlobalConfig::Instance()->GetFarfieldPicName());
 
 	auto* tree = far_field->GetTree();
@@ -1502,7 +1471,6 @@ void Radome::OnNewQuickCalcalteAction()
 	
 	if (is_calc_non_radome) {
 		FarField* non_far_field = new FarField("non_radome_farfield");
-		FarField* non_far_field = new FarField("non_radome_farfield");
 		std::string non_radome_result_path = thread.GetResultNonRadomePath();
 		if (!GlobalConfig::Instance()->GetNonRadomeReultPath().empty()) {
 			non_radome_result_path = GlobalConfig::Instance()->GetNonRadomeReultPath();
@@ -1511,12 +1479,12 @@ void Radome::OnNewQuickCalcalteAction()
 		if (!non_far_field->ReadFromNpy(non_radome_result_path)) {
 			qDebug((std::string("read npy failed: ") + thread.GetResultNonRadomePath()).c_str());
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("???????????????????"));
+				QString::fromLocal8Bit("生成无罩远场方向图失败"));
 			return;
 		}
 		int non_index = data_manager_.SetFarSource(non_far_field);
 		non_far_field->SetIndex(non_index);
-		non_far_field->SetName(std::string("??????_f") + fre_str
+		non_far_field->SetName(std::string("无罩结果_f") + fre_str
 			+ "_" + current_time.toStdString());
 		non_far_field->SetPicFilePath(non_radome_result_path + "/" + GlobalConfig::Instance()->GetFarfieldPicName());
 
@@ -1533,7 +1501,6 @@ void Radome::OnNewQuickCalcalteAction()
 	}
 
 	//far_widget_1->UpdateCombox();
-	//far_widget_1->UpdateCombox();
 	tabWidget->setCurrentIndex(2);
 
 	UpdateVtk();
@@ -1543,7 +1510,7 @@ void Radome::OnCalcalteFarFieldAction()
 {
 	if (nullptr == data_manager_.GetSource()) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????!"));
+			QString::fromLocal8Bit("未设置源!"));
 		return;
 	}
 	data_manager_.GetSource()->SaveFieldBase("pf2fffield");
@@ -1567,12 +1534,12 @@ void Radome::ToReceiveGaussian(int caseIndex)
 {
 	if (1 == caseIndex)
 	{
-		if (nullptr != data_manager_.GetSource()) // ?????????? ???????????
+		if (nullptr != data_manager_.GetSource()) // 如果已有源了 则会覆盖以前的源
 		{
 			gaussian_widget_->setHidden(true);
-			// ??????????????????????
+			// 判断是否保留原来的限制条件
 			switch (QMessageBox::question(this, tr("Question"),
-				QString::fromLocal8Bit("??????????????I?"),
+				QString::fromLocal8Bit("已设置源，是否替换?"),
 				QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok))
 			{
 			case QMessageBox::Ok:
@@ -1588,12 +1555,11 @@ void Radome::ToReceiveGaussian(int caseIndex)
 			}
 		}
 		Field* temPtr;
-		Field* temPtr;
 		if (!gaussian_widget_->getField(temPtr))
 		{
 			gaussian_widget_->setHidden(true);
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("???????????????"));
+				QString::fromLocal8Bit("参数有误，生成失败"));
 			ToReceiveGaussian(0);
 			return;
 		}
@@ -1624,7 +1590,7 @@ void Radome::ToReceiveGaussian(int caseIndex)
         ////
 		ToReceiveGaussian(0);
 	}
-	else if (0 == caseIndex)// ??????
+	else if (0 == caseIndex)// 点击取消
 	{
 		renderer->RemoveActor(temp_mirror_->getActor());
 
@@ -1644,7 +1610,6 @@ void Radome::DelMaterialRadomeParam(int index) {
 	auto data = data_manager_.GetMaterialData(index);
 	if (data == nullptr) return;
 	QTreeWidgetItem* tree = nullptr;
-	QTreeWidgetItem* tree = nullptr;
 	if (index < 100) tree = normal_material_tree_item_;
 	else tree = custom_material_tree_item_;
 	tree->removeChild(data->GetTreeItem());
@@ -1655,14 +1620,13 @@ void Radome::DelMaterialRadomeParam(int index) {
 void Radome::FarFieldFinished(int) {
 	process_show_widget_->Append("load farfield.....");
 	FarField* far_field = new FarField("farfield");
-	FarField* far_field = new FarField("farfield");
 	//std::string file = "FarField_inc_ForRead.txt";
 	std::string file = "FarField_ForRead.txt";
 	//std::string file = "Farfield.txt";
 	if (!far_field->ReadDataFromFile(file)) {
 		delete process_show_widget_;
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????????????"));
+			QString::fromLocal8Bit("生成远场方向图失败"));
 		return;
 	}
 	far_field->CreateActor3D();
@@ -1685,7 +1649,7 @@ void Radome::OnSaveFarfield() {
 	if (farfiled == nullptr) {
 		qDebug((std::string("not find farfield index:")+std::to_string(selected_farfield_index_)).c_str());
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("?????????????????"));
+			QString::fromLocal8Bit("远场方向图数据不存在"));
 		return;
 	}
 	QString filename = QFileDialog::getExistingDirectory(this,
@@ -1697,7 +1661,7 @@ void Radome::OnSaveFarfield() {
 	}
 	if (!farfiled->WriteDataToFile(filename.toStdString())) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("?????????????????????????????????"));
+			QString::fromLocal8Bit("远场方向图保存失败，请检查文件路径是否存在"));
 		return;
 	}
 }
@@ -1743,7 +1707,7 @@ void Radome::closeResultTab(int index)
 ////
 void Radome::OnNewScanCalcAction() {
 	ScanParamWidget* widget = new ScanParamWidget(&data_manager_, scan_widget_index_);
-	tabWidget->addTab(widget, QString::fromLocal8Bit("???") + QString::number(scan_widget_index_));
+	tabWidget->addTab(widget, QString::fromLocal8Bit("扫参") + QString::number(scan_widget_index_));
 	tabWidget->setCurrentIndex(scan_widget_index_ + 2);
 	scan_widget_index_++;
 }
@@ -1752,7 +1716,7 @@ void Radome::OnNewGAOptAction() {
 	auto source = data_manager_.GetSource();
 	if (source == nullptr) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????!"));
+			QString::fromLocal8Bit("未设置源!"));
 
 		return;
 	}
@@ -1760,15 +1724,14 @@ void Radome::OnNewGAOptAction() {
 	auto radome_data = data_manager_.GetRadomeData();
 	if (radome_data == nullptr) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("?????????!"));
+			QString::fromLocal8Bit("未设置模型!"));
 
 		return;
 	}
 
-
 	if (radome_data->GetType() != 1) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("??????????????!"));
+			QString::fromLocal8Bit("优化只支持冯卡门曲线!"));
 
 		return;
 	}
@@ -1777,7 +1740,7 @@ void Radome::OnNewGAOptAction() {
 	for (auto line : rotate_lines) {
 		if (line->GetLineType() != RotateLineBase::karman_line_radius_type) {
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("??????????????!"));
+				QString::fromLocal8Bit("优化只支持冯卡门曲线!"));
 			return;
 		}
 	}
@@ -1791,7 +1754,7 @@ void Radome::OnNewGAOptAction() {
 	const auto& ga_params = widget.GetGaParams();
 
 	auto process_show_widget = new ProcessShowWidget;
-	process_show_widget->SetWidgetText(QString::fromLocal8Bit("???????????????????????..."));
+	process_show_widget->SetWidgetText(QString::fromLocal8Bit("正在模型优化，请等待计算完成..."));
 	process_show_widget->setWindowFlags(Qt::WindowStaysOnTopHint);
 	process_show_widget->resize(800, 600);
 	// process_show_widget_->SetTextBrowserHidden(true);
@@ -1810,42 +1773,42 @@ void Radome::OnNewGAOptAction() {
 	if (thread.GetStatus() == -100) {
 		process_show_widget->close();
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????!"));
+			QString::fromLocal8Bit("未设置源!"));
 
 		return;
 	}
 	else if (thread.GetStatus() == -200) {
 		process_show_widget->close();
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("?????????!"));
+			QString::fromLocal8Bit("未设置模型!"));
 
 		return;
 	}
 	else if (thread.GetStatus() == -201) {
 		process_show_widget->close();
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("?????????????????!"));
+			QString::fromLocal8Bit("模型未设置材料属性!"));
 
 		return;
 	}
 	else if (thread.GetStatus() == -300) {
 		process_show_widget->close();
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("??????????????"));
+			QString::fromLocal8Bit("生成模型网格错误"));
 		return;
 	}
 	else if (thread.GetStatus() != 0) {
 		process_show_widget->close();
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("???????"));
+			QString::fromLocal8Bit("计算错误"));
 		return;
 	}
 
 
-	// ????QProcess?????????Python?????????????
+	// 创建QProcess对象，并设置Python程序路径和参数
 	QProcess process;
 	process_show_widget->QAppend(QString::fromLocal8Bit(" "));
-	process_show_widget->QAppend(QString::fromLocal8Bit("??????????????..."));
+	process_show_widget->QAppend(QString::fromLocal8Bit("开始计算，请等待完成..."));
 
 	process_show_widget->QAppend(
 		QCoreApplication::applicationDirPath() + "/script/quick_calc_py/GA_clac.py");
@@ -1862,7 +1825,7 @@ void Radome::OnNewGAOptAction() {
 	connect(&process, SIGNAL(readyReadStandardError()), process_show_widget, SLOT(OnReadError()));
 
 
-	// ???????????????????????
+	// 等待进程结束，并显示进度条
 	while (process.state() != QProcess::NotRunning) {
 		if (process_show_widget->IsCanceled()) {
 			process.kill();
@@ -1874,7 +1837,7 @@ void Radome::OnNewGAOptAction() {
 
 	std::ifstream ifs;
 
-	//3?????????????????????
+	//3、打开文件并且判断是否打开成功
 	std::string status_file = thread.GetResultPath() + "/status.txt";
 	ifs.open(status_file, ios::in);
 	if (ifs.is_open()) {
@@ -1893,20 +1856,20 @@ void Radome::OnNewGAOptAction() {
 	if (results_ifs.is_open()) {
 		string temp;
 		int lineNumber = 0;
-		while (getline(results_ifs, temp)) { // ??????????  
-			lineNumber++; // ?????????????1  
+		while (getline(results_ifs, temp)) { // 逐行读取文件  
+			lineNumber++; // 读取一行后，行号加1  
 
-			// ?????????????  
+			// 检查是否为奇数行  
 			if (lineNumber % 2 == 1) {
-				std::istringstream iss(temp); // ???istringstream???????????  
+				std::istringstream iss(temp); // 使用istringstream来解析字符串  
 				double value;
-				if (iss >> value) { // ??????????????double  
-					d_lines.push_back(value); // ?????????????vector??  
+				if (iss >> value) { // 尝试将字符串转换为double  
+					d_lines.push_back(value); // 转换成功，添加到vector中  
 				}
 				else {
 					is_success = false;
 					QMessageBox::warning(NULL, "Warning",
-						QString::fromLocal8Bit("?????????!"));
+						QString::fromLocal8Bit("读取结果失败!"));
 					return;
 				}
 			}
@@ -1916,16 +1879,16 @@ void Radome::OnNewGAOptAction() {
 	if (d_lines.size() != rotate_lines.size() - 1) {
 		is_success = false;
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("????????!"));
+			QString::fromLocal8Bit("读取异常失败!"));
 		return;
 	}
 
 	process_show_widget->QAppend(QString::fromLocal8Bit("=========================="));
 	if (is_success) {
-		process_show_widget->QAppend(QString::fromLocal8Bit("???????????????????."));
+		process_show_widget->QAppend(QString::fromLocal8Bit("计算成功！开始生成曲线."));
 	}
 	else {
-		process_show_widget->QAppend(QString::fromLocal8Bit("?????????????????????????????."));
+		process_show_widget->QAppend(QString::fromLocal8Bit("计算失败！请检查计算日志，点击确定后返回."));
 	}
 
 	if (!is_success) {
@@ -1951,9 +1914,8 @@ void Radome::OnNewGAOptAction() {
 	std::ofstream outfile(thread.GetResultPath() + "/meta_auto_curve.json");
 	if (!outfile.is_open()) {
 
-
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("????????!"));
+			QString::fromLocal8Bit("打文件失败!"));
 		return;
 	}
 	outfile << js.toStyledString();
@@ -1961,7 +1923,7 @@ void Radome::OnNewGAOptAction() {
 	for (auto line : rotate_lines) {
 		if (line->GetLineType() != RotateLineBase::karman_line_radius_type) {
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("??????????????!"));
+				QString::fromLocal8Bit("优化只支持冯卡门曲线!"));
 			return;
 		}
 	}
@@ -1980,7 +1942,7 @@ void Radome::OnNewGAOptAction() {
 	connect(&process_calc_line, SIGNAL(readyReadStandardOutput()), process_show_widget, SLOT(OnReadoutput()));
 	connect(&process_calc_line, SIGNAL(readyReadStandardError()), process_show_widget, SLOT(OnReadError()));
 
-	// ???????????????????????
+	// 等待进程结束，并显示进度条
 	while (process_calc_line.state() != QProcess::NotRunning) {
 		if (process_show_widget->IsCanceled()) {
 			process_calc_line.kill();
@@ -1988,9 +1950,9 @@ void Radome::OnNewGAOptAction() {
 		}
 		QCoreApplication::processEvents();
 	}
-	process_show_widget->QAppend(QString::fromLocal8Bit("?????????????????????????."));
+	process_show_widget->QAppend(QString::fromLocal8Bit("生成曲线成功！点击确认生成模型."));
 	process_show_widget->FinishProcess();
-	process_show_widget->QAppend(QString::fromLocal8Bit("??????????????????????."));
+	process_show_widget->QAppend(QString::fromLocal8Bit("生成曲线成功！开始生成模型."));
 
 	while (true) {
 		if (process_show_widget->IsCanceled()) {
@@ -2007,7 +1969,7 @@ void Radome::OnNewGAOptAction() {
 		auto line_data = RotateLineBaseFactory::GenRotateLine(RotateLineBase::import_point_type);
 		/*if (!ReadData(path, &param)) {
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("?????????"));
+				QString::fromLocal8Bit("读取结果失败"));
 			return;
 		}*/
 	}
@@ -2021,7 +1983,7 @@ bool Radome::ReadData(const std::string& path, std::vector<double>* data) {
 	QFile file(q_path);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		QMessageBox::warning(NULL, "Warning",
-			QString::fromLocal8Bit("????????"));
+			QString::fromLocal8Bit("打开文件失败"));
 		return false;
 	}
 	data->clear();
@@ -2032,7 +1994,7 @@ bool Radome::ReadData(const std::string& path, std::vector<double>* data) {
 		QStringList fields = line.split(" ");
 		if (fields.size() < 2) {
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("????????:") + line);
+				QString::fromLocal8Bit("数据有误:") + line);
 			return false;
 		}
 
@@ -2048,7 +2010,7 @@ bool Radome::ReadData(const std::string& path, std::vector<double>* data) {
 		}
 		else {
 			QMessageBox::warning(NULL, "Warning",
-				QString::fromLocal8Bit("????????:") + line);
+				QString::fromLocal8Bit("数据有误:") + line);
 			return false;
 		}
 
@@ -2063,7 +2025,7 @@ bool Radome::ReadData(const std::string& path, std::vector<double>* data) {
 void Radome::OnChangeSource() {
 	if (is_source_window_open_)
 	{
-		// ????????????
+		// 已经有窗口打开了
 		QMessageBox::warning(NULL, "Warning",
 			"A window has been opened. Please close and continue!");
 
@@ -2074,7 +2036,7 @@ void Radome::OnChangeSource() {
 		renderer->AddActor(temp_mirror_->getActor());
 		// gaussian_widget_ = new GaussianWidget;
 		gaussian_widget_->setMirror(temp_mirror_);
-		gaussian_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // ???????????
+		gaussian_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
 		gaussian_widget_->show();
 		is_source_window_open_ = true;
 	}
@@ -2083,7 +2045,7 @@ void Radome::OnChangeSource() {
 		renderer->AddActor(temp_mirror_->getActor());
 		// taile_source_widget_ = new TaileSourceWidget;
 		taile_source_widget_->setMirror(temp_mirror_);
-		taile_source_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // ???????????
+		taile_source_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
 		taile_source_widget_->show();
 		is_source_window_open_ = true;
 	}
@@ -2092,7 +2054,7 @@ void Radome::OnChangeSource() {
 		renderer->AddActor(temp_mirror_->getActor());
 		// taile_source_widget_ = new TaileSourceWidget;
 		taile_only_source_widget_->setMirror(temp_mirror_);
-		taile_only_source_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // ???????????
+		taile_only_source_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
 		taile_only_source_widget_->show();
 		is_source_window_open_ = true;
 	}
@@ -2105,7 +2067,7 @@ void Radome::OnChangeSource() {
 		renderer->AddActor(temp_mirror_->getActor());
 		// taile_source_widget_ = new TaileSourceWidget;
 		aperture_field_widget_->setMirror(temp_mirror_);
-		aperture_field_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // ???????????
+		aperture_field_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
 		aperture_field_widget_->show();
 		is_source_window_open_ = true;
 	}
@@ -2120,15 +2082,15 @@ void Radome::OnSaveAction() {
 		return;
 	}
 	Json::Value param_js;
-	// ?
+	// 源
 	SAVE_WIDGET_TO_JSON(taile_source_widget_, param_js);
 	//Json
 	//if (data_manager_.GetSource()) {
 
 	//}
-	// ???
-	// ????
-	// ??????
+	// 模型
+	// 材料
+	// 计算结果
 
 }
 
