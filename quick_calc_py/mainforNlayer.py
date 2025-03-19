@@ -36,10 +36,10 @@ def del_file(path):
 #调用初始化接口文件
 version = 1
 print(sys.argv)
-# jsopath = sys.argv[1]
-jsopath='meta_16.json'
-# syspath=os.path.dirname(os.path.realpath(sys.argv[0]))
-syspath='E:/GB-VTK-Radome-RT/new_radome_20241203/script/quick_calc_py'
+jsopath = sys.argv[1]
+# jsopath='meta_16.json'
+syspath=os.path.dirname(os.path.realpath(sys.argv[0]))
+# syspath='E:/GB-VTK-Radome-RT/new_radome_20241203/script/quick_calc_py'
 content = initData(jsopath)
 if content["version"] != version :
     print('version error',flush=True)
