@@ -46,8 +46,8 @@ ScanParamWidget::ScanParamWidget(DataManager* data_manager, int scan_widget_inde
 	mesh_N_edit_ = new QLineEdit("161");
 	ds_edit_ = new QLineEdit("1e-3");
 	polarization_type_combobox_ = new QComboBox;
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("ˮƽ����Ex"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("��ֱ����Ey"));
 	
 
 	path_lable_ = new QLabel(QString::fromLocal8Bit("保存结果文件夹至:"));
@@ -617,31 +617,31 @@ bool ScanParamWidget::ReadPhi() {
 
 void ScanParamWidget::OnBrowseBtn() {
 
-	//// 打开文件夹选择对话框
+	//// ���ļ���ѡ��Ի���
 	//QString folderPath = QFileDialog::getExistingDirectory(this, tr("Select Folder"),
 	//	QDir::homePath(),
 	//	QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
 	//if (!folderPath.isEmpty()) {
-	//	// 输出选择的文件夹路径
+	//	// ���ѡ����ļ���·��
 	//	qDebug() << "Selected folder path: " << folderPath;
-	//	// 这里可以添加你处理该文件夹路径的代码
+	//	// ������������㴦�����ļ���·���Ĵ���
 	//	custom_path_ = folderPath.toStdString();
 	//	path_edit_->setText(folderPath);
 	//}
 
-	QString selectedDir = QFileDialog::getSaveFileName(nullptr, QString::fromLocal8Bit("创建文件"), QDir::homePath(), QString::fromLocal8Bit(""));
+	QString selectedDir = QFileDialog::getSaveFileName(nullptr, QString::fromLocal8Bit("�����ļ�"), QDir::homePath(), QString::fromLocal8Bit(""));
 	if (!selectedDir.isEmpty()) {
 		QDir dir(selectedDir);
-		// 检查文件夹是否存在
+		// ����ļ����Ƿ����
 		if (!dir.exists()) {
-			// 若不存在则创建文件夹
+			// ���������򴴽��ļ���
 			if (!dir.mkpath(selectedDir)) {
-				QMessageBox::critical(nullptr, QString::fromLocal8Bit("失败"), QString::fromLocal8Bit("文件夹创建失败！"));
+				QMessageBox::critical(nullptr, QString::fromLocal8Bit("ʧ��"), QString::fromLocal8Bit("�ļ��д���ʧ�ܣ�"));
 			}
 		}
 		qDebug() << "Selected folder path: " << selectedDir;
-		// 这里可以添加你处理该文件夹路径的代码
+		// ������������㴦�����ļ���·���Ĵ���
 		custom_path_ = selectedDir.toStdString();
 		path_edit_->setText(selectedDir);
 	}

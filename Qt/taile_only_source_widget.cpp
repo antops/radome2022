@@ -13,7 +13,7 @@
 
 TaileOnlySourceWidget::TaileOnlySourceWidget(QWidget *parent)
 {
-	setWindowTitle(QString::fromLocal8Bit("创建理想泰勒源"));
+	setWindowTitle(QString::fromLocal8Bit("��������̩��Դ"));
 	// page1
 
 	//baseGroupBox
@@ -99,8 +99,8 @@ void TaileOnlySourceWidget::InitSourceParam() {
 	dy_edit_ = new QLineEdit("0.5");
 	ds_edit_ = new QLineEdit("1e-3");
 	polarization_type_combobox_ = new QComboBox;
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
-	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("ˮƽ����Ex"));
+	polarization_type_combobox_->addItem(QString::fromLocal8Bit("��ֱ����Ey"));
 
 	QGridLayout* basic_layout = new QGridLayout;
 	basic_layout->addWidget(theta_label_, 0, 0);
@@ -175,26 +175,26 @@ bool TaileOnlySourceWidget::getField(Field *& ptr)
 
 
 	QTreeWidgetItem* tree = new QTreeWidgetItem;
-	tree->setText(0, QString::fromLocal8Bit("理想泰勒源"));
+	tree->setText(0, QString::fromLocal8Bit("����̩��Դ"));
 
 	QTreeWidgetItem* treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("俯仰角(°):") + QString::number(theta_));
+	treeWidth->setText(0, QString::fromLocal8Bit("������(��):") + QString::number(theta_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("方位角(°):") + QString::number(phi_));
+	treeWidth->setText(0, QString::fromLocal8Bit("��λ��(��):") + QString::number(phi_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("频率(GHz):") + QString::number(fre_));
+	treeWidth->setText(0, QString::fromLocal8Bit("Ƶ��(GHz):") + QString::number(fre_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("口径场半径:") + QString::number(radius_));
+	treeWidth->setText(0, QString::fromLocal8Bit("�ھ����뾶:") + QString::number(radius_));
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("极化方式:") + polarization_type_ == 1 ? QString::fromLocal8Bit("垂直极化Ey") : QString::fromLocal8Bit("水平极化Ey"));
+	treeWidth->setText(0, QString::fromLocal8Bit("������ʽ:") + polarization_type_ == 1 ? QString::fromLocal8Bit("��ֱ����Ey") : QString::fromLocal8Bit("ˮƽ����Ey"));
 	tree->addChild(treeWidth);
 
 
