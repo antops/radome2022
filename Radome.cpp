@@ -2060,16 +2060,15 @@ void Radome::OnChangeSource() {
 	}
 	else if (source_type_ == Def::aperture_source_type) {
 		////0318:debug
-		// source_type_ = Def::aperture_source_type;
-		// R_Tree_SourceMenu->exec(QCursor::pos());
-		temp_mirror_ = new PlaneMirror(GraphTrans());
-		temp_mirror_->setSelected(true);
-		renderer->AddActor(temp_mirror_->getActor());
-		// taile_source_widget_ = new TaileSourceWidget;
-		aperture_field_widget_->setMirror(temp_mirror_);
-		aperture_field_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
-		aperture_field_widget_->show();
-		is_source_window_open_ = true;
+		source_type_ = Def::aperture_source_type;
+		R_Tree_SourceMenu->exec(QCursor::pos());
+		 //temp_mirror_->setSelected(true);
+		 //renderer->AddActor(temp_mirror_->getActor());
+		 //aperture_field_widget_->setMirror(temp_mirror_);
+		 //aperture_field_widget_->setWindowFlags(Qt::WindowStaysOnTopHint); // 子窗口保持置顶
+		 //aperture_field_widget_->show();
+		 //is_source_window_open_ = true;
+		////
 	}
 }
 
@@ -2319,7 +2318,18 @@ void Radome::onLoadProject() {
 
 		renderer->AddActor(ptr->getActor());
 
-		source_tree_item_->addChild(ptr->getTree());
+		//source_tree_item_->addChild(ptr->getTree());
+		//data_manager_.SetSource(ptr);
+		//source_tree_item_->setData(0, Qt::UserRole, QVariant(Def::taile_source_type));
+
+		auto tree_ptr = ptr->getTree();
+		tree_ptr->setData(0, Qt::UserRole, QVariant(Def::aperture_source_type));
+
+		source_tree_item_->addChild(tree_ptr);
+		source_tree_item_->setExpanded(true);
+		for (int i = 0; i < source_tree_item_->childCount(); i++) {
+			source_tree_item_->child(i)->setExpanded(true);
+		}
 		data_manager_.SetSource(ptr);
 
 		if (temp_mirror_ != nullptr) {
@@ -2396,5 +2406,6 @@ void Radome::onLoadProject() {
 	QMessageBox::information(this, QString::fromLocal8Bit("导入项目"), QString::fromLocal8Bit("导入项目成功"));
 	progressDialog.close();
 	// 关闭进度条
+	//CreateRightMenu();
 }
 
