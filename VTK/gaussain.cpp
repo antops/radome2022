@@ -17,7 +17,7 @@ Gaussain::Gaussain(const GraphTrans & _graphTrans,
 	M_depth = int(data[1] / data[5]) + 1;
 
 	polarization_type_ = int(data[6]);
-
+	source_diff_flag_ = int(data[7]);
 
 	setDs(data[5]);
 	SetFre(data[4] * 1e9);

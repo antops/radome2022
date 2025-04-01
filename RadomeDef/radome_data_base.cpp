@@ -88,5 +88,5 @@ bool RadomeBaseData::SaveToStlVolume(const std::string& path, std::vector<std::s
 
 bool RadomeBaseData::SaveToPoints(const std::string& path, std::vector<std::string>* path_vec)
 {
-	return true;
+	return false;
 }

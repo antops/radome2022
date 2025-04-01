@@ -95,3 +95,8 @@ void RadomeSTL::UpdateTreeItem()
 
 void RadomeSTL::Mesh(const MeshOption& option, int* step) {
 }
+
+bool RadomeSTL::SaveToPoints(const std::string& path, std::vector<std::string>* path_vec)
+{
+	return false;
+}

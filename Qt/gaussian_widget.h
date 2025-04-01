@@ -72,6 +72,9 @@ private:
 	QLabel* polarization_type_lable_;
 	QComboBox* polarization_type_combobox_;
 
+	QLabel* source_diff_lable_;
+	QComboBox* source_diff_combobox_;
+
 	PlaneMirror * planeMirror;
 
 };

@@ -95,6 +95,12 @@ protected:
 		std::vector<std::string> point_path_vec;
 		if (!radome_data->SaveToPoints(dir_stl_path + "/", &point_path_vec)) {
 			status_ = -300;
+			process_show_widget_->QAppend(QString::fromLocal8Bit("模型生成失败..."));
+			return;
+		}
+		if (point_path_vec.empty()) {
+			status_ = -300;
+			process_show_widget_->QAppend(QString::fromLocal8Bit("模型生成失败,生成的模型数为0..."));
 			return;
 		}
 		process_show_widget_->QAppend(QString::fromLocal8Bit("模型生成完成..."));

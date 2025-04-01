@@ -102,6 +102,11 @@ void TaileOnlySourceWidget::InitSourceParam() {
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
 
+	source_diff_lable_ = new QLabel(QString::fromLocal8Bit("波束类型:"));
+	source_diff_combobox_ = new QComboBox;
+	source_diff_combobox_->addItem(QString::fromLocal8Bit("和波束"));
+	source_diff_combobox_->addItem(QString::fromLocal8Bit("差波束"));
+
 	QGridLayout* basic_layout = new QGridLayout;
 	basic_layout->addWidget(theta_label_, 0, 0);
 	basic_layout->addWidget(theta_edit_, 0, 1);
@@ -117,6 +122,8 @@ void TaileOnlySourceWidget::InitSourceParam() {
 	basic_layout->addWidget(ds_edit_, 8, 1);
 	basic_layout->addWidget(polarization_type_lable_, 9, 0);
 	basic_layout->addWidget(polarization_type_combobox_, 9, 1);
+	basic_layout->addWidget(source_diff_lable_, 10, 0);
+	basic_layout->addWidget(source_diff_combobox_, 10, 1);
 	basic_qbox_ = new QGroupBox(QString::fromLocal8Bit("参数配置"));
 	basic_qbox_->setLayout(basic_layout);
 }
@@ -273,7 +280,7 @@ bool TaileOnlySourceWidget::ReadScanParam() {
 	mesh_N_ = planeMirror->getWidth() / ds_ + 1;
 
 	polarization_type_ = polarization_type_combobox_->currentIndex();
-
+	source_diff_flag_ = source_diff_combobox_->currentIndex();
 
 	return true;
 }

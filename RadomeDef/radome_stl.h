@@ -25,6 +25,7 @@ public:
 		}
 		return true;
 	}
+	bool SaveToPoints(const std::string& path, std::vector<std::string>* path_vec) override;
 
 protected:
 	bool UpdateSurface() override { return true; }

@@ -72,10 +72,15 @@ GaussianWidget::GaussianWidget(QWidget *parent)
 	freLineEdit->setText("10");
 	DsLineEdit->setText("0.005");
 
-	polarization_type_lable_ = new QLabel(QString::fromLocal8Bit("旁瓣电平:"));
+	polarization_type_lable_ = new QLabel(QString::fromLocal8Bit("极化方向:"));
 	polarization_type_combobox_ = new QComboBox;
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
+
+	source_diff_lable_ = new QLabel(QString::fromLocal8Bit("波束类型:"));
+	source_diff_combobox_ = new QComboBox;
+	source_diff_combobox_->addItem(QString::fromLocal8Bit("和波束"));
+	source_diff_combobox_->addItem(QString::fromLocal8Bit("差波束"));
 	
 
 	QGridLayout * layoutSou = new QGridLayout;
@@ -90,6 +95,9 @@ GaussianWidget::GaussianWidget(QWidget *parent)
 
 	layoutSou->addWidget(polarization_type_lable_, 4, 0);
 	layoutSou->addWidget(polarization_type_combobox_, 4, 1);
+
+	layoutSou->addWidget(source_diff_lable_, 5, 0);
+	layoutSou->addWidget(source_diff_combobox_, 5, 1);
 
 	sourceGroupBox = new QGroupBox;
 	sourceGroupBox->setTitle(tr("Source"));
@@ -129,7 +137,7 @@ bool GaussianWidget::getField(Field *& ptr)
 		return false;
 	}
 	bool ok, ok_back;
-	vector<double> para(7);
+	vector<double> para(8);
 	string temp;
 	para[0] = planeMirror->getWidth();
 	para[1] = planeMirror->getDepth();	
@@ -159,6 +167,8 @@ bool GaussianWidget::getField(Field *& ptr)
 		return false;
 	}
 	para[6] = polarization_type_combobox_->currentIndex();
+
+	para[7] = source_diff_combobox_->currentIndex();
 	ptr = new Gaussain(planeMirror->getGraphTrans(), para);
 	return true;
 }

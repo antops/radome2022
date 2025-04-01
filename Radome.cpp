@@ -313,7 +313,7 @@ void Radome::CreateMenus()
 	SourceMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("Ô´"));
 	SourceMenu->addAction(new_gaussian_source_action_);
 	SourceMenu->addAction(new_source_action_);
-	SourceMenu->addAction(new_taile_source_action_);
+	// SourceMenu->addAction(new_taile_source_action_);
 	SourceMenu->addAction(new_taile_only_source_action_);
 
 	CalMenu = this->menuBar()->addMenu(QString::fromLocal8Bit("¼ÆËã"));
@@ -1198,6 +1198,7 @@ void Radome::OnNewQuickCalcalteAction()
 	thread.SetFre(fre);
 	thread.SetCalcConf(conf);
 	thread.SetPolarizationType(source->GetPolarizationType());
+	thread.SetSourceDiffFlag(source->GetSourceDiffFlag());
 	thread.SetCustomPath(widget.GetCustomPath());
 
 	if (!GlobalConfig::Instance()->IsSkipQuickCalc()) {

@@ -52,6 +52,10 @@ public:
 		conf_ = conf;
 	}
 
+	void SetSourceDiffFlag(int source_diff_flag) {
+		source_diff_flag_ = source_diff_flag;
+	}
+
 private:
 	const DataManager& data_manager_;
 	std::vector<std::string> stl_path_;
@@ -63,6 +67,7 @@ private:
 	double fre_ = 0.0;
 	double ds_ = 0.0;
 	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
+	int source_diff_flag_ = 0;
 	GraphTrans graph_trans_;
 	CalcConf conf_;
 };
