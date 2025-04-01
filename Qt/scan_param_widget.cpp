@@ -48,6 +48,11 @@ ScanParamWidget::ScanParamWidget(DataManager* data_manager, int scan_widget_inde
 	polarization_type_combobox_ = new QComboBox;
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("水平极化Ex"));
 	polarization_type_combobox_->addItem(QString::fromLocal8Bit("垂直极化Ey"));
+
+	source_diff_lable_ = new QLabel(QString::fromLocal8Bit("波束类型:"));
+	source_diff_combobox_ = new QComboBox;
+	source_diff_combobox_->addItem(QString::fromLocal8Bit("和波束"));
+	source_diff_combobox_->addItem(QString::fromLocal8Bit("差波束"));
 	
 
 	path_lable_ = new QLabel(QString::fromLocal8Bit("保存结果文件夹至:"));
@@ -76,11 +81,13 @@ ScanParamWidget::ScanParamWidget(DataManager* data_manager, int scan_widget_inde
 	basic_layout->addWidget(ds_edit_, 8, 1);
 	basic_layout->addWidget(polarization_type_lable_, 9, 0);
 	basic_layout->addWidget(polarization_type_combobox_, 9, 1);
-	basic_layout->addWidget(path_lable_, 10, 0);
+	basic_layout->addWidget(source_diff_lable_, 10, 0);
+	basic_layout->addWidget(source_diff_combobox_, 10, 1);
+	basic_layout->addWidget(path_lable_, 11, 0);
 	QHBoxLayout* layout_tmp = new QHBoxLayout;
 	layout_tmp->addWidget(path_edit_);
 	layout_tmp->addWidget(browse_btn_);
-	basic_layout->addLayout(layout_tmp, 10, 1);
+	basic_layout->addLayout(layout_tmp, 11, 1);
 	basic_qbox_ = new QGroupBox(QString::fromLocal8Bit("源信息配置"));
 	basic_qbox_->setLayout(basic_layout);
 
@@ -309,6 +316,7 @@ bool ScanParamWidget::ReadScanParam() {
 	PARSE_EDIT_LINE_TO_INT_RETURN(mesh_N_edit_, mesh_N_, 1, 10000);
 
 	polarization_type_ = polarization_type_combobox_->currentIndex();
+	source_diff_flag_ = source_diff_combobox_->currentIndex();
 	scan_type_ = scan_param_combobox_->currentIndex();
 	if (!ReadTheta()) {
 		return false;
@@ -452,6 +460,7 @@ void ScanParamWidget::GenCalcMeta() {
 	gen_meta.SetOutputPath(cur_result_path_);
 	gen_meta.SetFre(fre_ * 1e9);
 	gen_meta.SetPolarizationType(polarization_type_);
+	gen_meta.SetSourceDiffFlag(source_diff_flag_);
 	gen_meta.SetCalcConf(GetCalcConf());
 
 	gen_meta.WriteMetaMsg(cur_result_path_ + "/meta.json");
