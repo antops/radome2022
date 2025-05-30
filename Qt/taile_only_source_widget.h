@@ -34,6 +34,7 @@ public:
 	private slots:
 	void on_widthChange(QString var);
 	void on_depthChange(QString var);
+	void OnSourceDiffCombobox(int);
 
 private:
 	void InitSourceParam();
@@ -81,6 +82,9 @@ private:
 	QLabel* source_diff_lable_;
 	QComboBox* source_diff_combobox_;
 
+	QLabel* zero_dep_lable_;
+	QComboBox* zero_dep_combobox_;
+
 	double theta_ = 0.0;
 	double phi_ = 0.0;
 	double fre_ = 17;
@@ -95,6 +99,7 @@ private:
 	int mesh_N_ = 161;
 	int polarization_type_ = 0;
 	int source_diff_flag_ = 0;
+	int zero_depth_d_ = 0;
 
 	std::string dir_path_;
 

@@ -107,6 +107,15 @@ void TaileOnlySourceWidget::InitSourceParam() {
 	source_diff_combobox_->addItem(QString::fromLocal8Bit("和波束"));
 	source_diff_combobox_->addItem(QString::fromLocal8Bit("差波束"));
 
+	connect(source_diff_combobox_, SIGNAL(currentIndexChanged(int)), this, SLOT(OnSourceDiffCombobox(int)));
+
+	zero_dep_lable_ = new QLabel(QString::fromLocal8Bit("零深方向:"));
+	zero_dep_combobox_ = new QComboBox;
+	zero_dep_combobox_->addItem(QString::fromLocal8Bit("沿X轴"));
+	zero_dep_combobox_->addItem(QString::fromLocal8Bit("沿Y轴"));
+	zero_dep_lable_->setHidden(true);
+	zero_dep_combobox_->setHidden(true);
+
 	QGridLayout* basic_layout = new QGridLayout;
 	basic_layout->addWidget(theta_label_, 0, 0);
 	basic_layout->addWidget(theta_edit_, 0, 1);
@@ -124,6 +133,8 @@ void TaileOnlySourceWidget::InitSourceParam() {
 	basic_layout->addWidget(polarization_type_combobox_, 9, 1);
 	basic_layout->addWidget(source_diff_lable_, 10, 0);
 	basic_layout->addWidget(source_diff_combobox_, 10, 1);
+	basic_layout->addWidget(zero_dep_lable_, 11, 0);
+	basic_layout->addWidget(zero_dep_combobox_, 11, 1);
 	basic_qbox_ = new QGroupBox(QString::fromLocal8Bit("参数配置"));
 	basic_qbox_->setLayout(basic_layout);
 }
@@ -178,8 +189,9 @@ bool TaileOnlySourceWidget::getField(Field *& ptr)
 	ptr->setGraphTrans(planeMirror->getGraphTrans());
 	ptr->SetFre(fre_ * 1e9);
 	ptr->ReadPythonText(dir_path_ + "/source.txt");
-
-
+	ptr->SetPolarizationType(polarization_type_);
+	ptr->SetSourceDiffFlag(source_diff_flag_);
+	ptr->SetZeroDepthD(zero_depth_d_);
 
 	QTreeWidgetItem* tree = new QTreeWidgetItem;
 	tree->setText(0, QString::fromLocal8Bit("理想泰勒源"));
@@ -201,8 +213,18 @@ bool TaileOnlySourceWidget::getField(Field *& ptr)
 	tree->addChild(treeWidth);
 
 	treeWidth = new QTreeWidgetItem;
-	treeWidth->setText(0, QString::fromLocal8Bit("极化方式:") + polarization_type_ == 1 ? QString::fromLocal8Bit("垂直极化Ey") : QString::fromLocal8Bit("水平极化Ey"));
+	treeWidth->setText(0, QString::fromLocal8Bit("极化方式:") + (polarization_type_ == 1 ? QString::fromLocal8Bit("垂直极化Ey") : QString::fromLocal8Bit("水平极化Ey")));
 	tree->addChild(treeWidth);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("波束类型:") + (source_diff_flag_ == 0 ? QString::fromLocal8Bit("和波束") : QString::fromLocal8Bit("差波束")));
+	tree->addChild(treeWidth);
+
+	if (source_diff_flag_ == 1) {
+		treeWidth = new QTreeWidgetItem;
+		treeWidth->setText(0, QString::fromLocal8Bit("零深方向:") + (zero_depth_d_ == 0 ? QString::fromLocal8Bit("沿X轴") : QString::fromLocal8Bit("沿Y轴")));
+		tree->addChild(treeWidth);
+	}
 
 
 	treeWidth = new QTreeWidgetItem;
@@ -281,6 +303,7 @@ bool TaileOnlySourceWidget::ReadScanParam() {
 
 	polarization_type_ = polarization_type_combobox_->currentIndex();
 	source_diff_flag_ = source_diff_combobox_->currentIndex();
+	zero_depth_d_ = zero_dep_combobox_->currentIndex();
 
 	return true;
 }
@@ -368,3 +391,13 @@ bool TaileOnlySourceWidget::GenSource() {
 	return true;
 }
 
+void TaileOnlySourceWidget::OnSourceDiffCombobox(int index) {
+	if (index == 1) {
+		zero_dep_lable_->setHidden(false);
+		zero_dep_combobox_->setHidden(false);
+	}
+	else {
+		zero_dep_lable_->setHidden(true);
+		zero_dep_combobox_->setHidden(true);
+	}
+}

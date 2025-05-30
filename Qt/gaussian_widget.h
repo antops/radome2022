@@ -34,6 +34,7 @@ public:
 	private slots:
 	void on_widthChange(QString var);
 	void on_depthChange(QString var);
+	void OnSourceDiffCombobox(int);
 
 private:
 	//void changeText(int index, const string& t);
@@ -74,6 +75,9 @@ private:
 
 	QLabel* source_diff_lable_;
 	QComboBox* source_diff_combobox_;
+
+	QLabel* zero_dep_lable_;
+	QComboBox* zero_dep_combobox_;
 
 	PlaneMirror * planeMirror;
 

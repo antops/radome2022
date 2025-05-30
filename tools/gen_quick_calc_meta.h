@@ -56,6 +56,10 @@ public:
 		source_diff_flag_ = source_diff_flag;
 	}
 
+	void SetZeroDepthD(int zero_depth_d) {
+		zero_depth_d_ = zero_depth_d;
+	}
+
 private:
 	const DataManager& data_manager_;
 	std::vector<std::string> stl_path_;
@@ -68,6 +72,7 @@ private:
 	double ds_ = 0.0;
 	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
 	int source_diff_flag_ = 0;
+	int zero_depth_d_ = 0; // 差波束时的0深方向，0为X，1为Y
 	GraphTrans graph_trans_;
 	CalcConf conf_;
 };

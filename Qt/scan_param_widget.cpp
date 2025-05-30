@@ -53,7 +53,14 @@ ScanParamWidget::ScanParamWidget(DataManager* data_manager, int scan_widget_inde
 	source_diff_combobox_ = new QComboBox;
 	source_diff_combobox_->addItem(QString::fromLocal8Bit("和波束"));
 	source_diff_combobox_->addItem(QString::fromLocal8Bit("差波束"));
-	
+	connect(source_diff_combobox_, SIGNAL(currentIndexChanged(int)), this, SLOT(OnSourceDiffCombobox(int)));
+
+	zero_dep_lable_ = new QLabel(QString::fromLocal8Bit("零深方向:"));
+	zero_dep_combobox_ = new QComboBox;
+	zero_dep_combobox_->addItem(QString::fromLocal8Bit("沿X轴"));
+	zero_dep_combobox_->addItem(QString::fromLocal8Bit("沿Y轴"));
+	zero_dep_lable_->setHidden(true);
+	zero_dep_combobox_->setHidden(true);
 
 	path_lable_ = new QLabel(QString::fromLocal8Bit("保存结果文件夹至:"));
 	path_edit_ = new QLineEdit;
@@ -83,11 +90,13 @@ ScanParamWidget::ScanParamWidget(DataManager* data_manager, int scan_widget_inde
 	basic_layout->addWidget(polarization_type_combobox_, 9, 1);
 	basic_layout->addWidget(source_diff_lable_, 10, 0);
 	basic_layout->addWidget(source_diff_combobox_, 10, 1);
-	basic_layout->addWidget(path_lable_, 11, 0);
+	basic_layout->addWidget(zero_dep_lable_, 11, 0);
+	basic_layout->addWidget(zero_dep_combobox_, 11, 1);
+	basic_layout->addWidget(path_lable_, 12, 0);
 	QHBoxLayout* layout_tmp = new QHBoxLayout;
 	layout_tmp->addWidget(path_edit_);
 	layout_tmp->addWidget(browse_btn_);
-	basic_layout->addLayout(layout_tmp, 11, 1);
+	basic_layout->addLayout(layout_tmp, 12, 1);
 	basic_qbox_ = new QGroupBox(QString::fromLocal8Bit("源信息配置"));
 	basic_qbox_->setLayout(basic_layout);
 
@@ -317,6 +326,7 @@ bool ScanParamWidget::ReadScanParam() {
 
 	polarization_type_ = polarization_type_combobox_->currentIndex();
 	source_diff_flag_ = source_diff_combobox_->currentIndex();
+	zero_depth_d_ = zero_dep_combobox_->currentIndex();
 	scan_type_ = scan_param_combobox_->currentIndex();
 	if (!ReadTheta()) {
 		return false;
@@ -461,6 +471,7 @@ void ScanParamWidget::GenCalcMeta() {
 	gen_meta.SetFre(fre_ * 1e9);
 	gen_meta.SetPolarizationType(polarization_type_);
 	gen_meta.SetSourceDiffFlag(source_diff_flag_);
+	gen_meta.SetZeroDepthD(zero_depth_d_);
 	gen_meta.SetCalcConf(GetCalcConf());
 
 	gen_meta.WriteMetaMsg(cur_result_path_ + "/meta.json");
@@ -653,5 +664,16 @@ void ScanParamWidget::OnBrowseBtn() {
 		// 这里可以添加你处理该文件夹路径的代码
 		custom_path_ = selectedDir.toStdString();
 		path_edit_->setText(selectedDir);
+	}
+}
+
+void ScanParamWidget::OnSourceDiffCombobox(int index) {
+	if (index == 1) {
+		zero_dep_lable_->setHidden(false);
+		zero_dep_combobox_->setHidden(false);
+	}
+	else {
+		zero_dep_lable_->setHidden(true);
+		zero_dep_combobox_->setHidden(true);
 	}
 }

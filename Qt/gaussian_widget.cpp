@@ -81,6 +81,14 @@ GaussianWidget::GaussianWidget(QWidget *parent)
 	source_diff_combobox_ = new QComboBox;
 	source_diff_combobox_->addItem(QString::fromLocal8Bit("ºÍ²¨Êø"));
 	source_diff_combobox_->addItem(QString::fromLocal8Bit("²î²¨Êø"));
+	connect(source_diff_combobox_, SIGNAL(currentIndexChanged(int)), this, SLOT(OnSourceDiffCombobox(int)));
+
+	zero_dep_lable_ = new QLabel(QString::fromLocal8Bit("ÁãÉî·½Ïò:"));
+	zero_dep_combobox_ = new QComboBox;
+	zero_dep_combobox_->addItem(QString::fromLocal8Bit("ÑØXÖá"));
+	zero_dep_combobox_->addItem(QString::fromLocal8Bit("ÑØYÖá"));
+	zero_dep_lable_->setHidden(true);
+	zero_dep_combobox_->setHidden(true);
 	
 
 	QGridLayout * layoutSou = new QGridLayout;
@@ -98,6 +106,8 @@ GaussianWidget::GaussianWidget(QWidget *parent)
 
 	layoutSou->addWidget(source_diff_lable_, 5, 0);
 	layoutSou->addWidget(source_diff_combobox_, 5, 1);
+	layoutSou->addWidget(zero_dep_lable_, 6, 0);
+	layoutSou->addWidget(zero_dep_combobox_, 6, 1);
 
 	sourceGroupBox = new QGroupBox;
 	sourceGroupBox->setTitle(tr("Source"));
@@ -137,7 +147,7 @@ bool GaussianWidget::getField(Field *& ptr)
 		return false;
 	}
 	bool ok, ok_back;
-	vector<double> para(8);
+	vector<double> para(9);
 	string temp;
 	para[0] = planeMirror->getWidth();
 	para[1] = planeMirror->getDepth();	
@@ -169,6 +179,7 @@ bool GaussianWidget::getField(Field *& ptr)
 	para[6] = polarization_type_combobox_->currentIndex();
 
 	para[7] = source_diff_combobox_->currentIndex();
+	para[8] = zero_dep_combobox_->currentIndex();
 	ptr = new Gaussain(planeMirror->getGraphTrans(), para);
 	return true;
 }
@@ -226,4 +237,16 @@ void GaussianWidget::on_depthChange(QString var)
 	planeMirror->setDepth(res);
 	depthLineEdit->setStyleSheet("background-color:rgba(255,255,255,255)");
 	emit sendData(2);
+}
+
+
+void GaussianWidget::OnSourceDiffCombobox(int index) {
+	if (index == 1) {
+		zero_dep_lable_->setHidden(false);
+		zero_dep_combobox_->setHidden(false);
+	}
+	else {
+		zero_dep_lable_->setHidden(true);
+		zero_dep_combobox_->setHidden(true);
+	}
 }

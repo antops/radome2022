@@ -39,6 +39,10 @@ public:
 		source_diff_flag_ = source_diff_flag;
 	}
 
+	void SetZeroDepthD(int zero_depth_d) {
+		zero_depth_d_ = zero_depth_d;
+	}
+
 	void SetCustomPath(const std::string custom_path) {
 		custom_path_ = custom_path;
 	}
@@ -135,6 +139,7 @@ protected:
 		gen_meta.SetFre(fre_);
 		gen_meta.SetPolarizationType(polarization_type_);
 		gen_meta.SetSourceDiffFlag(source_diff_flag_);
+		gen_meta.SetZeroDepthD(zero_depth_d_);
 		gen_meta.SetCalcConf(conf_);
 
 		if (!gen_meta.WriteMetaMsg(dir_path_ + "/meta.json")) {
@@ -157,5 +162,6 @@ protected:
 	double fre_ = 0.0;
 	int polarization_type_ = 1; // 垂直极化是1, 非1水平极化
 	int source_diff_flag_ = 0;
+	int zero_depth_d_ = 0; // 差波束时的0深方向，0为X，1为Y
 	CalcConf conf_;
 };

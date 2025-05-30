@@ -56,8 +56,18 @@ public:
 
 	int GetPolarizationType() const { return polarization_type_; }
 	void SetPolarizationType(int polarization_type) { polarization_type_ = polarization_type; }
+	void SetSourceDiffFlag(int source_diff_flag) {
+		source_diff_flag_ = source_diff_flag;
+	}
+
+	void SetZeroDepthD(int zero_depth_d) {
+		zero_depth_d_ = zero_depth_d;
+	}
+
 
 	int GetSourceDiffFlag() const { return source_diff_flag_; }
+
+	int GetZeroDepthD() const{ return zero_depth_d_; }
 
 	//得到场的参数
 	void getSourcePara(GraphTrans & _graphTransPara, 
@@ -145,6 +155,7 @@ protected:
 
 	int polarization_type_ = 0; // 极化方向 垂直极化-Ey- source_mode=1，水平极化- Ex-source_mode=0，导入源source_mode=2
 	int source_diff_flag_ = 0; // 和波束为0，差波束为1
+	int zero_depth_d_ = 0; // 差波束时的0深方向，0为X，1为Y
 
 	QTreeWidgetItem* tree_ = nullptr;
 };

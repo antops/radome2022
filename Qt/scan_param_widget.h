@@ -31,6 +31,7 @@ signals:
 private slots :
 	void OnOKClicked();
 	void OnBrowseBtn();
+	void OnSourceDiffCombobox(int index);
 
 private:
 	bool GenSource();
@@ -80,6 +81,8 @@ private:
 	QComboBox* polarization_type_combobox_;
 	QLabel* source_diff_lable_;
 	QComboBox* source_diff_combobox_;
+	QLabel* zero_dep_lable_;
+	QComboBox* zero_dep_combobox_;
 
 	QLabel* path_lable_;
 	QLineEdit* path_edit_;
@@ -122,6 +125,7 @@ private:
 	int mesh_N_ = 161;
 	int polarization_type_ = 0;
 	int source_diff_flag_ = 0;
+	int zero_depth_d_ = 0;
 	int scan_type_ = 0;
 	int scan_count_;
 	std::string result_path_;

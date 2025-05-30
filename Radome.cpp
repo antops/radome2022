@@ -1199,6 +1199,7 @@ void Radome::OnNewQuickCalcalteAction()
 	thread.SetCalcConf(conf);
 	thread.SetPolarizationType(source->GetPolarizationType());
 	thread.SetSourceDiffFlag(source->GetSourceDiffFlag());
+	thread.SetZeroDepthD(source->GetZeroDepthD());
 	thread.SetCustomPath(widget.GetCustomPath());
 
 	if (!GlobalConfig::Instance()->IsSkipQuickCalc()) {

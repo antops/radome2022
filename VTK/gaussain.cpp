@@ -18,6 +18,7 @@ Gaussain::Gaussain(const GraphTrans & _graphTrans,
 
 	polarization_type_ = int(data[6]);
 	source_diff_flag_ = int(data[7]);
+	zero_depth_d_ = int(data[8]);
 
 	setDs(data[5]);
 	SetFre(data[4] * 1e9);
@@ -88,6 +89,20 @@ QTreeWidgetItem * Gaussain::getTree()
 	tree->addChild(treew0);
 	tree->addChild(treeFre);
 	tree->addChild(treeds);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("极化方式:") + (polarization_type_ == 1 ? QString::fromLocal8Bit("垂直极化Ey") : QString::fromLocal8Bit("水平极化Ey")));
+	tree->addChild(treeWidth);
+
+	treeWidth = new QTreeWidgetItem;
+	treeWidth->setText(0, QString::fromLocal8Bit("波束类型:") + (source_diff_flag_ == 0 ? QString::fromLocal8Bit("和波束") : QString::fromLocal8Bit("差波束")));
+	tree->addChild(treeWidth);
+
+	if (source_diff_flag_ == 1) {
+		treeWidth = new QTreeWidgetItem;
+		treeWidth->setText(0, QString::fromLocal8Bit("零深方向:") + (zero_depth_d_ == 0 ? QString::fromLocal8Bit("沿X轴") : QString::fromLocal8Bit("沿Y轴")));
+		tree->addChild(treeWidth);
+	}
 
 	tree->addChild(getTransformTree());
 

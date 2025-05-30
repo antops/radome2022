@@ -43,6 +43,7 @@ bool GenQuickCalcMeta::WriteMetaMsg(const std::string & path)
 	js["ds"] = ds_;
 	js["source_mode"] = polarization_type_;
 	js["source_diff_flag"] = source_diff_flag_;
+	js["zero_depth_d"] = zero_depth_d_;
 
 	Json::Value& js_farfield = js["farfield"];
 	js_farfield["maxtheta"] = conf_.max_theta;
